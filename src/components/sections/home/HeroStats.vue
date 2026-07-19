@@ -1,0 +1,128 @@
+<template>
+  <div class="hero-stats">
+    <div
+      v-for="(stat, i) in STATS"
+      :key="stat.label"
+      class="stat-card"
+      :style="{ animationDelay: `${1200 + i * 120}ms` }"
+    >
+      <div class="stat-card__value">
+        <span ref="(el) => setRef(el, i)" class="stat-number">0</span>
+        <span class="stat-suffix">{{ stat.suffix }}</span>
+      </div>
+      <p class="stat-card__label">{{ stat.label }}</p>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { gsap } from '@/plugins/gsap'
+import { STATS } from '@/constants'
+
+const statEls = ref<(HTMLElement | null)[]>([])
+
+function setRef(el: unknown, i: number) {
+  statEls.value[i] = el as HTMLElement | null
+}
+
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        const idx = statEls.value.indexOf(entry.target as HTMLElement)
+        if (idx === -1) return
+        const target = STATS[idx].value
+        const obj = { val: 0 }
+        gsap.to(obj, {
+          val: target,
+          duration: 1.8,
+          delay: idx * 0.12,
+          ease: 'power2.out',
+          snap: { val: 1 },
+          onUpdate() {
+            if (statEls.value[idx]) {
+              statEls.value[idx]!.textContent = String(Math.round(obj.val))
+            }
+          },
+        })
+        observer.unobserve(entry.target)
+      })
+    },
+    { threshold: 0.4 },
+  )
+
+  nextTick(() => {
+    statEls.value.forEach((el) => el && observer.observe(el))
+  })
+
+  onUnmounted(() => observer.disconnect())
+})
+</script>
+
+<style scoped>
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 480px) {
+  .hero-stats { grid-template-columns: repeat(4, 1fr); }
+}
+
+.stat-card {
+  position: relative;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: center;
+  opacity: 0;
+  animation: statReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.stat-card:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.06);
+}
+
+@keyframes statReveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.stat-card__value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f5f5f5;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.stat-suffix {
+  font-size: 20px;
+  font-weight: 700;
+  color: #6366f1;
+}
+
+.stat-card__label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #737373;
+}
+</style>

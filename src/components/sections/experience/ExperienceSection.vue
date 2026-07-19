@@ -1,0 +1,469 @@
+<template>
+  <section
+    id="experience"
+    ref="sectionEl"
+    class="exp-section"
+    aria-label="Work experience"
+  >
+    <!-- Ambient background -->
+    <div class="exp-section__bg" aria-hidden="true">
+      <div class="bg-orb bg-orb--1" />
+      <div class="bg-orb bg-orb--2" />
+    </div>
+
+    <!-- ── Section header ──────────────────────────────────────── -->
+    <div class="exp-section__header">
+      <div ref="labelEl" class="section-label">
+        <span class="label-line" />
+        <span class="label-text">Experience</span>
+      </div>
+
+      <h2 ref="headingEl" class="exp-section__heading">
+        Seven years of systems<br />
+        <span class="heading-accent">that run in production.</span>
+      </h2>
+
+      <p ref="subEl" class="exp-section__sub">
+        Every role here left a mark — on the codebase, on the team,
+        and on how I think about building software.
+      </p>
+    </div>
+
+    <!-- ── Timeline ───────────────────────────────────────────── -->
+    <div class="exp-section__timeline-wrap">
+      <div ref="timelineEl" class="exp-timeline">
+
+        <!-- Animated spine -->
+        <div class="exp-timeline__spine-track" aria-hidden="true">
+          <div ref="spineEl" class="exp-timeline__spine" />
+        </div>
+
+        <!-- Experience items -->
+        <div
+          v-for="(exp, index) in EXPERIENCES"
+          :key="exp.id"
+          ref="itemEls"
+          class="exp-timeline__item"
+          :class="{ 'exp-timeline__item--right': index % 2 !== 0 }"
+        >
+          <!-- Connector dot -->
+          <div class="exp-timeline__dot" aria-hidden="true">
+            <div
+              class="exp-timeline__dot-ring"
+              :class="{ 'exp-timeline__dot-ring--active': exp.current }"
+            />
+            <div
+              class="exp-timeline__dot-core"
+              :class="{ 'exp-timeline__dot-core--active': exp.current }"
+            />
+          </div>
+
+          <!-- Year label on spine -->
+          <div
+            class="exp-timeline__year"
+            :class="{ 'exp-timeline__year--right': index % 2 !== 0 }"
+          >
+            {{ exp.startDate.split('-')[0] }}
+          </div>
+
+          <!-- Card -->
+          <ExperienceCard :experience="exp" />
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Summary strip ──────────────────────────────────────── -->
+    <div ref="summaryEl" class="exp-summary">
+      <div
+        v-for="item in SUMMARY"
+        :key="item.label"
+        class="exp-summary__item"
+      >
+        <span class="exp-summary__value">{{ item.value }}</span>
+        <span class="exp-summary__label">{{ item.label }}</span>
+      </div>
+    </div>
+
+  </section>
+</template>
+
+<script setup lang="ts">
+import { gsap, ScrollTrigger } from '@/plugins/gsap'
+import { EXPERIENCES } from '@/constants'
+import ExperienceCard from './ExperienceCard.vue'
+
+const SUMMARY = [
+  { value: '7+',  label: 'Years in industry'    },
+  { value: '4',   label: 'Companies'             },
+  { value: '₹40Cr', label: 'Transactions / month' },
+  { value: '60%', label: 'Avg latency reduction' },
+] as const
+
+// ── Refs ──────────────────────────────────────────────────────────
+const sectionEl  = ref<HTMLElement | null>(null)
+const labelEl    = ref<HTMLElement | null>(null)
+const headingEl  = ref<HTMLElement | null>(null)
+const subEl      = ref<HTMLElement | null>(null)
+const timelineEl = ref<HTMLElement | null>(null)
+const spineEl    = ref<HTMLElement | null>(null)
+const itemEls    = ref<HTMLElement[]>([])
+const summaryEl  = ref<HTMLElement | null>(null)
+
+// ── GSAP animations ───────────────────────────────────────────────
+onMounted(() => {
+  const ctx = gsap.context(() => {
+    const ease = 'power3.out'
+
+    // Header sequence
+    gsap.from(labelEl.value, {
+      scrollTrigger: { trigger: labelEl.value, start: 'top 88%' },
+      opacity: 0, x: -24, duration: 0.6, ease,
+    })
+
+    gsap.from(headingEl.value, {
+      scrollTrigger: { trigger: headingEl.value, start: 'top 85%' },
+      opacity: 0, y: 32, duration: 0.8, ease,
+    })
+
+    gsap.from(subEl.value, {
+      scrollTrigger: { trigger: subEl.value, start: 'top 88%' },
+      opacity: 0, y: 20, duration: 0.6, ease, delay: 0.1,
+    })
+
+    // Spine draw — scrub with scroll
+    gsap.fromTo(
+      spineEl.value,
+      { scaleY: 0 },
+      {
+        scaleY: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: timelineEl.value,
+          start: 'top 70%',
+          end: 'bottom 30%',
+          scrub: 0.8,
+        },
+      },
+    )
+
+    // Timeline items — alternate left/right entrance
+    itemEls.value.forEach((el, i) => {
+      const isRight = i % 2 !== 0
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 85%' },
+        opacity: 0,
+        x: isRight ? 48 : -48,
+        y: 24,
+        duration: 0.75,
+        ease,
+        delay: 0.05,
+      })
+    })
+
+    // Summary strip
+    gsap.from(summaryEl.value!.querySelectorAll('.exp-summary__item'), {
+      scrollTrigger: { trigger: summaryEl.value, start: 'top 88%' },
+      opacity: 0, y: 20, duration: 0.5, ease, stagger: 0.08,
+    })
+
+  }, sectionEl.value!)
+
+  onUnmounted(() => ctx.revert())
+})
+</script>
+
+<style scoped>
+/* ── Section shell ─────────────────────────────────────────────── */
+.exp-section {
+  position: relative;
+  padding: 120px 0 100px;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+/* ── Background orbs ───────────────────────────────────────────── */
+.exp-section__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+}
+
+.bg-orb--1 {
+  width: 600px;
+  height: 600px;
+  top: 0;
+  left: -200px;
+  background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%);
+}
+
+.bg-orb--2 {
+  width: 400px;
+  height: 400px;
+  bottom: 10%;
+  right: -100px;
+  background: radial-gradient(circle, rgba(139,92,246,0.05) 0%, transparent 70%);
+}
+
+/* ── Header ────────────────────────────────────────────────────── */
+.exp-section__header {
+  max-width: 1280px;
+  margin: 0 auto 72px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.label-line {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: #6366f1;
+  flex-shrink: 0;
+}
+
+.label-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6366f1;
+  font-family: 'Geist Mono', monospace;
+}
+
+.exp-section__heading {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #f5f5f5;
+  max-width: 640px;
+}
+
+.heading-accent {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.exp-section__sub {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #737373;
+  max-width: 480px;
+}
+
+/* ── Timeline wrapper ──────────────────────────────────────────── */
+.exp-section__timeline-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Timeline ──────────────────────────────────────────────────── */
+.exp-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Spine track */
+.exp-timeline__spine-track {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .exp-timeline__spine-track { display: block; }
+}
+
+.exp-timeline__spine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #6366f1 8%,
+    #8b5cf6 50%,
+    #6366f1 92%,
+    transparent 100%
+  );
+  transform-origin: top center;
+}
+
+/* Timeline item */
+.exp-timeline__item {
+  position: relative;
+  padding: 0 0 48px 0;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .exp-timeline__item {
+    width: calc(50% - 40px);
+    padding: 0 0 56px 0;
+    align-self: flex-start;
+  }
+
+  .exp-timeline__item:nth-child(odd) {
+    margin-right: auto;
+    padding-right: 48px;
+  }
+
+  .exp-timeline__item--right {
+    margin-left: auto;
+    padding-left: 48px;
+    padding-right: 0;
+    margin-top: -120px;
+  }
+}
+
+/* Connector dot */
+.exp-timeline__dot {
+  display: none;
+  position: absolute;
+  top: 24px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  z-index: 2;
+}
+
+@media (min-width: 1024px) {
+  .exp-timeline__dot { display: flex; align-items: center; justify-content: center; }
+
+  .exp-timeline__item--right .exp-timeline__dot {
+    right: auto;
+    left: -8px;
+  }
+}
+
+.exp-timeline__dot-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #333333;
+  background: #0a0a0a;
+  transition: border-color 0.3s;
+}
+
+.exp-timeline__dot-ring--active {
+  border-color: #6366f1;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+}
+
+.exp-timeline__dot-core {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #333333;
+  position: relative;
+  z-index: 1;
+  transition: background 0.3s;
+}
+
+.exp-timeline__dot-core--active {
+  background: #6366f1;
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(99,102,241,0); }
+}
+
+/* Year label */
+.exp-timeline__year {
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: calc(100% + 56px);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Geist Mono', monospace;
+  letter-spacing: 0.1em;
+  color: #555555;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .exp-timeline__year { display: block; }
+
+  .exp-timeline__year--right {
+    right: auto;
+    left: calc(100% + 56px);
+  }
+}
+
+/* ── Summary strip ─────────────────────────────────────────────── */
+.exp-summary {
+  max-width: 1280px;
+  margin: 56px auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  border: 1px solid #1a1a1a;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+@media (min-width: 640px) {
+  .exp-summary { grid-template-columns: repeat(4, 1fr); }
+}
+
+.exp-summary__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 28px 20px;
+  background: #0a0a0a;
+  transition: background 0.2s;
+}
+
+.exp-summary__item:hover { background: #111111; }
+
+.exp-summary__value {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #f5f5f5, #a0a0a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-variant-numeric: tabular-nums;
+}
+
+.exp-summary__label {
+  font-size: 12px;
+  color: #555555;
+  font-family: 'Geist Mono', monospace;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+</style>
