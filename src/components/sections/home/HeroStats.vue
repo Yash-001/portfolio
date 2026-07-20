@@ -7,30 +7,33 @@
       :style="{ animationDelay: `${1200 + i * 120}ms` }"
     >
       <div class="stat-card__value">
-        <span ref="(el) => setRef(el, i)" class="stat-number">0</span>
+        <span
+          :ref="(el) => { statEls[i] = el as HTMLElement | null }"
+          class="stat-number"
+        >0</span>
         <span class="stat-suffix">{{ stat.suffix }}</span>
       </div>
-      <p class="stat-card__label">{{ stat.label }}</p>
+      <p class="stat-card__label">
+        {{ stat.label }}
+      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted, nextTick } from 'vue'
 import { gsap } from '@/plugins/gsap'
 import { STATS } from '@/constants'
 
-const statEls = ref<(HTMLElement | null)[]>([])
-
-function setRef(el: unknown, i: number) {
-  statEls.value[i] = el as HTMLElement | null
-}
+const statEls: (HTMLElement | null)[] = []
+let statObserver: IntersectionObserver | null = null
 
 onMounted(() => {
-  const observer = new IntersectionObserver(
+  statObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return
-        const idx = statEls.value.indexOf(entry.target as HTMLElement)
+        const idx = statEls.indexOf(entry.target as HTMLElement)
         if (idx === -1) return
         const target = STATS[idx].value
         const obj = { val: 0 }
@@ -41,23 +44,23 @@ onMounted(() => {
           ease: 'power2.out',
           snap: { val: 1 },
           onUpdate() {
-            if (statEls.value[idx]) {
-              statEls.value[idx]!.textContent = String(Math.round(obj.val))
+            if (statEls[idx]) {
+              statEls[idx]!.textContent = String(Math.round(obj.val))
             }
           },
         })
-        observer.unobserve(entry.target)
+        statObserver!.unobserve(entry.target)
       })
     },
     { threshold: 0.4 },
   )
 
   nextTick(() => {
-    statEls.value.forEach((el) => el && observer.observe(el))
+    statEls.forEach((el) => el && statObserver!.observe(el))
   })
-
-  onUnmounted(() => observer.disconnect())
 })
+
+onUnmounted(() => statObserver?.disconnect())
 </script>
 
 <style scoped>

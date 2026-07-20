@@ -1,8 +1,13 @@
 <template>
-  <div ref="heroEl" class="fp-hero">
-
+  <div
+    ref="heroEl"
+    class="fp-hero"
+  >
     <!-- Animated background -->
-    <div class="fp-hero__bg" aria-hidden="true">
+    <div
+      class="fp-hero__bg"
+      aria-hidden="true"
+    >
       <div class="fp-hero__bg-grid" />
       <div class="fp-hero__orb fp-hero__orb--1" />
       <div class="fp-hero__orb fp-hero__orb--2" />
@@ -10,29 +15,55 @@
     </div>
 
     <div class="fp-hero__inner">
-
       <!-- Left: copy -->
       <div class="fp-hero__copy">
-
-        <div ref="badgeEl" class="fp-hero__badge-row">
-          <span class="fp-hero__status-dot" aria-hidden="true" />
+        <div
+          ref="badgeEl"
+          class="fp-hero__badge-row"
+        >
+          <span
+            class="fp-hero__status-dot"
+            aria-hidden="true"
+          />
           <span class="fp-hero__status">Live in Production</span>
-          <span class="fp-hero__sep" aria-hidden="true">·</span>
+          <span
+            class="fp-hero__sep"
+            aria-hidden="true"
+          >·</span>
           <span class="fp-hero__meta-text">{{ EAM_PROJECT.year }}</span>
-          <span class="fp-hero__sep" aria-hidden="true">·</span>
+          <span
+            class="fp-hero__sep"
+            aria-hidden="true"
+          >·</span>
           <span class="fp-hero__meta-text">{{ EAM_PROJECT.duration }}</span>
         </div>
 
-        <h1 ref="titleEl" class="fp-hero__title">
+        <h1
+          ref="titleEl"
+          class="fp-hero__title"
+        >
           Enterprise<br />
           <span class="fp-hero__title-accent">Asset Management</span><br />
           System
         </h1>
 
-        <p ref="taglineEl" class="fp-hero__tagline">{{ EAM_PROJECT.tagline }}</p>
-        <p ref="descEl"    class="fp-hero__desc">{{ EAM_PROJECT.description }}</p>
+        <p
+          ref="taglineEl"
+          class="fp-hero__tagline"
+        >
+          {{ EAM_PROJECT.tagline }}
+        </p>
+        <p
+          ref="descEl"
+          class="fp-hero__desc"
+        >
+          {{ EAM_PROJECT.description }}
+        </p>
 
-        <div ref="metaEl" class="fp-hero__meta">
+        <div
+          ref="metaEl"
+          class="fp-hero__meta"
+        >
           <div class="fp-hero__meta-item">
             <i class="pi pi-user" />
             <span>{{ EAM_PROJECT.role }}</span>
@@ -43,7 +74,10 @@
           </div>
         </div>
 
-        <div ref="techEl" class="fp-hero__tech">
+        <div
+          ref="techEl"
+          class="fp-hero__tech"
+        >
           <span
             v-for="t in HERO_TECH"
             :key="t.name"
@@ -51,11 +85,13 @@
             :style="{ '--tc': t.color }"
           >{{ t.name }}</span>
         </div>
-
       </div>
 
       <!-- Right: architecture diagram -->
-      <div ref="diagramEl" class="fp-hero__diagram">
+      <div
+        ref="diagramEl"
+        class="fp-hero__diagram"
+      >
         <div class="fp-diagram">
           <div class="fp-diagram__bar">
             <span class="fp-diagram__dot fp-diagram__dot--r" />
@@ -65,16 +101,22 @@
           </div>
 
           <div class="fp-diagram__body">
-
             <div class="fp-diagram__layer fp-diagram__layer--client">
               <span class="fp-diagram__layer-label">Client Layer</span>
               <div class="fp-diagram__nodes">
-                <div class="fp-diagram__node fp-diagram__node--vue"><i class="pi pi-desktop" /><span>Vue 3 SPA</span></div>
-                <div class="fp-diagram__node fp-diagram__node--mobile"><i class="pi pi-mobile" /><span>Mobile QR</span></div>
+                <div class="fp-diagram__node fp-diagram__node--vue">
+                  <i class="pi pi-desktop" /><span>Vue 3 SPA</span>
+                </div>
+                <div class="fp-diagram__node fp-diagram__node--mobile">
+                  <i class="pi pi-mobile" /><span>Mobile QR</span>
+                </div>
               </div>
             </div>
 
-            <div class="fp-diagram__arrow" aria-hidden="true">
+            <div
+              class="fp-diagram__arrow"
+              aria-hidden="true"
+            >
               <div class="fp-diagram__arrow-line" />
               <i class="pi pi-arrow-down fp-diagram__arrow-icon" />
             </div>
@@ -82,13 +124,22 @@
             <div class="fp-diagram__layer fp-diagram__layer--api">
               <span class="fp-diagram__layer-label">API Layer</span>
               <div class="fp-diagram__nodes">
-                <div class="fp-diagram__node fp-diagram__node--alb"><i class="pi pi-share-alt" /><span>AWS ALB</span></div>
-                <div class="fp-diagram__node fp-diagram__node--spring"><i class="pi pi-server" /><span>Spring Boot 3</span></div>
-                <div class="fp-diagram__node fp-diagram__node--spring"><i class="pi pi-server" /><span>Spring Boot 3</span></div>
+                <div class="fp-diagram__node fp-diagram__node--alb">
+                  <i class="pi pi-share-alt" /><span>AWS ALB</span>
+                </div>
+                <div class="fp-diagram__node fp-diagram__node--spring">
+                  <i class="pi pi-server" /><span>Spring Boot 3</span>
+                </div>
+                <div class="fp-diagram__node fp-diagram__node--spring">
+                  <i class="pi pi-server" /><span>Spring Boot 3</span>
+                </div>
               </div>
             </div>
 
-            <div class="fp-diagram__arrow" aria-hidden="true">
+            <div
+              class="fp-diagram__arrow"
+              aria-hidden="true"
+            >
               <div class="fp-diagram__arrow-line" />
               <i class="pi pi-arrow-down fp-diagram__arrow-icon" />
             </div>
@@ -96,27 +147,37 @@
             <div class="fp-diagram__layer fp-diagram__layer--data">
               <span class="fp-diagram__layer-label">Data Layer</span>
               <div class="fp-diagram__nodes">
-                <div class="fp-diagram__node fp-diagram__node--pg"><i class="pi pi-database" /><span>PostgreSQL + RLS</span></div>
-                <div class="fp-diagram__node fp-diagram__node--redis"><i class="pi pi-bolt" /><span>Redis Cache</span></div>
-                <div class="fp-diagram__node fp-diagram__node--s3"><i class="pi pi-cloud" /><span>AWS S3</span></div>
+                <div class="fp-diagram__node fp-diagram__node--pg">
+                  <i class="pi pi-database" /><span>PostgreSQL + RLS</span>
+                </div>
+                <div class="fp-diagram__node fp-diagram__node--redis">
+                  <i class="pi pi-bolt" /><span>Redis Cache</span>
+                </div>
+                <div class="fp-diagram__node fp-diagram__node--s3">
+                  <i class="pi pi-cloud" /><span>AWS S3</span>
+                </div>
               </div>
             </div>
-
           </div>
 
           <!-- Animated data flow pulses -->
-          <div class="fp-diagram__pulses" aria-hidden="true">
+          <div
+            class="fp-diagram__pulses"
+            aria-hidden="true"
+          >
             <div class="fp-diagram__pulse fp-diagram__pulse--1" />
             <div class="fp-diagram__pulse fp-diagram__pulse--2" />
             <div class="fp-diagram__pulse fp-diagram__pulse--3" />
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- Metrics strip -->
-    <div ref="metricsEl" class="fp-hero__metrics">
+    <div
+      ref="metricsEl"
+      class="fp-hero__metrics"
+    >
       <div
         v-for="m in EAM_METRICS"
         :key="m.label"
@@ -127,11 +188,11 @@
         <span class="fp-hero__metric-label">{{ m.label }}</span>
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from '@/plugins/gsap'
 import { EAM_PROJECT, EAM_METRICS, EAM_TECH } from '@/constants/featured-project.constants'
 
@@ -147,8 +208,10 @@ const techEl    = ref<HTMLElement | null>(null)
 const diagramEl = ref<HTMLElement | null>(null)
 const metricsEl = ref<HTMLElement | null>(null)
 
+let gsapCtx: ReturnType<typeof gsap.context> | null = null
+
 onMounted(() => {
-  const ctx = gsap.context(() => {
+  gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
     const tl = gsap.timeline({ defaults: { ease, duration: 0.7 } })
 
@@ -173,9 +236,9 @@ onMounted(() => {
       delay: 1.1, transformOrigin: 'top center',
     })
   }, heroEl.value!)
-
-  onUnmounted(() => ctx.revert())
 })
+
+onUnmounted(() => gsapCtx?.revert())
 </script>
 
 <style scoped>

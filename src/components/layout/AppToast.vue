@@ -1,5 +1,8 @@
 <template>
-  <Toast position="top-right" :pt="pt" />
+  <Toast
+    position="top-right"
+    :pt="pt"
+  />
 </template>
 
 <script setup lang="ts">

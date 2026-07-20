@@ -1,6 +1,11 @@
 <template>
-  <div class="fp-gallery">
-
+  <div
+    class="fp-gallery"
+    tabindex="0"
+    role="group"
+    aria-label="Project screenshots gallery. Use arrow keys to navigate."
+    @keydown="onKey"
+  >
     <!-- Thumbnail grid -->
     <div class="fp-gallery__grid">
       <button
@@ -12,15 +17,32 @@
         @click="open(i)"
       >
         <!-- Placeholder visual -->
-        <div class="fp-gallery__placeholder" :style="placeholderStyle(i)">
-          <div class="fp-gallery__placeholder-bar" v-for="n in 4" :key="n" :style="barStyle(i, n)" />
-          <div class="fp-gallery__placeholder-block" :style="blockStyle(i)" />
-          <i :class="SCREEN_ICONS[i]" class="fp-gallery__placeholder-icon" />
+        <div
+          class="fp-gallery__placeholder"
+          :style="placeholderStyle(i)"
+        >
+          <div
+            v-for="n in 4"
+            :key="n"
+            class="fp-gallery__placeholder-bar"
+            :style="barStyle(i, n)"
+          />
+          <div
+            class="fp-gallery__placeholder-block"
+            :style="blockStyle(i)"
+          />
+          <i
+            :class="SCREEN_ICONS[i]"
+            class="fp-gallery__placeholder-icon"
+          />
         </div>
         <div class="fp-gallery__thumb-label">
           <span class="fp-gallery__thumb-title">{{ shot.label }}</span>
         </div>
-        <div class="fp-gallery__thumb-overlay" aria-hidden="true">
+        <div
+          class="fp-gallery__thumb-overlay"
+          aria-hidden="true"
+        >
           <i class="pi pi-search-plus" />
         </div>
       </button>
@@ -28,52 +50,89 @@
 
     <!-- Active screenshot detail -->
     <Transition name="gallery-detail">
-      <div v-if="active" class="fp-gallery__detail">
-        <div class="fp-gallery__detail-visual" :style="detailStyle">
+      <div
+        v-if="active"
+        class="fp-gallery__detail"
+      >
+        <div
+          class="fp-gallery__detail-visual"
+          :style="detailStyle"
+        >
           <!-- Simulated UI screenshot -->
           <div class="fp-gallery__mock-ui">
             <div class="fp-gallery__mock-header">
               <div class="fp-gallery__mock-dots">
                 <span /><span /><span />
               </div>
-              <div class="fp-gallery__mock-title">{{ active.label }}</div>
+              <div class="fp-gallery__mock-title">
+                {{ active.label }}
+              </div>
             </div>
             <div class="fp-gallery__mock-body">
               <div class="fp-gallery__mock-sidebar">
-                <div v-for="n in 6" :key="n" class="fp-gallery__mock-nav-item" :style="navItemStyle(n)" />
+                <div
+                  v-for="n in 6"
+                  :key="n"
+                  class="fp-gallery__mock-nav-item"
+                  :style="navItemStyle(n)"
+                />
               </div>
               <div class="fp-gallery__mock-content">
                 <div class="fp-gallery__mock-stat-row">
-                  <div v-for="n in 4" :key="n" class="fp-gallery__mock-stat" :style="statStyle(n)" />
+                  <div
+                    v-for="n in 4"
+                    :key="n"
+                    class="fp-gallery__mock-stat"
+                    :style="statStyle(n)"
+                  />
                 </div>
                 <div class="fp-gallery__mock-table">
                   <div class="fp-gallery__mock-table-header" />
-                  <div v-for="n in 5" :key="n" class="fp-gallery__mock-table-row" :style="rowStyle(n)" />
+                  <div
+                    v-for="n in 5"
+                    :key="n"
+                    class="fp-gallery__mock-table-row"
+                    :style="rowStyle(n)"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="fp-gallery__detail-info">
-          <h4 class="fp-gallery__detail-title">{{ active.label }}</h4>
-          <p class="fp-gallery__detail-desc">{{ active.description }}</p>
+          <h4 class="fp-gallery__detail-title">
+            {{ active.label }}
+          </h4>
+          <p class="fp-gallery__detail-desc">
+            {{ active.description }}
+          </p>
           <div class="fp-gallery__detail-nav">
-            <button class="fp-gallery__nav-btn" :disabled="activeIndex === 0" @click="prev" aria-label="Previous screenshot">
+            <button
+              class="fp-gallery__nav-btn"
+              :disabled="activeIndex === 0"
+              aria-label="Previous screenshot"
+              @click="prev"
+            >
               <i class="pi pi-chevron-left" />
             </button>
             <span class="fp-gallery__nav-count">{{ activeIndex + 1 }} / {{ EAM_SCREENSHOTS.length }}</span>
-            <button class="fp-gallery__nav-btn" :disabled="activeIndex === EAM_SCREENSHOTS.length - 1" @click="next" aria-label="Next screenshot">
+            <button
+              class="fp-gallery__nav-btn"
+              :disabled="activeIndex === EAM_SCREENSHOTS.length - 1"
+              aria-label="Next screenshot"
+              @click="next"
+            >
               <i class="pi pi-chevron-right" />
             </button>
           </div>
         </div>
       </div>
     </Transition>
-
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { EAM_SCREENSHOTS } from '@/constants/featured-project.constants'
 
 const SCREEN_ICONS = [
@@ -90,13 +149,11 @@ function open(i: number) { activeIndex.value = i }
 function prev() { if (activeIndex.value > 0) activeIndex.value-- }
 function next() { if (activeIndex.value < EAM_SCREENSHOTS.length - 1) activeIndex.value++ }
 
-// Keyboard navigation
+// Keyboard navigation — only when gallery is hovered/focused
 function onKey(e: KeyboardEvent) {
-  if (e.key === 'ArrowLeft') prev()
-  if (e.key === 'ArrowRight') next()
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prev() }
+  if (e.key === 'ArrowRight') { e.preventDefault(); next() }
 }
-onMounted(() => window.addEventListener('keydown', onKey))
-onUnmounted(() => window.removeEventListener('keydown', onKey))
 
 // Placeholder styles — each screenshot gets a unique color accent
 function placeholderStyle(i: number) {
@@ -133,7 +190,17 @@ function rowStyle(n: number) {
 </script>
 
 <style scoped>
-.fp-gallery { display: flex; flex-direction: column; gap: 24px; }
+.fp-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  outline: none;
+}
+.fp-gallery:focus-visible {
+  outline: 2px solid rgba(99,102,241,0.5);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
 
 /* ── Thumbnail grid ─────────────────────────────────────────────── */
 .fp-gallery__grid {

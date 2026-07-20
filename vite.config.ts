@@ -7,9 +7,19 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
   plugins: [
     vue(),
-    compression({ algorithm: 'gzip' }),
-    compression({ algorithm: 'brotliCompress', ext: '.br' }),
-    visualizer({ open: false, filename: 'dist/stats.html' }),
+    compression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      deleteOriginFile: false,
+      threshold: 10240, // only compress files > 10kb
+    }),
+    compression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      deleteOriginFile: false,
+      threshold: 10240,
+    }),
+    visualizer({ open: false, filename: 'stats.html', gzipSize: true }),
   ],
   resolve: {
     alias: {
@@ -31,21 +41,21 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    minify: 'terser',
+    minify: 'esbuild',
     cssCodeSplit: true,
+    outDir: 'dist',
     rollupOptions: {
       output: {
         manualChunks: {
-          'vue-vendor': ['vue', 'vue-router', 'pinia'],
-          'primevue-vendor': ['primevue', 'primeicons'],
-          'gsap-vendor': ['gsap'],
-          'utils-vendor': ['@vueuse/core', 'axios'],
+          'vue-vendor':     ['vue', 'vue-router', 'pinia'],
+          'primevue-vendor': ['primevue'],
+          'gsap-vendor':    ['gsap'],
+          'utils-vendor':   ['@vueuse/core', 'axios'],
         },
       },
     },
   },
   css: {
-    preprocessorOptions: {},
     devSourcemap: true,
   },
   server: {

@@ -1,12 +1,18 @@
 <template>
-  <div class="hero-bg" aria-hidden="true">
+  <div
+    class="hero-bg"
+    aria-hidden="true"
+  >
     <!-- Radial gradient orbs -->
     <div class="orb orb--primary" />
     <div class="orb orb--violet" />
     <div class="orb orb--cyan" />
 
     <!-- Particle canvas -->
-    <canvas ref="canvasEl" class="hero-bg__canvas" />
+    <canvas
+      ref="canvasEl"
+      class="hero-bg__canvas"
+    />
 
     <!-- Grid overlay -->
     <div class="hero-bg__grid" />
@@ -17,6 +23,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+
 const canvasEl = ref<HTMLCanvasElement | null>(null)
 
 interface Particle {
@@ -25,19 +33,21 @@ interface Particle {
   r: number; alpha: number
 }
 
+let raf: number
+let ro: ResizeObserver | null = null
+
 onMounted(() => {
   const canvas = canvasEl.value
   if (!canvas) return
   const ctx = canvas.getContext('2d')!
-  let raf: number
   let W = 0, H = 0
   const PARTICLE_COUNT = 80
   const CONNECTION_DIST = 140
   const particles: Particle[] = []
 
   function resize() {
-    W = canvas.width  = canvas.offsetWidth
-    H = canvas.height = canvas.offsetHeight
+    W = canvas!.width  = canvas!.offsetWidth
+    H = canvas!.height = canvas!.offsetHeight
   }
 
   function spawn(): Particle {
@@ -59,7 +69,6 @@ onMounted(() => {
   function draw() {
     ctx.clearRect(0, 0, W, H)
 
-    // Update + draw particles
     for (const p of particles) {
       p.x += p.vx; p.y += p.vy
       if (p.x < 0) p.x = W
@@ -73,7 +82,6 @@ onMounted(() => {
       ctx.fill()
     }
 
-    // Draw connections
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x
@@ -94,14 +102,14 @@ onMounted(() => {
     raf = requestAnimationFrame(draw)
   }
 
-  const ro = new ResizeObserver(() => { resize(); init() })
+  ro = new ResizeObserver(() => { resize() })
   ro.observe(canvas)
   resize(); init(); draw()
+})
 
-  onUnmounted(() => {
-    cancelAnimationFrame(raf)
-    ro.disconnect()
-  })
+onUnmounted(() => {
+  cancelAnimationFrame(raf)
+  ro?.disconnect()
 })
 </script>
 

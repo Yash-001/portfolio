@@ -1,12 +1,17 @@
 <template>
-  <section id="hero" class="hero" aria-label="Introduction">
+  <section
+    id="hero"
+    class="hero"
+    aria-label="Introduction"
+  >
     <HeroBackground />
 
     <div class="hero__inner">
-
       <!-- LEFT COLUMN -->
-      <div ref="leftCol" class="hero__left">
-
+      <div
+        ref="leftCol"
+        class="hero__left"
+      >
         <!-- Availability badge -->
         <div class="hero__badge reveal-item">
           <span class="badge-dot" />
@@ -25,10 +30,19 @@
           </h1>
 
           <!-- Typewriter role line -->
-          <div class="hero__role reveal-item" aria-label="Role">
+          <div
+            class="hero__role reveal-item"
+            aria-label="Role"
+          >
             <span class="hero__role-prefix">I build&nbsp;</span>
-            <span ref="typewriterEl" class="hero__role-typed" />
-            <span class="hero__cursor" aria-hidden="true">|</span>
+            <span
+              ref="typewriterEl"
+              class="hero__role-typed"
+            />
+            <span
+              class="hero__cursor"
+              aria-hidden="true"
+            >|</span>
           </div>
         </div>
 
@@ -39,34 +53,45 @@
         </p>
 
         <!-- Tech stack pills -->
-        <div class="hero__stack reveal-item" aria-label="Core technologies">
-          <span v-for="tech in TECH_STACK" :key="tech" class="tech-pill">{{ tech }}</span>
+        <div
+          class="hero__stack reveal-item"
+          aria-label="Core technologies"
+        >
+          <span
+            v-for="tech in TECH_STACK"
+            :key="tech"
+            class="tech-pill"
+          >{{ tech }}</span>
         </div>
 
         <!-- CTA row -->
         <div class="hero__cta reveal-item">
-          <RouterLink to="/contact">
-            <Button
-              label="Hire Me"
-              icon="pi pi-send"
-              class="hero__btn-primary"
-              size="large"
-            />
+          <RouterLink
+            to="/contact"
+            class="hero__btn-primary"
+            aria-label="Hire Me"
+          >
+            <i class="pi pi-send" aria-hidden="true" />
+            <span>Hire Me</span>
           </RouterLink>
 
-          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-            <Button
-              label="Resume"
-              icon="pi pi-download"
-              outlined
-              size="large"
-              class="hero__btn-outline"
-            />
+          <a
+            :href="APP_RESUME_URL"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero__btn-outline"
+            aria-label="Download resume"
+          >
+            <i class="pi pi-download" aria-hidden="true" />
+            <span>Resume</span>
           </a>
         </div>
 
         <!-- Social links -->
-        <div class="hero__social reveal-item" aria-label="Social links">
+        <div
+          class="hero__social reveal-item"
+          aria-label="Social links"
+        >
           <a
             v-for="s in SOCIAL_LINKS_NAV"
             :key="s.platform"
@@ -80,29 +105,53 @@
             <span>{{ s.label }}</span>
           </a>
         </div>
-
       </div>
 
       <!-- RIGHT COLUMN -->
-      <div ref="rightCol" class="hero__right">
-
+      <div
+        ref="rightCol"
+        class="hero__right"
+      >
         <!-- Profile card -->
         <div class="profile-card reveal-item">
           <!-- Glow ring -->
-          <div class="profile-card__glow" aria-hidden="true" />
+          <div
+            class="profile-card__glow"
+            aria-hidden="true"
+          />
 
           <!-- Avatar -->
           <div class="profile-card__avatar">
-            <div class="avatar-placeholder" aria-label="Profile photo placeholder">
-              <i class="pi pi-user" style="font-size: 3rem; color: #6366f1;" />
+            <img
+              v-if="PROFILE_IMAGE"
+              :src="PROFILE_IMAGE"
+              :alt="APP_NAME"
+              class="avatar-img"
+            />
+            <div
+              v-else
+              class="avatar-placeholder"
+              aria-label="Profile photo placeholder"
+            >
+              <i
+                class="pi pi-user"
+                style="font-size: 3rem; color: #6366f1;"
+              />
             </div>
-            <div class="avatar-ring" aria-hidden="true" />
+            <div
+              class="avatar-ring"
+              aria-hidden="true"
+            />
           </div>
 
           <!-- Identity -->
           <div class="profile-card__identity">
-            <p class="profile-card__name">{{ APP_NAME }}</p>
-            <p class="profile-card__title font-mono">{{ APP_TITLE }}</p>
+            <p class="profile-card__name">
+              {{ APP_NAME }}
+            </p>
+            <p class="profile-card__title font-mono">
+              {{ APP_TITLE }}
+            </p>
           </div>
 
           <!-- Location + time -->
@@ -113,7 +162,10 @@
             </span>
             <span class="meta-item">
               <i class="pi pi-clock" />
-              <span ref="clockEl" class="font-mono">{{ currentTime }}</span>
+              <span
+                ref="clockEl"
+                class="font-mono"
+              >{{ currentTime }}</span>
             </span>
           </div>
 
@@ -131,31 +183,33 @@
             </span>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- Scroll indicator -->
-    <div class="hero__scroll-hint" aria-hidden="true">
+    <div
+      class="hero__scroll-hint"
+      aria-hidden="true"
+    >
       <span class="font-mono text-label-sm text-content-tertiary tracking-widest uppercase">Scroll</span>
       <div class="scroll-line">
         <div class="scroll-line__inner" />
       </div>
     </div>
-
   </section>
 </template>
 
 <script setup lang="ts">
-import { gsap, ScrollTrigger } from '@/plugins/gsap'
-import Button from 'primevue/button'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { gsap } from '@/plugins/gsap'
 import HeroBackground from './HeroBackground.vue'
 import HeroStats from './HeroStats.vue'
 import { useTypewriter } from '@/composables/useTypewriter'
 import {
-  APP_NAME, APP_TITLE, APP_LOCATION, APP_AVAILABILITY_TEXT, APP_RESPONSE_TIME,
+  APP_NAME, APP_TITLE, APP_LOCATION, APP_AVAILABILITY_TEXT, APP_RESPONSE_TIME, APP_RESUME_URL,
 } from '@/constants'
 import { SOCIAL_LINKS_NAV } from '@/constants'
+import { PROFILE_IMAGE } from '@/config/portfolio.config'
 
 const TECH_STACK = ['Java', 'Spring Boot', 'Vue 3', 'AWS', 'PostgreSQL', 'Docker', 'Kubernetes', 'Redis']
 
@@ -176,6 +230,8 @@ useTypewriter(typewriterEl, ROLES, { typingSpeed: 0.055, deletingSpeed: 0.028, p
 
 // Live clock
 let clockInterval: ReturnType<typeof setInterval>
+let gsapCtx: ReturnType<typeof gsap.context> | null = null
+
 function updateClock() {
   currentTime.value = new Date().toLocaleTimeString('en-IN', {
     hour: '2-digit', minute: '2-digit', second: '2-digit',
@@ -187,32 +243,32 @@ onMounted(() => {
   updateClock()
   clockInterval = setInterval(updateClock, 1000)
 
-  // Entrance animation — stagger reveal items in left column
   const items = leftCol.value?.querySelectorAll('.reveal-item') ?? []
-  gsap.fromTo(
-    items,
-    { opacity: 0, y: 28 },
-    {
-      opacity: 1, y: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      stagger: 0.1,
-      delay: 0.15,
-      clearProps: 'transform',
-    },
-  )
+  gsapCtx = gsap.context(() => {
+    gsap.fromTo(
+      items,
+      { opacity: 0, y: 28 },
+      {
+        opacity: 1, y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        stagger: 0.1,
+        delay: 0.15,
+        clearProps: 'transform',
+      },
+    )
 
-  // Right column slides in from right
-  gsap.fromTo(
-    rightCol.value,
-    { opacity: 0, x: 48 },
-    { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out', delay: 0.4, clearProps: 'transform' },
-  )
+    gsap.fromTo(
+      rightCol.value,
+      { opacity: 0, x: 48 },
+      { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out', delay: 0.4, clearProps: 'transform' },
+    )
+  }, leftCol.value!)
 })
 
 onUnmounted(() => {
   clearInterval(clockInterval)
-  ScrollTrigger.getAll().forEach((t) => t.kill())
+  gsapCtx?.revert()
 })
 </script>
 
@@ -359,6 +415,16 @@ onUnmounted(() => {
 }
 
 .hero__btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.02em;
   background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
   border: none !important;
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35) !important;
@@ -371,8 +437,18 @@ onUnmounted(() => {
 }
 
 .hero__btn-outline {
-  border-color: #333333 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  border: 1px solid #333333 !important;
   color: #a0a0a0 !important;
+  background: transparent;
   transition: border-color 0.2s, color 0.2s, transform 0.2s !important;
 }
 
@@ -451,6 +527,15 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.avatar-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(99, 102, 241, 0.3);
+  display: block;
 }
 
 .avatar-ring {
@@ -563,4 +648,14 @@ onUnmounted(() => {
 
 /* ── REVEAL ITEMS (initial state, GSAP takes over) ── */
 .reveal-item { opacity: 0; }
+
+/* Reduced-motion: skip animation, show immediately */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-item { opacity: 1 !important; transform: none !important; }
+  .hero__cursor { animation: none; opacity: 1; }
+  .badge-dot { animation: none; }
+  .open-dot { animation: none; }
+  .scroll-line__inner { animation: none; }
+  .avatar-ring { animation: none; }
+}
 </style>

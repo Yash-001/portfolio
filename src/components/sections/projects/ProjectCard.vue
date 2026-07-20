@@ -8,29 +8,53 @@
     @mouseenter="onMouseEnter"
   >
     <!-- Animated conic border -->
-    <div class="proj-card__border" :style="borderStyle" aria-hidden="true" />
+    <div
+      class="proj-card__border"
+      :style="borderStyle"
+      aria-hidden="true"
+    />
     <!-- Mouse-follow glow -->
-    <div class="proj-card__glow"   :style="glowStyle"  aria-hidden="true" />
+    <div
+      class="proj-card__glow"
+      :style="glowStyle"
+      aria-hidden="true"
+    />
 
     <div class="proj-card__inner">
-
       <!-- ── Image / Visual area ─────────────────────────────── -->
-      <div class="proj-card__visual" :style="visualStyle">
+      <div
+        class="proj-card__visual"
+        :style="visualStyle"
+      >
         <!-- Gradient overlay -->
-        <div class="proj-card__visual-overlay" :style="overlayStyle" />
+        <div
+          class="proj-card__visual-overlay"
+          :style="overlayStyle"
+        />
 
         <!-- Floating mockup window -->
-        <div class="proj-card__mockup" :class="{ 'proj-card__mockup--hovered': isHovered }">
+        <div
+          class="proj-card__mockup"
+          :class="{ 'proj-card__mockup--hovered': isHovered }"
+        >
           <div class="mockup-bar">
-            <span class="mockup-dot mockup-dot--red"   />
-            <span class="mockup-dot mockup-dot--yellow"/>
+            <span class="mockup-dot mockup-dot--red" />
+            <span class="mockup-dot mockup-dot--yellow" />
             <span class="mockup-dot mockup-dot--green" />
             <span class="mockup-url">{{ project.slug }}.app</span>
           </div>
           <div class="mockup-body">
             <!-- Animated code lines -->
-            <div v-for="n in 6" :key="n" class="mockup-line" :style="mockupLineStyle(n)" />
-            <div class="mockup-block" :style="{ background: `${gradient.from}22` }" />
+            <div
+              v-for="n in 6"
+              :key="n"
+              class="mockup-line"
+              :style="mockupLineStyle(n)"
+            />
+            <div
+              class="mockup-block"
+              :style="{ background: `${gradient.from}22` }"
+            />
           </div>
         </div>
 
@@ -39,7 +63,10 @@
           class="proj-card__cat-badge"
           :style="{ color: catConfig.color, background: catConfig.bg }"
         >
-          <i :class="catConfig.icon" style="font-size:10px;" />
+          <i
+            :class="catConfig.icon"
+            style="font-size:10px;"
+          />
           {{ catConfig.label }}
         </div>
 
@@ -49,19 +76,28 @@
 
       <!-- ── Content ─────────────────────────────────────────── -->
       <div class="proj-card__content">
-
         <!-- Header -->
         <div class="proj-card__header">
           <div>
             <div class="proj-card__title-row">
-              <h3 class="proj-card__title">{{ project.title }}</h3>
-              <span v-if="project.featured" class="proj-card__featured-tag">Featured</span>
+              <h3 class="proj-card__title">
+                {{ project.title }}
+              </h3>
+              <span
+                v-if="project.featured"
+                class="proj-card__featured-tag"
+              >Featured</span>
             </div>
-            <p class="proj-card__tagline">{{ project.tagline }}</p>
+            <p class="proj-card__tagline">
+              {{ project.tagline }}
+            </p>
           </div>
           <div class="proj-card__meta-right">
             <span class="proj-card__duration">
-              <i class="pi pi-clock" style="font-size:10px;" />
+              <i
+                class="pi pi-clock"
+                style="font-size:10px;"
+              />
               {{ project.duration }}
             </span>
             <span class="proj-card__role-badge">{{ project.role }}</span>
@@ -69,23 +105,34 @@
         </div>
 
         <!-- Description -->
-        <p class="proj-card__desc">{{ project.description }}</p>
+        <p class="proj-card__desc">
+          {{ project.description }}
+        </p>
 
         <!-- Metrics row -->
-        <div v-if="project.metrics?.length" class="proj-card__metrics">
+        <div
+          v-if="project.metrics?.length"
+          class="proj-card__metrics"
+        >
           <div
             v-for="m in project.metrics"
             :key="m.label"
             class="metric-item"
             :title="m.description"
           >
-            <span class="metric-value" :style="{ color: gradient.from }">{{ m.value }}</span>
+            <span
+              class="metric-value"
+              :style="{ color: gradient.from }"
+            >{{ m.value }}</span>
             <span class="metric-label">{{ m.label }}</span>
           </div>
         </div>
 
         <!-- Tech badges -->
-        <div class="proj-card__tech" aria-label="Technologies">
+        <div
+          class="proj-card__tech"
+          aria-label="Technologies"
+        >
           <span
             v-for="t in project.tech"
             :key="t.name"
@@ -113,7 +160,9 @@
 
           <button
             class="proj-card__expand-btn"
+            type="button"
             :aria-expanded="isExpanded"
+            :aria-label="isExpanded ? `Collapse details for ${project.title}` : `Expand details for ${project.title}`"
             @click="toggleExpand"
           >
             <span>{{ isExpanded ? 'Less' : 'Deep dive' }}</span>
@@ -127,61 +176,109 @@
 
         <!-- ── Expandable deep-dive ──────────────────────────── -->
         <Transition name="deep-dive">
-          <div v-if="isExpanded" class="proj-card__deep-dive">
-            <div class="deep-dive__divider" :style="{ background: `linear-gradient(90deg, ${gradient.from}66, transparent)` }" />
+          <div
+            v-if="isExpanded"
+            class="proj-card__deep-dive"
+          >
+            <div
+              class="deep-dive__divider"
+              :style="{ background: `linear-gradient(90deg, ${gradient.from}66, transparent)` }"
+            />
 
             <div class="deep-dive__grid">
-
-              <div v-if="project.problem" class="deep-dive__block">
+              <div
+                v-if="project.problem"
+                class="deep-dive__block"
+              >
                 <div class="deep-dive__block-header">
-                  <div class="deep-dive__icon-wrap" style="background: rgba(239,68,68,0.1);">
-                    <i class="pi pi-exclamation-triangle" style="color:#ef4444; font-size:13px;" />
+                  <div
+                    class="deep-dive__icon-wrap"
+                    style="background: rgba(239,68,68,0.1);"
+                  >
+                    <i
+                      class="pi pi-exclamation-triangle"
+                      style="color:#ef4444; font-size:13px;"
+                    />
                   </div>
                   <span class="deep-dive__block-title">The Problem</span>
                 </div>
-                <p class="deep-dive__text">{{ project.problem }}</p>
+                <p class="deep-dive__text">
+                  {{ project.problem }}
+                </p>
               </div>
 
-              <div v-if="project.approach" class="deep-dive__block">
+              <div
+                v-if="project.approach"
+                class="deep-dive__block"
+              >
                 <div class="deep-dive__block-header">
-                  <div class="deep-dive__icon-wrap" style="background: rgba(99,102,241,0.1);">
-                    <i class="pi pi-sitemap" style="color:#6366f1; font-size:13px;" />
+                  <div
+                    class="deep-dive__icon-wrap"
+                    style="background: rgba(99,102,241,0.1);"
+                  >
+                    <i
+                      class="pi pi-sitemap"
+                      style="color:#6366f1; font-size:13px;"
+                    />
                   </div>
                   <span class="deep-dive__block-title">Architecture & Approach</span>
                 </div>
-                <p class="deep-dive__text">{{ project.approach }}</p>
+                <p class="deep-dive__text">
+                  {{ project.approach }}
+                </p>
               </div>
 
-              <div v-if="project.outcome" class="deep-dive__block">
+              <div
+                v-if="project.outcome"
+                class="deep-dive__block"
+              >
                 <div class="deep-dive__block-header">
-                  <div class="deep-dive__icon-wrap" style="background: rgba(16,185,129,0.1);">
-                    <i class="pi pi-chart-line" style="color:#10b981; font-size:13px;" />
+                  <div
+                    class="deep-dive__icon-wrap"
+                    style="background: rgba(16,185,129,0.1);"
+                  >
+                    <i
+                      class="pi pi-chart-line"
+                      style="color:#10b981; font-size:13px;"
+                    />
                   </div>
                   <span class="deep-dive__block-title">Business Impact</span>
                 </div>
-                <p class="deep-dive__text">{{ project.outcome }}</p>
+                <p class="deep-dive__text">
+                  {{ project.outcome }}
+                </p>
               </div>
 
-              <div v-if="project.reflection" class="deep-dive__block">
+              <div
+                v-if="project.reflection"
+                class="deep-dive__block"
+              >
                 <div class="deep-dive__block-header">
-                  <div class="deep-dive__icon-wrap" style="background: rgba(245,158,11,0.1);">
-                    <i class="pi pi-lightbulb" style="color:#f59e0b; font-size:13px;" />
+                  <div
+                    class="deep-dive__icon-wrap"
+                    style="background: rgba(245,158,11,0.1);"
+                  >
+                    <i
+                      class="pi pi-lightbulb"
+                      style="color:#f59e0b; font-size:13px;"
+                    />
                   </div>
                   <span class="deep-dive__block-title">What I Learned</span>
                 </div>
-                <p class="deep-dive__text">{{ project.reflection }}</p>
+                <p class="deep-dive__text">
+                  {{ project.reflection }}
+                </p>
               </div>
-
             </div>
           </div>
         </Transition>
-
       </div>
     </div>
   </article>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import type { Project } from '@/types'
 import { PROJECT_CATEGORY_CONFIG, PROJECT_GRADIENT } from '@/constants'
 
@@ -708,11 +805,14 @@ const overlayStyle = computed(() => ({
 
 /* ── Transition: deep dive ─────────────────────────────────────── */
 .deep-dive-enter-active {
-  transition: max-height 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transition: max-height 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
   max-height: 1200px;
+  overflow: hidden;
 }
 .deep-dive-leave-active {
   transition: max-height 0.35s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.2s ease;
+  max-height: 1200px;
+  overflow: hidden;
 }
 .deep-dive-enter-from,
 .deep-dive-leave-to {

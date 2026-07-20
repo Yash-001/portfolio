@@ -1,15 +1,24 @@
 <template>
-  <header class="app-navbar" :class="{ 'app-navbar--scrolled': scrolled }">
+  <header
+    class="app-navbar"
+    :class="{ 'app-navbar--scrolled': scrolled }"
+  >
     <div class="app-navbar__inner">
-
       <!-- Logo -->
-      <RouterLink to="/" class="app-navbar__logo" aria-label="Home">
+      <RouterLink
+        to="/"
+        class="app-navbar__logo"
+        aria-label="Home"
+      >
         <span class="logo-mark">YR</span>
         <span class="logo-text">{{ APP_NAME }}</span>
       </RouterLink>
 
       <!-- Desktop nav -->
-      <nav class="app-navbar__nav" aria-label="Primary navigation">
+      <nav
+        class="app-navbar__nav"
+        aria-label="Primary navigation"
+      >
         <RouterLink
           v-for="link in NAV_LINKS"
           :key="link.to"
@@ -25,16 +34,19 @@
         <AppThemeSwitcher />
 
         <a
-          href="/resume.pdf"
+          :href="APP_RESUME_URL"
           target="_blank"
           rel="noopener noreferrer"
-          class="hidden md:flex"
+          class="resume-link hidden md:flex"
+          aria-label="Download resume"
         >
-          <Button label="Resume" icon="pi pi-download" size="small" outlined />
+          <i class="pi pi-download" style="font-size: 13px;" />
+          <span>Resume</span>
         </a>
 
         <!-- Hamburger (mobile) -->
         <Button
+          ref="hamburgerBtn"
           icon="pi pi-bars"
           text
           rounded
@@ -43,19 +55,28 @@
           @click="ui.toggleMobileMenu()"
         />
       </div>
-
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import Button from 'primevue/button'
-import AppThemeSwitcher from './AppThemeSwitcher.vue'
 import { useUiStore } from '@/stores/ui.store'
-import { NAV_LINKS, APP_NAME } from '@/constants'
+import { NAV_LINKS, APP_NAME, APP_RESUME_URL } from '@/constants'
+import AppThemeSwitcher from '@/components/layout/AppThemeSwitcher.vue'
 
 const ui      = useUiStore()
 const scrolled = ref(false)
+const hamburgerBtn = ref<{ $el: HTMLElement } | null>(null)
+
+// Return focus to hamburger when mobile menu closes
+watch(() => ui.mobileMenuOpen, async (isOpen) => {
+  if (!isOpen) {
+    await nextTick()
+    hamburgerBtn.value?.$el?.focus()
+  }
+})
 
 function onScroll() { scrolled.value = window.scrollY > 20 }
 
@@ -152,10 +173,39 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   color: #6366f1;
 }
 
+.nav-link:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
 .app-navbar__actions {
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.resume-link {
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #a0a0a0;
+  border: 1px solid #333333;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.resume-link:hover {
+  border-color: #6366f1;
+  color: #f5f5f5;
+}
+
+.resume-link:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 </style>

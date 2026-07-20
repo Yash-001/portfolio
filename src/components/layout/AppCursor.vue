@@ -2,17 +2,22 @@
   <Teleport to="body">
     <div
       class="cursor-dot"
-      :style="{ transform: `translate(${x}px, ${y}px)`, opacity: visible ? 1 : 0 }"
+      :style="{ translate: `${x}px ${y}px`, opacity: visible ? 1 : 0 }"
     />
     <div
       class="cursor-ring"
-      :class="{ 'cursor-ring--hover': hovering }"
-      :style="{ transform: `translate(${rx}px, ${ry}px)`, opacity: visible ? 1 : 0 }"
+      :style="{
+        translate: `${rx}px ${ry}px`,
+        scale: hovering ? '1.375' : '1',
+        opacity: visible ? 1 : 0,
+        borderColor: hovering ? 'rgba(99,102,241,0.9)' : 'rgba(99,102,241,0.5)',
+      }"
     />
   </Teleport>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 const x = ref(-100); const y = ref(-100)
 const rx = ref(-100); const ry = ref(-100)
 const visible = ref(false)
@@ -21,13 +26,13 @@ const hovering = ref(false)
 let rafId: number
 
 function onMove(e: MouseEvent) {
-  x.value = e.clientX - 4
-  y.value = e.clientY - 4
+  x.value = e.clientX
+  y.value = e.clientY
   visible.value = true
   cancelAnimationFrame(rafId)
   rafId = requestAnimationFrame(() => {
-    rx.value = e.clientX - 16
-    ry.value = e.clientY - 16
+    rx.value = e.clientX
+    ry.value = e.clientY
   })
 }
 
@@ -35,13 +40,23 @@ function onOver(e: MouseEvent) {
   hovering.value = !!(e.target as HTMLElement).closest('a, button, [role="button"], [data-cursor-hover]')
 }
 
+function onLeave() { visible.value = false }
+
+// Only mount on non-touch devices
+const isTouch = window.matchMedia('(hover: none)').matches
+
 onMounted(() => {
+  if (isTouch) return
   window.addEventListener('mousemove', onMove, { passive: true })
   window.addEventListener('mouseover', onOver, { passive: true })
+  document.documentElement.addEventListener('mouseleave', onLeave, { passive: true })
 })
+
 onUnmounted(() => {
+  if (isTouch) return
   window.removeEventListener('mousemove', onMove)
   window.removeEventListener('mouseover', onOver)
+  document.documentElement.removeEventListener('mouseleave', onLeave)
   cancelAnimationFrame(rafId)
 })
 </script>
@@ -55,7 +70,7 @@ onUnmounted(() => {
   pointer-events: none;
   z-index: 9999;
   border-radius: 50%;
-  will-change: transform;
+  will-change: translate;
   transition: opacity 0.3s;
 }
 
@@ -63,18 +78,16 @@ onUnmounted(() => {
   width: 8px;
   height: 8px;
   background: #6366f1;
+  margin-left: -4px;
+  margin-top: -4px;
 }
 
 .cursor-ring {
   width: 32px;
   height: 32px;
   border: 1.5px solid rgba(99, 102, 241, 0.5);
-  transition: opacity 0.3s, width 0.2s, height 0.2s, border-color 0.2s;
-}
-
-.cursor-ring--hover {
-  width: 44px;
-  height: 44px;
-  border-color: rgba(99, 102, 241, 0.9);
+  margin-left: -16px;
+  margin-top: -16px;
+  transition: opacity 0.3s, scale 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
 }
 </style>

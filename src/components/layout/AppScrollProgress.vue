@@ -1,6 +1,15 @@
 <template>
-  <div class="scroll-progress" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
-    <div class="scroll-progress__bar" :style="{ width: `${progress}%` }" />
+  <div
+    class="scroll-progress"
+    role="progressbar"
+    :aria-valuenow="progress"
+    aria-valuemin="0"
+    aria-valuemax="100"
+  >
+    <div
+      class="scroll-progress__bar"
+      :style="{ width: `${progress}%` }"
+    />
   </div>
 </template>
 

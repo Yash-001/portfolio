@@ -29,7 +29,7 @@ export const EXPERIENCES: Experience[] = [
   },
   {
     id: 'senior-engineer-logistics',
-    role: 'Senior Software Engineer',
+    role: 'Enterprise Software & AI Consultant',
     company: 'Logistics & Supply Chain Platform',
     companyUrl: '',
     location: 'Pune, India',

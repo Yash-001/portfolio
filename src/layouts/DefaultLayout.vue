@@ -4,10 +4,20 @@
     <AppNavbar />
     <AppMobileMenu />
 
-    <main id="main-content" class="default-layout__main">
+    <main
+      id="main-content"
+      class="default-layout__main"
+      aria-label="Main content"
+    >
       <RouterView v-slot="{ Component, route }">
-        <Transition :name="(route.meta.transition as string) || 'page'" mode="out-in">
-          <component :is="Component" :key="route.path" />
+        <Transition
+          :name="(route.meta.transition as string) || 'page'"
+          mode="out-in"
+        >
+          <component
+            :is="Component"
+            :key="route.path"
+          />
         </Transition>
       </RouterView>
     </main>

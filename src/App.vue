@@ -1,21 +1,37 @@
 <template>
-  <div id="app-root" :class="{ 'reduce-motion': prefersReducedMotion }">
+  <div
+    id="app-root"
+    :class="{ 'reduce-motion': prefersReducedMotion }"
+  >
     <AppCursor v-if="!isMobile" />
 
     <!-- Route navigation loading bar -->
     <Transition name="loading-bar">
-      <div v-if="isNavigating" class="nav-loading-bar" />
+      <div
+        v-if="isNavigating"
+        class="nav-loading-bar"
+      />
     </Transition>
 
     <!-- Global page loading overlay -->
     <Transition name="fade">
-      <div v-if="ui.isLoading" class="global-loading" role="status" aria-live="polite">
+      <div
+        v-if="ui.isLoading"
+        class="global-loading"
+        role="status"
+        aria-live="polite"
+      >
         <ProgressSpinner
           style="width: 40px; height: 40px"
           stroke-width="3"
           animation-duration="0.8s"
         />
-        <p v-if="ui.loadingText" class="global-loading__text">{{ ui.loadingText }}</p>
+        <p
+          v-if="ui.loadingText"
+          class="global-loading__text"
+        >
+          {{ ui.loadingText }}
+        </p>
       </div>
     </Transition>
 
@@ -27,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import ProgressSpinner from 'primevue/progressspinner'
 import AppCursor from '@/components/layout/AppCursor.vue'

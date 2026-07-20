@@ -1,9 +1,15 @@
 <template>
-  <div ref="tabsEl" class="fp-tabs" role="tablist" :aria-label="ariaLabel">
-
+  <div
+    ref="tabsEl"
+    class="fp-tabs"
+    role="tablist"
+    :aria-label="ariaLabel"
+  >
     <!-- Scrollable pill row -->
-    <div ref="trackEl" class="fp-tabs__track">
-
+    <div
+      ref="trackEl"
+      class="fp-tabs__track"
+    >
       <!-- Sliding indicator -->
       <div
         class="fp-tabs__indicator"
@@ -19,23 +25,34 @@
         :class="{ 'fp-tabs__tab--active': modelValue === tab.id }"
         role="tab"
         :aria-selected="modelValue === tab.id"
-        :aria-controls="`panel-${tab.id}`"
+        :tabindex="modelValue === tab.id ? 0 : -1"
+        :aria-controls="modelValue === tab.id ? `panel-${tab.id}` : undefined"
         @click="select(tab.id)"
+        @keydown="onKeydown"
       >
-        <i :class="tab.icon" class="fp-tabs__tab-icon" aria-hidden="true" />
+        <i
+          :class="tab.icon"
+          class="fp-tabs__tab-icon"
+          aria-hidden="true"
+        />
         <span>{{ tab.label }}</span>
       </button>
-
     </div>
 
     <!-- Fade edges -->
-    <div class="fp-tabs__fade fp-tabs__fade--left"  aria-hidden="true" />
-    <div class="fp-tabs__fade fp-tabs__fade--right" aria-hidden="true" />
-
+    <div
+      class="fp-tabs__fade fp-tabs__fade--left"
+      aria-hidden="true"
+    />
+    <div
+      class="fp-tabs__fade fp-tabs__fade--right"
+      aria-hidden="true"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import type { EamTabId } from '@/constants/featured-project.constants'
 import { EAM_TABS } from '@/constants/featured-project.constants'
 
@@ -49,6 +66,7 @@ const trackEl = ref<HTMLElement | null>(null)
 const tabRefs = new Map<string, HTMLElement>()
 function setTabRef(id: string, el: HTMLElement | null) {
   if (el) tabRefs.set(id, el)
+  else tabRefs.delete(id)
 }
 
 // Indicator position
@@ -66,17 +84,29 @@ function updateIndicator(id: string) {
   if (!btn || !track) return
   const btnRect   = btn.getBoundingClientRect()
   const trackRect = track.getBoundingClientRect()
+  if (!btnRect.width) return
   indicatorLeft.value  = btnRect.left - trackRect.left + track.scrollLeft
   indicatorWidth.value = btnRect.width
 }
 
 function select(id: EamTabId) {
   emit('update:modelValue', id)
-  // Scroll selected tab into view
   nextTick(() => {
     tabRefs.get(id)?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
     updateIndicator(id)
   })
+}
+
+// Keyboard navigation — arrow keys cycle tabs (WCAG 2.1 tablist pattern)
+function onKeydown(e: KeyboardEvent) {
+  const ids = EAM_TABS.map(t => t.id)
+  const current = ids.indexOf(props.modelValue)
+  let next: EamTabId | null = null
+  if (e.key === 'ArrowRight') { e.preventDefault(); next = ids[(current + 1) % ids.length] }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); next = ids[(current - 1 + ids.length) % ids.length] }
+  else if (e.key === 'Home') { e.preventDefault(); next = ids[0] }
+  else if (e.key === 'End') { e.preventDefault(); next = ids[ids.length - 1] }
+  if (next) { select(next); nextTick(() => tabRefs.get(next!)?.focus()) }
 }
 
 // Update indicator on mount and on prop change
@@ -87,7 +117,7 @@ watch(() => props.modelValue, (id) => nextTick(() => updateIndicator(id)))
 let ro: ResizeObserver | null = null
 onMounted(() => {
   ro = new ResizeObserver(() => updateIndicator(props.modelValue))
-  if (trackEl.value) ro.observe(trackEl.value)
+  if (tabsEl.value) ro.observe(tabsEl.value)
 })
 onUnmounted(() => ro?.disconnect())
 </script>

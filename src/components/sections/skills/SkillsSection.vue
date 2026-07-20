@@ -1,31 +1,50 @@
 <template>
-  <section id="skills" ref="sectionEl" class="skills-section" aria-label="Skills and expertise">
-
+  <section
+    id="skills"
+    ref="sectionEl"
+    class="skills-section"
+    aria-label="Skills and expertise"
+  >
     <!-- Background ambient -->
-    <div class="skills-section__bg" aria-hidden="true">
+    <div
+      class="skills-section__bg"
+      aria-hidden="true"
+    >
       <div class="bg-orb bg-orb--1" />
       <div class="bg-orb bg-orb--2" />
     </div>
 
     <!-- Section header -->
     <div class="skills-section__header">
-      <div ref="labelEl" class="section-label">
+      <div
+        ref="labelEl"
+        class="section-label"
+      >
         <span class="label-line" />
         <span class="label-text">Expertise</span>
       </div>
 
-      <h2 ref="headingEl" class="skills-section__heading">
+      <h2
+        ref="headingEl"
+        class="skills-section__heading"
+      >
         The full technical picture.
         <span class="heading-accent">No fluff.</span>
       </h2>
 
-      <p ref="subEl" class="skills-section__sub">
+      <p
+        ref="subEl"
+        class="skills-section__sub"
+      >
         Seven years of production systems across the full stack.
         Every skill here has been used in anger, not just tutorials.
       </p>
 
       <!-- Filter -->
-      <div ref="filterEl" class="skills-section__filter">
+      <div
+        ref="filterEl"
+        class="skills-section__filter"
+      >
         <SkillCategoryFilter
           v-model="activeCategory"
           :groups="SKILL_GROUPS"
@@ -50,7 +69,10 @@
     </div>
 
     <!-- Bottom summary strip -->
-    <div ref="summaryEl" class="skills-summary">
+    <div
+      ref="summaryEl"
+      class="skills-summary"
+    >
       <div
         v-for="item in SUMMARY"
         :key="item.label"
@@ -60,13 +82,13 @@
         <span class="summary-item__label">{{ item.label }}</span>
       </div>
     </div>
-
   </section>
 </template>
 
 <script setup lang="ts">
-import { gsap, ScrollTrigger } from '@/plugins/gsap'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { SkillCategory } from '@/types'
+import { gsap } from '@/plugins/gsap'
 import { SKILL_GROUPS } from '@/constants'
 import SkillCard from './SkillCard.vue'
 import SkillCategoryFilter from './SkillCategoryFilter.vue'
@@ -75,7 +97,7 @@ const SUMMARY = [
   { value: '7+',  label: 'Years in production' },
   { value: '17',  label: 'Technologies' },
   { value: '7',   label: 'Skill categories' },
-  { value: '12+', label: 'Enterprise clients' },
+  { value: '6+', label: 'Enterprise clients' },
 ] as const
 
 const activeCategory = ref<SkillCategory | 'all'>('all')
@@ -95,45 +117,47 @@ const filterEl  = ref<HTMLElement | null>(null)
 const summaryEl = ref<HTMLElement | null>(null)
 
 // ── GSAP entrance ─────────────────────────────────────────────────
+let gsapCtx: ReturnType<typeof gsap.context> | null = null
+
 onMounted(() => {
-  const ctx = gsap.context(() => {
+  gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
     gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
       opacity: 0, x: -24, duration: 0.6, ease,
     })
 
     gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%' },
+      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
       opacity: 0, y: 32, duration: 0.8, ease,
     })
 
     gsap.from(subEl.value, {
-      scrollTrigger: { trigger: subEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
       opacity: 0, y: 20, duration: 0.6, ease, delay: 0.1,
     })
 
     gsap.from(filterEl.value, {
-      scrollTrigger: { trigger: filterEl.value, start: 'top 90%' },
+      scrollTrigger: { trigger: filterEl.value, start: 'top 90%', once: true },
       opacity: 0, y: 16, duration: 0.5, ease, delay: 0.15,
     })
 
     gsap.from('.grid-card', {
-      scrollTrigger: { trigger: '.skills-section__grid', start: 'top 82%' },
+      scrollTrigger: { trigger: '.skills-section__grid', start: 'top 82%', once: true },
       opacity: 0, y: 40, scale: 0.96,
       duration: 0.65, ease, stagger: 0.08,
     })
 
     gsap.from(summaryEl.value!.querySelectorAll('.summary-item'), {
-      scrollTrigger: { trigger: summaryEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: summaryEl.value, start: 'top 88%', once: true },
       opacity: 0, y: 20, duration: 0.5, ease, stagger: 0.08,
     })
 
   }, sectionEl.value!)
-
-  onUnmounted(() => ctx.revert())
 })
+
+onUnmounted(() => gsapCtx?.revert())
 </script>
 
 <style scoped>

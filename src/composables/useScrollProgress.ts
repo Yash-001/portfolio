@@ -1,3 +1,5 @@
+import { ref, onMounted, onUnmounted } from 'vue'
+
 export function useScrollProgress() {
   const progress = ref(0)
 

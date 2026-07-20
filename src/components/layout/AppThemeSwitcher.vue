@@ -18,10 +18,17 @@ const { isDark, toggleTheme } = useTheme()
 <style scoped>
 .theme-switcher {
   color: var(--p-surface-300) !important;
-  transition: color 0.2s, transform 0.2s;
+  transition: color 0.2s !important;
 }
 .theme-switcher:hover {
   color: var(--p-primary-400) !important;
-  transform: rotate(15deg);
+}
+.theme-switcher :deep(.p-button-icon) {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform-origin: center center !important;
+  display: inline-block !important;
+}
+.theme-switcher:hover :deep(.p-button-icon) {
+  transform: rotate(30deg) !important;
 }
 </style>

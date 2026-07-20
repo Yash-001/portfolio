@@ -8,6 +8,7 @@ import { gsapPlugin } from '@/plugins/gsap'
 
 import '@/styles/main.css'
 
+
 const app = createApp(App)
 
 app.use(pinia)

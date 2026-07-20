@@ -46,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch, onUnmounted } from 'vue'
 import Drawer from 'primevue/drawer'
 import Divider from 'primevue/divider'
 import { useUiStore } from '@/stores/ui.store'
@@ -55,9 +56,17 @@ import { APP_NAME } from '@/constants'
 const ui   = useUiStore()
 const open = computed({
   get: () => ui.mobileMenuOpen,
-  set: (v) => { if (!v) ui.closeMobileMenu() },
+  set: (v: boolean) => { if (!v) ui.closeMobileMenu() },
 })
 const year = new Date().getFullYear()
+
+// Lock body scroll when menu is open
+watch(open, (isOpen) => {
+  document.body.style.overflow = isOpen ? 'hidden' : ''
+})
+
+// Restore scroll if component unmounts while menu is open
+onUnmounted(() => { document.body.style.overflow = '' })
 
 const pt = {
   root:    { class: 'app-mobile-menu__root' },
@@ -73,12 +82,17 @@ const pt = {
   font-size: 18px;
   font-weight: 500;
   color: var(--p-surface-200);
+  text-decoration: none;
   transition: background 0.15s, color 0.15s;
 }
 .mobile-nav-link:hover,
 .mobile-nav-link.router-link-active {
   background: rgba(99, 102, 241, 0.08);
   color: #6366f1;
+}
+.mobile-nav-link:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
 }
 
 .social-icon-btn {

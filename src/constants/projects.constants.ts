@@ -1,4 +1,5 @@
 import type { Project } from '@/types'
+import { GITHUB_URL } from '@/config/portfolio.config'
 
 export const PROJECTS: Project[] = [
   {
@@ -28,7 +29,7 @@ export const PROJECTS: Project[] = [
       { name: 'Redis',         color: '#dc382d' },
     ],
     links: [
-      { label: 'GitHub', url: 'https://github.com/yourusername', type: 'github' },
+      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
     ],
     metrics: [
       { label: 'Cost reduction',    value: '65%',   description: 'Infrastructure cost vs 8 separate deployments' },
@@ -65,7 +66,7 @@ export const PROJECTS: Project[] = [
       { name: 'AWS Lambda',    color: '#ff9900' },
     ],
     links: [
-      { label: 'GitHub', url: 'https://github.com/yourusername', type: 'github' },
+      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
     ],
     metrics: [
       { label: 'Manual review reduction', value: '70%',  description: 'Hours saved per week'                    },
@@ -102,7 +103,7 @@ export const PROJECTS: Project[] = [
       { name: 'Gradle',        color: '#02303a' },
     ],
     links: [
-      { label: 'GitHub', url: 'https://github.com/yourusername', type: 'github' },
+      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
     ],
     metrics: [
       { label: 'Location staleness', value: '<3s',  description: 'Down from 30–90 seconds'              },
@@ -139,7 +140,7 @@ export const PROJECTS: Project[] = [
       { name: 'REST APIs',     color: '#6366f1' },
     ],
     links: [
-      { label: 'GitHub', url: 'https://github.com/yourusername', type: 'github' },
+      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
     ],
     metrics: [
       { label: 'Monthly transactions', value: '₹40Cr', description: 'Processed without errors'                  },
@@ -176,7 +177,7 @@ export const PROJECTS: Project[] = [
       { name: 'Git',         color: '#f05032' },
     ],
     links: [
-      { label: 'GitHub', url: 'https://github.com/yourusername', type: 'github' },
+      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
     ],
     metrics: [
       { label: 'Daily records',    value: '100K+',  description: 'Payment records reconciled per day'     },

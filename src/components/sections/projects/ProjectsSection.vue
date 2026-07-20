@@ -6,7 +6,10 @@
     aria-label="Projects showcase"
   >
     <!-- Ambient background -->
-    <div class="projects-section__bg" aria-hidden="true">
+    <div
+      class="projects-section__bg"
+      aria-hidden="true"
+    >
       <div class="bg-orb bg-orb--1" />
       <div class="bg-orb bg-orb--2" />
       <div class="bg-orb bg-orb--3" />
@@ -14,24 +17,36 @@
 
     <!-- ── Section header ──────────────────────────────────────── -->
     <div class="projects-section__header">
-      <div ref="labelEl" class="section-label">
+      <div
+        ref="labelEl"
+        class="section-label"
+      >
         <span class="label-line" />
         <span class="label-text">Work</span>
       </div>
 
-      <h2 ref="headingEl" class="projects-section__heading">
+      <h2
+        ref="headingEl"
+        class="projects-section__heading"
+      >
         Selected projects.
         <span class="heading-accent">Real systems.</span>
       </h2>
 
-      <p ref="subEl" class="projects-section__sub">
+      <p
+        ref="subEl"
+        class="projects-section__sub"
+      >
         Not side projects. Not tutorials. Production systems that processed
         real money, served real clients, and ran without me watching them.
       </p>
     </div>
 
     <!-- ── Filter bar ──────────────────────────────────────────── -->
-    <div ref="filterEl" class="projects-section__filter-wrap">
+    <div
+      ref="filterEl"
+      class="projects-section__filter-wrap"
+    >
       <ProjectsFilter
         v-model:search="searchQuery"
         v-model:category="activeCategory"
@@ -57,13 +72,24 @@
 
       <!-- Empty state -->
       <Transition name="fade">
-        <div v-if="!filteredProjects.length" class="projects-empty">
+        <div
+          v-if="!filteredProjects.length"
+          class="projects-empty"
+        >
           <div class="projects-empty__icon">
             <i class="pi pi-search" />
           </div>
-          <p class="projects-empty__title">No projects found</p>
-          <p class="projects-empty__sub">Try a different search term or category</p>
-          <button class="projects-empty__reset" @click="resetFilters">
+          <p class="projects-empty__title">
+            No projects found
+          </p>
+          <p class="projects-empty__sub">
+            Try a different search term or category
+          </p>
+          <button
+            class="projects-empty__reset"
+            type="button"
+            @click="resetFilters"
+          >
             Clear filters
           </button>
         </div>
@@ -71,26 +97,37 @@
     </div>
 
     <!-- ── CTA strip ───────────────────────────────────────────── -->
-    <div ref="ctaEl" class="projects-cta">
+    <div
+      ref="ctaEl"
+      class="projects-cta"
+    >
       <div class="projects-cta__inner">
         <div>
-          <p class="projects-cta__heading">Have a system that needs fixing?</p>
-          <p class="projects-cta__sub">I work with founders and CTOs directly. No agencies, no middlemen.</p>
+          <p class="projects-cta__heading">
+            Have a system that needs fixing?
+          </p>
+          <p class="projects-cta__sub">
+            I work with founders and CTOs directly. No agencies, no middlemen.
+          </p>
         </div>
-        <RouterLink to="/contact">
-          <button class="projects-cta__btn">
-            <span>Let's talk</span>
-            <i class="pi pi-arrow-right" style="font-size:12px;" />
-          </button>
+        <RouterLink
+          to="/contact"
+          class="projects-cta__btn"
+        >
+          <span>Let's talk</span>
+          <i
+            class="pi pi-arrow-right"
+            style="font-size:12px;"
+          />
         </RouterLink>
       </div>
     </div>
-
   </section>
 </template>
 
 <script setup lang="ts">
-import { gsap, ScrollTrigger } from '@/plugins/gsap'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { gsap } from '@/plugins/gsap'
 import type { ProjectCategory } from '@/types'
 import { PROJECTS } from '@/constants'
 import ProjectCard    from './ProjectCard.vue'
@@ -134,45 +171,47 @@ const filterEl  = ref<HTMLElement | null>(null)
 const ctaEl     = ref<HTMLElement | null>(null)
 
 // ── GSAP entrance ─────────────────────────────────────────────────
+let gsapCtx: ReturnType<typeof gsap.context> | null = null
+
 onMounted(() => {
-  const ctx = gsap.context(() => {
+  gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
     gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
       opacity: 0, x: -24, duration: 0.6, ease,
     })
 
     gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%' },
+      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
       opacity: 0, y: 32, duration: 0.8, ease,
     })
 
     gsap.from(subEl.value, {
-      scrollTrigger: { trigger: subEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
       opacity: 0, y: 20, duration: 0.6, ease, delay: 0.1,
     })
 
     gsap.from(filterEl.value, {
-      scrollTrigger: { trigger: filterEl.value, start: 'top 90%' },
+      scrollTrigger: { trigger: filterEl.value, start: 'top 90%', once: true },
       opacity: 0, y: 16, duration: 0.5, ease, delay: 0.15,
     })
 
     gsap.from('.proj-grid-item', {
-      scrollTrigger: { trigger: '.projects-section__grid', start: 'top 82%' },
+      scrollTrigger: { trigger: '.projects-section__grid', start: 'top 82%', once: true },
       opacity: 0, y: 48, scale: 0.96,
       duration: 0.7, ease, stagger: 0.1,
     })
 
     gsap.from(ctaEl.value, {
-      scrollTrigger: { trigger: ctaEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: ctaEl.value, start: 'top 88%', once: true },
       opacity: 0, y: 24, duration: 0.6, ease,
     })
 
   }, sectionEl.value!)
-
-  onUnmounted(() => ctx.revert())
 })
+
+onUnmounted(() => gsapCtx?.revert())
 </script>
 
 <style scoped>
@@ -364,6 +403,10 @@ onMounted(() => {
   border-color: rgba(99, 102, 241, 0.3);
   color: #a0a0a0;
 }
+.projects-empty__reset:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
 
 /* Fade utility */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.3s; }
@@ -414,7 +457,7 @@ onMounted(() => {
   color: #fff;
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
+  text-decoration: none;
   white-space: nowrap;
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
   transition: box-shadow 0.3s, transform 0.2s;

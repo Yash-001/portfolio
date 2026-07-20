@@ -6,24 +6,36 @@
     aria-label="Work experience"
   >
     <!-- Ambient background -->
-    <div class="exp-section__bg" aria-hidden="true">
+    <div
+      class="exp-section__bg"
+      aria-hidden="true"
+    >
       <div class="bg-orb bg-orb--1" />
       <div class="bg-orb bg-orb--2" />
     </div>
 
     <!-- ── Section header ──────────────────────────────────────── -->
     <div class="exp-section__header">
-      <div ref="labelEl" class="section-label">
+      <div
+        ref="labelEl"
+        class="section-label"
+      >
         <span class="label-line" />
         <span class="label-text">Experience</span>
       </div>
 
-      <h2 ref="headingEl" class="exp-section__heading">
+      <h2
+        ref="headingEl"
+        class="exp-section__heading"
+      >
         Seven years of systems<br />
         <span class="heading-accent">that run in production.</span>
       </h2>
 
-      <p ref="subEl" class="exp-section__sub">
+      <p
+        ref="subEl"
+        class="exp-section__sub"
+      >
         Every role here left a mark — on the codebase, on the team,
         and on how I think about building software.
       </p>
@@ -31,11 +43,19 @@
 
     <!-- ── Timeline ───────────────────────────────────────────── -->
     <div class="exp-section__timeline-wrap">
-      <div ref="timelineEl" class="exp-timeline">
-
+      <div
+        ref="timelineEl"
+        class="exp-timeline"
+      >
         <!-- Animated spine -->
-        <div class="exp-timeline__spine-track" aria-hidden="true">
-          <div ref="spineEl" class="exp-timeline__spine" />
+        <div
+          class="exp-timeline__spine-track"
+          aria-hidden="true"
+        >
+          <div
+            ref="spineEl"
+            class="exp-timeline__spine"
+          />
         </div>
 
         <!-- Experience items -->
@@ -47,7 +67,10 @@
           :class="{ 'exp-timeline__item--right': index % 2 !== 0 }"
         >
           <!-- Connector dot -->
-          <div class="exp-timeline__dot" aria-hidden="true">
+          <div
+            class="exp-timeline__dot"
+            aria-hidden="true"
+          >
             <div
               class="exp-timeline__dot-ring"
               :class="{ 'exp-timeline__dot-ring--active': exp.current }"
@@ -69,12 +92,14 @@
           <!-- Card -->
           <ExperienceCard :experience="exp" />
         </div>
-
       </div>
     </div>
 
     <!-- ── Summary strip ──────────────────────────────────────── -->
-    <div ref="summaryEl" class="exp-summary">
+    <div
+      ref="summaryEl"
+      class="exp-summary"
+    >
       <div
         v-for="item in SUMMARY"
         :key="item.label"
@@ -84,11 +109,11 @@
         <span class="exp-summary__label">{{ item.label }}</span>
       </div>
     </div>
-
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap, ScrollTrigger } from '@/plugins/gsap'
 import { EXPERIENCES } from '@/constants'
 import ExperienceCard from './ExperienceCard.vue'
@@ -111,27 +136,27 @@ const itemEls    = ref<HTMLElement[]>([])
 const summaryEl  = ref<HTMLElement | null>(null)
 
 // ── GSAP animations ───────────────────────────────────────────────
+let gsapCtx: ReturnType<typeof gsap.context> | null = null
+
 onMounted(() => {
-  const ctx = gsap.context(() => {
+  gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
-    // Header sequence
     gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
       opacity: 0, x: -24, duration: 0.6, ease,
     })
 
     gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%' },
+      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
       opacity: 0, y: 32, duration: 0.8, ease,
     })
 
     gsap.from(subEl.value, {
-      scrollTrigger: { trigger: subEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
       opacity: 0, y: 20, duration: 0.6, ease, delay: 0.1,
     })
 
-    // Spine draw — scrub with scroll
     gsap.fromTo(
       spineEl.value,
       { scaleY: 0 },
@@ -147,11 +172,10 @@ onMounted(() => {
       },
     )
 
-    // Timeline items — alternate left/right entrance
     itemEls.value.forEach((el, i) => {
       const isRight = i % 2 !== 0
       gsap.from(el, {
-        scrollTrigger: { trigger: el, start: 'top 85%' },
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
         opacity: 0,
         x: isRight ? 48 : -48,
         y: 24,
@@ -161,15 +185,17 @@ onMounted(() => {
       })
     })
 
-    // Summary strip
     gsap.from(summaryEl.value!.querySelectorAll('.exp-summary__item'), {
-      scrollTrigger: { trigger: summaryEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: summaryEl.value, start: 'top 88%', once: true },
       opacity: 0, y: 20, duration: 0.5, ease, stagger: 0.08,
     })
 
   }, sectionEl.value!)
+})
 
-  onUnmounted(() => ctx.revert())
+onUnmounted(() => {
+  gsapCtx?.revert()
+  ScrollTrigger.getAll().forEach((t) => t.kill())
 })
 </script>
 

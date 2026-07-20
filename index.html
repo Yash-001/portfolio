@@ -2,36 +2,68 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Primary Meta -->
-    <title>Yash Ranjan | Senior Software Engineer</title>
-    <meta name="description" content="Senior Software Engineer with 7+ years building enterprise backends, cloud infrastructure, and AI-assisted systems. Java, Spring Boot, Vue.js, AWS." />
-    <meta name="keywords" content="Senior Java Developer, Spring Boot, Vue.js, AWS, Enterprise Software, Freelance Developer" />
+    <!--
+      ╔══════════════════════════════════════════════════════════════════╗
+      ║  PORTFOLIO CONFIGURATION                                         ║
+      ║  To update name, title, description, and social URLs:            ║
+      ║  → Edit  src/config/portfolio.config.ts                          ║
+      ║                                                                  ║
+      ║  The static meta tags below (title, description, og:*) must     ║
+      ║  be kept in sync manually with portfolio.config.ts because       ║
+      ║  index.html is not processed by Vue at runtime.                  ║
+      ║  All runtime pages override these via usePageMeta().             ║
+      ╚══════════════════════════════════════════════════════════════════╝
+    -->
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Primary Meta — keep in sync with portfolio.config.ts -->
+    <title>Yash Ranjan | Enterprise Software & AI Consultant</title>
+    <meta name="description" content="Enterprise Software & AI Consultant with 7+ years building enterprise backends, cloud infrastructure, and AI-assisted systems. Java, Spring Boot, Vue.js, Angular, GCP, AWS." />
+    <meta name="keywords" content="Senior Java Developer, Spring Boot, Vue.js, Angular, GCP, AWS, Enterprise Software, Freelance Developer, Full Stack Engineer, India" />
     <meta name="author" content="Yash Ranjan" />
     <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="color-scheme" content="dark" />
 
-    <!-- Open Graph -->
+    <!-- Open Graph — keep in sync with portfolio.config.ts -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://yourdomain.com" />
-    <meta property="og:title" content="Yash Ranjan | Senior Software Engineer" />
-    <meta property="og:description" content="7+ years building enterprise backends, cloud infrastructure, and AI-assisted systems." />
+    <meta property="og:site_name" content="Yash Ranjan" />
+    <meta property="og:title" content="Yash Ranjan | Enterprise Software & AI Consultant" />
+    <meta property="og:description" content="7+ years building enterprise softwares, cloud infrastructure, and AI-assisted systems. Java, Spring Boot, Vue.js, Angular, GCP, AWS." />
     <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Yash Ranjan — Enterprise Software & AI Consultant" />
+    <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter -->
+    <!-- Twitter / X — keep in sync with portfolio.config.ts -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Yash Ranjan | Senior Software Engineer" />
-    <meta name="twitter:description" content="7+ years building enterprise backends, cloud infrastructure, and AI-assisted systems." />
+    <meta name="twitter:title" content="Yash Ranjan | Enterprise Software & AI Consultant" />
+    <meta name="twitter:description" content="7+ years building enterprise softwares, cloud infrastructure, and AI-assisted systems." />
     <meta name="twitter:image" content="/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Yash Ranjan — Enterprise Software & AI Consultant" />
 
-    <!-- Fonts -->
+    <!-- Fonts — preconnect first, then load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-    <!-- Theme color -->
-    <meta name="theme-color" content="#0A0A0A" />
+    <!-- Preload critical font -->
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body>
     <div id="app"></div>

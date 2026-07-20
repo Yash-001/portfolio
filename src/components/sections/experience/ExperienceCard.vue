@@ -3,32 +3,42 @@
     ref="cardEl"
     class="exp-card"
     :class="{ 'exp-card--current': experience.current, 'exp-card--expanded': isExpanded }"
-    :aria-expanded="isExpanded"
     @mousemove="onMouseMove"
     @mouseleave="onMouseLeave"
     @mouseenter="onMouseEnter"
   >
     <!-- Animated border layer -->
-    <div class="exp-card__border" :style="borderStyle" aria-hidden="true" />
+    <div
+      class="exp-card__border"
+      :style="borderStyle"
+      aria-hidden="true"
+    />
 
     <!-- Mouse-follow glow -->
-    <div class="exp-card__glow"   :style="glowStyle"  aria-hidden="true" />
+    <div
+      class="exp-card__glow"
+      :style="glowStyle"
+      aria-hidden="true"
+    />
 
     <!-- Card body -->
     <div class="exp-card__body">
-
       <!-- ── Header ─────────────────────────────────────────── -->
       <header class="exp-card__header">
-
         <div class="exp-card__header-left">
           <!-- Company initial badge -->
-          <div class="exp-card__badge" :style="badgeStyle">
+          <div
+            class="exp-card__badge"
+            :style="badgeStyle"
+          >
             {{ experience.company.charAt(0) }}
           </div>
 
           <div class="exp-card__title-block">
             <div class="exp-card__role-row">
-              <h3 class="exp-card__role">{{ experience.role }}</h3>
+              <h3 class="exp-card__role">
+                {{ experience.role }}
+              </h3>
               <span
                 v-if="experience.current"
                 class="exp-card__current-tag"
@@ -36,9 +46,15 @@
             </div>
             <div class="exp-card__company-row">
               <span class="exp-card__company">{{ experience.company }}</span>
-              <span class="exp-card__sep" aria-hidden="true">·</span>
+              <span
+                class="exp-card__sep"
+                aria-hidden="true"
+              >·</span>
               <span class="exp-card__location">
-                <i class="pi pi-map-marker" style="font-size:10px;" />
+                <i
+                  class="pi pi-map-marker"
+                  style="font-size:10px;"
+                />
                 {{ experience.location }}
               </span>
             </div>
@@ -55,14 +71,18 @@
             :style="{ color: typeConfig.color, background: typeConfig.bg }"
           >{{ typeConfig.label }}</span>
         </div>
-
       </header>
 
       <!-- ── Description ────────────────────────────────────── -->
-      <p class="exp-card__desc">{{ experience.description }}</p>
+      <p class="exp-card__desc">
+        {{ experience.description }}
+      </p>
 
       <!-- ── Tech chips ─────────────────────────────────────── -->
-      <div class="exp-card__tech" aria-label="Technologies used">
+      <div
+        class="exp-card__tech"
+        aria-label="Technologies used"
+      >
         <span
           v-for="t in experience.tech"
           :key="t.name"
@@ -71,27 +91,46 @@
       </div>
 
       <!-- ── Expandable achievements ────────────────────────── -->
-      <div class="exp-card__expand-trigger" @click="toggleExpand">
+      <button
+        class="exp-card__expand-trigger"
+        :aria-expanded="isExpanded"
+        :aria-controls="`exp-achievements-${experience.id}`"
+        @click="toggleExpand"
+      >
         <span class="expand-label">
           {{ isExpanded ? 'Hide' : 'Show' }} achievements
           <span class="expand-count">({{ experience.highlights.length }})</span>
         </span>
-        <div class="expand-icon" :class="{ 'expand-icon--open': isExpanded }">
+        <div
+          class="expand-icon"
+          :class="{ 'expand-icon--open': isExpanded }"
+          aria-hidden="true"
+        >
           <i class="pi pi-chevron-down" />
         </div>
-      </div>
+      </button>
 
       <!-- Achievements — animated expand -->
       <Transition name="achievements">
-        <div v-if="isExpanded" class="exp-card__achievements">
-          <ul class="achievements-list" role="list">
+        <div
+          v-if="isExpanded"
+          :id="`exp-achievements-${experience.id}`"
+          class="exp-card__achievements"
+        >
+          <ul
+            class="achievements-list"
+            role="list"
+          >
             <li
               v-for="(highlight, i) in experience.highlights"
               :key="i"
               class="achievement-item"
               :style="{ transitionDelay: `${i * 50}ms` }"
             >
-              <div class="achievement-bullet" aria-hidden="true">
+              <div
+                class="achievement-bullet"
+                aria-hidden="true"
+              >
                 <div class="achievement-bullet__inner" />
               </div>
               <span class="achievement-text">{{ highlight.text }}</span>
@@ -99,12 +138,12 @@
           </ul>
         </div>
       </Transition>
-
     </div>
   </article>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import type { Experience } from '@/types'
 import { EXPERIENCE_TYPE_CONFIG } from '@/constants'
 
@@ -427,11 +466,19 @@ const glowStyle = computed(() => ({
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
   user-select: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
 }
 
 .exp-card__expand-trigger:hover {
   border-color: rgba(99, 102, 241, 0.25);
   background: rgba(99, 102, 241, 0.04);
+}
+
+.exp-card__expand-trigger:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
 }
 
 .expand-label {
@@ -528,10 +575,13 @@ const glowStyle = computed(() => ({
   transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.3s ease;
   max-height: 800px;
+  overflow: hidden;
 }
 .achievements-leave-active {
   transition: max-height 0.35s cubic-bezier(0.76, 0, 0.24, 1),
               opacity 0.2s ease;
+  max-height: 800px;
+  overflow: hidden;
 }
 .achievements-enter-from,
 .achievements-leave-to {

@@ -9,33 +9,57 @@
     @mouseenter="onMouseEnter"
   >
     <!-- Animated conic border -->
-    <div class="skill-card__border" :style="borderStyle" aria-hidden="true" />
+    <div
+      class="skill-card__border"
+      :style="borderStyle"
+      aria-hidden="true"
+    />
 
     <!-- Glow blob -->
-    <div class="skill-card__glow" :style="glowStyle" aria-hidden="true" />
+    <div
+      class="skill-card__glow"
+      :style="glowStyle"
+      aria-hidden="true"
+    />
 
     <!-- Inner content -->
     <div class="skill-card__inner">
-
       <!-- Header -->
       <div class="skill-card__header">
-        <div class="skill-card__icon-wrap" :style="iconWrapStyle">
-          <i :class="group.icon" class="skill-card__icon" :style="{ color: colors.from }" />
+        <div
+          class="skill-card__icon-wrap"
+          :style="iconWrapStyle"
+        >
+          <i
+            :class="group.icon"
+            class="skill-card__icon"
+            :style="{ color: colors.from }"
+          />
         </div>
         <div class="skill-card__meta">
-          <h3 class="skill-card__title">{{ group.label }}</h3>
+          <h3 class="skill-card__title">
+            {{ group.label }}
+          </h3>
           <span class="skill-card__count">{{ group.skills.length }} skill{{ group.skills.length !== 1 ? 's' : '' }}</span>
         </div>
       </div>
 
       <!-- Description -->
-      <p class="skill-card__desc">{{ group.description }}</p>
+      <p class="skill-card__desc">
+        {{ group.description }}
+      </p>
 
       <!-- Divider -->
-      <div class="skill-card__divider" :style="{ background: `linear-gradient(90deg, ${colors.from}44, transparent)` }" />
+      <div
+        class="skill-card__divider"
+        :style="{ background: `linear-gradient(90deg, ${colors.from}44, transparent)` }"
+      />
 
       <!-- Skills list -->
-      <ul class="skill-card__skills" role="list">
+      <ul
+        class="skill-card__skills"
+        role="list"
+      >
         <li
           v-for="skill in group.skills"
           :key="skill.id"
@@ -53,12 +77,20 @@
               {{ SKILL_LEVEL_CONFIG[skill.level].label }}
             </span>
           </div>
-          <p v-if="skill.context" class="skill-item__context">{{ skill.context }}</p>
-          <div class="skill-item__bar-track" aria-hidden="true">
+          <p
+            v-if="skill.context"
+            class="skill-item__context"
+          >
+            {{ skill.context }}
+          </p>
+          <div
+            class="skill-item__bar-track"
+            aria-hidden="true"
+          >
             <div
               class="skill-item__bar-fill"
               :style="{
-                width: isHovered ? LEVEL_WIDTH[skill.level] : '0%',
+                width: showBars ? LEVEL_WIDTH[skill.level] : '0%',
                 background: `linear-gradient(90deg, ${colors.from}, ${colors.to})`,
                 transitionDelay: `${group.skills.indexOf(skill) * 60}ms`,
               }"
@@ -69,11 +101,20 @@
 
       <!-- Years badge -->
       <div class="skill-card__footer">
-        <span class="skill-card__years" :style="{ color: colors.from }">
-          <i class="pi pi-clock" style="font-size: 11px;" />
+        <span
+          class="skill-card__years"
+          :style="{ color: colors.from }"
+        >
+          <i
+            class="pi pi-clock"
+            style="font-size: 11px;"
+          />
           {{ maxYears }}+ yrs
         </span>
-        <div class="skill-card__dots" aria-hidden="true">
+        <div
+          class="skill-card__dots"
+          aria-hidden="true"
+        >
           <span
             v-for="n in 3"
             :key="n"
@@ -82,12 +123,12 @@
           />
         </div>
       </div>
-
     </div>
   </article>
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onUnmounted } from 'vue'
 import type { SkillGroup } from '@/types'
 import { SKILL_LEVEL_CONFIG, CATEGORY_COLORS } from '@/constants'
 
@@ -104,22 +145,29 @@ const colors  = computed(() => CATEGORY_COLORS[props.group.category])
 const maxYears = computed(() => Math.max(...props.group.skills.map((s) => s.yearsOfExperience)))
 
 // ── 3D tilt ──────────────────────────────────────────────────────
-const cardEl   = ref<HTMLElement | null>(null)
+const cardEl    = ref<HTMLElement | null>(null)
 const isHovered = ref(false)
-const tiltX    = ref(0)
-const tiltY    = ref(0)
-const mouseX   = ref(50) // percent
-const mouseY   = ref(50)
+const showBars  = ref(false) // delayed reset prevents bar flicker on quick mouseleave
+const tiltX     = ref(0)
+const tiltY     = ref(0)
+const mouseX    = ref(50)
+const mouseY    = ref(50)
 
-function onMouseEnter() { isHovered.value = true }
+let barTimer: ReturnType<typeof setTimeout> | null = null
+
+function onMouseEnter() {
+  isHovered.value = true
+  if (barTimer) { clearTimeout(barTimer); barTimer = null }
+  showBars.value = true
+}
 
 function onMouseMove(e: MouseEvent) {
   const el = cardEl.value
   if (!el) return
   const { left, top, width, height } = el.getBoundingClientRect()
-  const x = (e.clientX - left) / width   // 0–1
-  const y = (e.clientY - top)  / height  // 0–1
-  tiltX.value  = (y - 0.5) * -12  // deg
+  const x = (e.clientX - left) / width
+  const y = (e.clientY - top)  / height
+  tiltX.value  = (y - 0.5) * -12
   tiltY.value  = (x - 0.5) *  12
   mouseX.value = x * 100
   mouseY.value = y * 100
@@ -131,7 +179,11 @@ function onMouseLeave() {
   tiltY.value = 0
   mouseX.value = 50
   mouseY.value = 50
+  // Keep bars visible until CSS transition finishes (800ms + buffer)
+  barTimer = setTimeout(() => { showBars.value = false }, 900)
 }
+
+onUnmounted(() => { if (barTimer) clearTimeout(barTimer) })
 
 // ── Computed styles ───────────────────────────────────────────────
 const cardStyle = computed(() => ({

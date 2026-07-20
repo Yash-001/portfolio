@@ -1,6 +1,5 @@
 <template>
   <div class="projects-filter">
-
     <!-- Search -->
     <div class="projects-filter__search">
       <i class="pi pi-search search-icon" />
@@ -18,12 +17,19 @@
         aria-label="Clear search"
         @click="emit('update:search', '')"
       >
-        <i class="pi pi-times" style="font-size:10px;" />
+        <i
+          class="pi pi-times"
+          style="font-size:10px;"
+        />
       </button>
     </div>
 
     <!-- Category pills -->
-    <div class="projects-filter__pills" role="tablist" aria-label="Filter by category">
+    <div
+      class="projects-filter__pills"
+      role="tablist"
+      aria-label="Filter by category"
+    >
       <button
         role="tab"
         :aria-selected="category === 'all'"
@@ -47,7 +53,7 @@
           color: cfg.color,
           boxShadow: `0 0 16px ${cfg.bg}`,
         } : {}"
-        @click="emit('update:category', key)"
+        @click="emit('update:category', key as ProjectCategory)"
       >
         <i :class="cfg.icon" />
         {{ cfg.label }}
@@ -59,7 +65,6 @@
       <span class="count-value">{{ count }}</span>
       <span class="count-label">project{{ count !== 1 ? 's' : '' }}</span>
     </div>
-
   </div>
 </template>
 

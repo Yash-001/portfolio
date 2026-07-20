@@ -39,6 +39,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'services',    name: 'services',      component: () => import('@/pages/ServicesPage.vue'),                meta: meta('services') },
       { path: 'testimonials',name: 'testimonials',  component: () => import('@/pages/TestimonialsPage.vue'),            meta: meta('testimonials') },
       { path: 'contact',     name: 'contact',       component: () => import('@/pages/ContactPage.vue'),                 meta: meta('contact') },
+      { path: 'privacy',     name: 'privacy',       component: () => import('@/pages/PrivacyPage.vue'),                 meta: { title: 'Privacy Policy | Yash Ranjan', description: 'Privacy policy.', noIndex: true, transition: 'page' } },
+      { path: 'terms',       name: 'terms',         component: () => import('@/pages/TermsPage.vue'),                   meta: { title: 'Terms of Use | Yash Ranjan',   description: 'Terms of use.',   noIndex: true, transition: 'page' } },
       {
         path: 'projects',
         name: 'projects',
@@ -82,12 +84,23 @@ export const router = createRouter({
   routes,
   scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) return savedPosition
-    if (to.hash) return { el: to.hash, behavior: 'smooth', top: 80 }
-    return { top: 0, behavior: 'smooth' }
+    if (to.hash) {
+      // Defer to next tick so async components have time to mount
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ el: to.hash, behavior: 'smooth', top: 80 })
+        }, 100)
+      })
+    }
+    return { top: 0, behavior: 'instant' }
   },
 })
 
-router.beforeEach(() => { isNavigating.value = true })
+router.beforeEach(() => {
+  isNavigating.value = true
+  // Ensure body scroll is never left locked between page navigations
+  document.body.style.overflow = ''
+})
 
 router.afterEach((to) => {
   isNavigating.value = false

@@ -1,9 +1,13 @@
 <template>
-  <div class="skill-filter" role="tablist" aria-label="Filter skills by category">
-
+  <div
+    class="skill-filter"
+    role="tablist"
+    aria-label="Filter skills by category"
+  >
     <!-- All -->
     <button
       role="tab"
+      type="button"
       :aria-selected="modelValue === 'all'"
       class="filter-pill"
       :class="{ 'filter-pill--active': modelValue === 'all' }"
@@ -18,6 +22,7 @@
       v-for="group in groups"
       :key="group.category"
       role="tab"
+      type="button"
       :aria-selected="modelValue === group.category"
       class="filter-pill"
       :class="{ 'filter-pill--active': modelValue === group.category }"
@@ -27,7 +32,6 @@
       <i :class="group.icon" />
       <span>{{ group.label }}</span>
     </button>
-
   </div>
 </template>
 
@@ -85,6 +89,11 @@ function activePillStyle(category: string) {
   border-color: #333333;
   color: #a0a0a0;
   transform: translateY(-1px);
+}
+
+.filter-pill:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
 }
 
 .filter-pill--active {

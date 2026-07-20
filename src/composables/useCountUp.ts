@@ -1,3 +1,4 @@
+import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from '@/plugins/gsap'
 
 export function useCountUp(target: number, duration = 1.8, delay = 0) {

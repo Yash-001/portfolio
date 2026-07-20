@@ -1,23 +1,34 @@
 <template>
-  <section id="about" ref="sectionEl" class="about-section" aria-label="About Yash Ranjan">
-
+  <section
+    id="about"
+    ref="sectionEl"
+    class="about-section"
+    aria-label="About Yash Ranjan"
+  >
     <!-- Section label -->
-    <div ref="labelEl" class="section-label">
+    <div
+      ref="labelEl"
+      class="section-label"
+    >
       <span class="label-line" />
       <span class="label-text">About</span>
     </div>
 
     <div class="about-inner">
-
       <!-- ══ LEFT — Story ══════════════════════════════════════ -->
       <div class="about-story">
-
-        <h2 ref="headingEl" class="about-heading">
+        <h2
+          ref="headingEl"
+          class="about-heading"
+        >
           I don't just write code.<br />
           <span class="heading-accent">I engineer outcomes.</span>
         </h2>
 
-        <div ref="storyEl" class="story-body">
+        <div
+          ref="storyEl"
+          class="story-body"
+        >
           <p>
             Seven years ago I joined a fintech startup as the only backend engineer.
             No playbook, no senior to ask — just a production system that needed to
@@ -50,37 +61,53 @@
         </div>
 
         <!-- Signature -->
-        <div ref="signatureEl" class="signature-block">
+        <div
+          ref="signatureEl"
+          class="signature-block"
+        >
           <div class="signature-line" />
           <div class="signature-meta">
             <span class="signature-name">{{ APP_NAME }}</span>
-            <span class="signature-title">Senior Software Engineer · {{ APP_YEARS_EXPERIENCE }}+ yrs</span>
+            <span class="signature-title">Enterprise Software & AI Consultant · {{ APP_YEARS_EXPERIENCE }}+ yrs</span>
           </div>
         </div>
-
       </div>
 
       <!-- ══ RIGHT — Cards + Stack ══════════════════════════════ -->
       <div class="about-aside">
-
         <!-- Philosophy cards -->
-        <div ref="cardsEl" class="philosophy-grid">
+        <div
+          ref="cardsEl"
+          class="philosophy-grid"
+        >
           <div
             v-for="card in PHILOSOPHY"
             :key="card.title"
             class="philosophy-card"
           >
             <div class="card-icon-wrap">
-              <i :class="card.icon" class="card-icon" />
+              <i
+                :class="card.icon"
+                class="card-icon"
+              />
             </div>
-            <h3 class="card-title">{{ card.title }}</h3>
-            <p class="card-body">{{ card.body }}</p>
+            <h3 class="card-title">
+              {{ card.title }}
+            </h3>
+            <p class="card-body">
+              {{ card.body }}
+            </p>
           </div>
         </div>
 
         <!-- Currently working with -->
-        <div ref="stackEl" class="stack-block">
-          <p class="stack-label">Currently working with</p>
+        <div
+          ref="stackEl"
+          class="stack-block"
+        >
+          <p class="stack-label">
+            Currently working with
+          </p>
           <div class="stack-pills">
             <span
               v-for="tech in TECH_STACK"
@@ -94,7 +121,10 @@
         </div>
 
         <!-- Location + availability -->
-        <div ref="metaEl" class="meta-strip">
+        <div
+          ref="metaEl"
+          class="meta-strip"
+        >
           <div class="meta-item">
             <i class="pi pi-map-marker meta-icon" />
             <span>{{ APP_LOCATION }}</span>
@@ -110,35 +140,50 @@
             <span>Responds in {{ APP_RESPONSE_TIME }}</span>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- ══ Timeline ════════════════════════════════════════════ -->
-    <div ref="timelineEl" class="timeline" aria-label="Career timeline">
+    <div
+      ref="timelineEl"
+      class="timeline"
+      aria-label="Career timeline"
+    >
       <div
         v-for="(item, i) in TIMELINE"
         :key="item.year"
         class="timeline-item"
         :class="{ 'timeline-item--right': i % 2 !== 0 }"
       >
-        <div class="timeline-dot" aria-hidden="true">
+        <div
+          class="timeline-dot"
+          aria-hidden="true"
+        >
           <div class="timeline-dot__inner" />
         </div>
         <div class="timeline-card">
           <span class="timeline-year">{{ item.year }}</span>
-          <h4 class="timeline-role">{{ item.role }}</h4>
-          <p class="timeline-company">{{ item.company }}</p>
-          <p class="timeline-desc">{{ item.desc }}</p>
+          <h4 class="timeline-role">
+            {{ item.role }}
+          </h4>
+          <p class="timeline-company">
+            {{ item.company }}
+          </p>
+          <p class="timeline-desc">
+            {{ item.desc }}
+          </p>
         </div>
       </div>
-      <div class="timeline-spine" aria-hidden="true" />
+      <div
+        class="timeline-spine"
+        aria-hidden="true"
+      />
     </div>
-
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap, ScrollTrigger } from '@/plugins/gsap'
 import {
   APP_NAME,
@@ -225,47 +270,49 @@ const metaEl      = ref<HTMLElement | null>(null)
 const timelineEl  = ref<HTMLElement | null>(null)
 
 // ── Animations ────────────────────────────────────────────────────
+let gsapCtx: ReturnType<typeof gsap.context> | null = null
+
 onMounted(() => {
-  const ctx = gsap.context(() => {
+  gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
     gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
       opacity: 0, x: -24, duration: 0.6, ease,
     })
 
     gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%' },
+      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
       opacity: 0, y: 40, duration: 0.8, ease,
     })
 
     gsap.from(storyEl.value!.querySelectorAll('p'), {
-      scrollTrigger: { trigger: storyEl.value, start: 'top 82%' },
+      scrollTrigger: { trigger: storyEl.value, start: 'top 82%', once: true },
       opacity: 0, y: 28, duration: 0.7, ease, stagger: 0.14,
     })
 
     gsap.from(signatureEl.value, {
-      scrollTrigger: { trigger: signatureEl.value, start: 'top 90%' },
+      scrollTrigger: { trigger: signatureEl.value, start: 'top 90%', once: true },
       opacity: 0, x: -20, duration: 0.6, ease, delay: 0.2,
     })
 
     gsap.from(cardsEl.value!.querySelectorAll('.philosophy-card'), {
-      scrollTrigger: { trigger: cardsEl.value, start: 'top 82%' },
+      scrollTrigger: { trigger: cardsEl.value, start: 'top 82%', once: true },
       opacity: 0, y: 32, scale: 0.97, duration: 0.65, ease, stagger: 0.1,
     })
 
     gsap.from(stackEl.value!.querySelectorAll('.stack-pill'), {
-      scrollTrigger: { trigger: stackEl.value, start: 'top 88%' },
+      scrollTrigger: { trigger: stackEl.value, start: 'top 88%', once: true },
       opacity: 0, scale: 0.85, duration: 0.4, ease: 'back.out(1.4)', stagger: 0.05,
     })
 
     gsap.from(metaEl.value, {
-      scrollTrigger: { trigger: metaEl.value, start: 'top 90%' },
+      scrollTrigger: { trigger: metaEl.value, start: 'top 90%', once: true },
       opacity: 0, y: 16, duration: 0.5, ease,
     })
 
     gsap.from(timelineEl.value!.querySelectorAll('.timeline-item'), {
-      scrollTrigger: { trigger: timelineEl.value, start: 'top 80%' },
+      scrollTrigger: { trigger: timelineEl.value, start: 'top 80%', once: true },
       opacity: 0, y: 40, duration: 0.7, ease, stagger: 0.15,
     })
 
@@ -282,8 +329,11 @@ onMounted(() => {
     })
 
   }, sectionEl.value!)
+})
 
-  onUnmounted(() => ctx.revert())
+onUnmounted(() => {
+  gsapCtx?.revert()
+  ScrollTrigger.getAll().forEach((t) => t.kill())
 })
 </script>
 
