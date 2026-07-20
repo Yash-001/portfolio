@@ -21,23 +21,22 @@
         class="section-label"
       >
         <span class="label-line" />
-        <span class="label-text">Work</span>
+        <span class="label-text">{{ t('projects.label') }}</span>
       </div>
 
       <h2
         ref="headingEl"
         class="projects-section__heading"
       >
-        Selected projects.
-        <span class="heading-accent">Real systems.</span>
+        {{ t('projects.heading') }}
+        <span class="heading-accent">{{ t('projects.headingAccent') }}</span>
       </h2>
 
       <p
         ref="subEl"
         class="projects-section__sub"
       >
-        Not side projects. Not tutorials. Production systems that processed
-        real money, served real clients, and ran without me watching them.
+        {{ t('projects.sub') }}
       </p>
     </div>
 
@@ -79,17 +78,17 @@
             <i class="pi pi-search" />
           </div>
           <p class="projects-empty__title">
-            No projects found
+            {{ t('common.misc.noProjectsFound') }}
           </p>
           <p class="projects-empty__sub">
-            Try a different search term or category
+            {{ t('common.misc.tryDifferentSearch') }}
           </p>
           <button
             class="projects-empty__reset"
             type="button"
             @click="resetFilters"
           >
-            Clear filters
+            {{ t('common.misc.clearFilters') }}
           </button>
         </div>
       </Transition>
@@ -102,18 +101,14 @@
     >
       <div class="projects-cta__inner">
         <div>
-          <p class="projects-cta__heading">
-            Have a system that needs fixing?
-          </p>
-          <p class="projects-cta__sub">
-            I work with founders and CTOs directly. No agencies, no middlemen.
-          </p>
+          <p class="projects-cta__heading">{{ t('projects.cta.heading') }}</p>
+          <p class="projects-cta__sub">{{ t('projects.cta.sub') }}</p>
         </div>
         <RouterLink
           to="/contact"
           class="projects-cta__btn"
         >
-          <span>Let's talk</span>
+          <span>{{ t('projects.cta.btn') }}</span>
           <i
             class="pi pi-arrow-right"
             style="font-size:12px;"
@@ -131,6 +126,9 @@ import type { ProjectCategory } from '@/types'
 import { PROJECTS } from '@/constants'
 import ProjectCard    from './ProjectCard.vue'
 import ProjectsFilter from './ProjectsFilter.vue'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 // ── Filter state ──────────────────────────────────────────────────
 const searchQuery    = ref('')

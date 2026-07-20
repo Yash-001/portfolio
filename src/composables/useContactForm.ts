@@ -12,6 +12,7 @@
  */
 
 import { reactive, ref, computed, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { submitContactForm } from '@/services/contact.service'
 import type {
@@ -22,51 +23,51 @@ import type {
   ValidationResult,
 } from '@/types/contact.types'
 
-// ── Validation rules ───────────────────────────────────────────────────────
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-
-function validateName(value: string): string | undefined {
-  const v = value.trim()
-  if (!v)           return 'Full name is required.'
-  if (v.length < 2) return 'Name must be at least 2 characters.'
-  if (v.length > 100) return 'Name must be under 100 characters.'
-  return undefined
-}
-
-function validateEmail(value: string): string | undefined {
-  const v = value.trim()
-  if (!v)               return 'Email address is required.'
-  if (!EMAIL_RE.test(v)) return 'Please enter a valid email address.'
-  return undefined
-}
-
-function validateProjectType(value: string): string | undefined {
-  if (!value) return 'Please select a project type.'
-  return undefined
-}
-
-function validateMessage(value: string): string | undefined {
-  const v = value.trim()
-  if (!v)             return 'Message is required.'
-  if (v.length < 20)  return 'Message must be at least 20 characters.'
-  if (v.length > 1000) return 'Message must be under 1000 characters.'
-  return undefined
-}
-
-const VALIDATORS: Record<ContactFormField, (v: string) => string | undefined> = {
-  name:        validateName,
-  email:       validateEmail,
-  projectType: validateProjectType,
-  message:     validateMessage,
-}
-
 const REQUIRED_FIELDS: ContactFormField[] = ['name', 'email', 'projectType', 'message']
 
 // ── Composable ─────────────────────────────────────────────────────────────
 
 export function useContactForm() {
   const toast = useToast()
+  const { t } = useI18n()
+
+  // ── Validation helpers (use t() for messages) ────────────────────────────
+
+  function validateName(value: string): string | undefined {
+    const v = value.trim()
+    if (!v)             return t('contact.form.errors.nameRequired')
+    if (v.length < 2)   return t('contact.form.errors.nameMin')
+    if (v.length > 100) return t('contact.form.errors.nameMax')
+    return undefined
+  }
+
+  function validateEmail(value: string): string | undefined {
+    const v = value.trim()
+    if (!v)                return t('contact.form.errors.emailRequired')
+    if (!EMAIL_RE.test(v)) return t('contact.form.errors.emailInvalid')
+    return undefined
+  }
+
+  function validateProjectType(value: string): string | undefined {
+    if (!value) return t('contact.form.errors.typeRequired')
+    return undefined
+  }
+
+  function validateMessage(value: string): string | undefined {
+    const v = value.trim()
+    if (!v)              return t('contact.form.errors.messageRequired')
+    if (v.length < 20)   return t('contact.form.errors.messageMin')
+    if (v.length > 1000) return t('contact.form.errors.messageMax')
+    return undefined
+  }
+
+  const VALIDATORS: Record<ContactFormField, (v: string) => string | undefined> = {
+    name:        validateName,
+    email:       validateEmail,
+    projectType: validateProjectType,
+    message:     validateMessage,
+  }
 
   // ── State ────────────────────────────────────────────────────────────────
 
@@ -171,8 +172,8 @@ export function useContactForm() {
       await focusFirstError()
       toast.add({
         severity: 'warn',
-        summary:  'Check your form',
-        detail:   'Please fix the highlighted fields before sending.',
+        summary:  t('contact.form.toast.checkForm'),
+        detail:   t('contact.form.toast.fixFields'),
         life:     4000,
       })
       return
@@ -198,7 +199,7 @@ export function useContactForm() {
 
       toast.add({
         severity: 'error',
-        summary:  isRateLimit ? 'Slow down' : isConfig ? 'Not configured' : 'Send failed',
+        summary:  isRateLimit ? t('contact.form.toast.slowDown') : isConfig ? t('contact.form.toast.notConfig') : t('contact.form.toast.sendFailed'),
         detail:   result.message,
         life:     isRateLimit ? 8000 : 6000,
       })

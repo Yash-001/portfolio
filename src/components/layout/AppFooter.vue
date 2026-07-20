@@ -40,8 +40,7 @@
           {{ APP_TITLE }}
         </p>
         <p class="ft-brand__bio">
-          Building production-grade systems for startups and enterprises.
-          Available for remote engagements worldwide.
+          {{ t('common.misc.remoteWorldwide') }}
         </p>
 
         <!-- Availability badge -->
@@ -95,13 +94,11 @@
         class="ft-nav"
         aria-label="Footer navigation"
       >
-        <h3 class="ft-nav__heading">
-          Navigation
-        </h3>
+        <h3 class="ft-nav__heading">{{ t('common.footer.navigation') }}</h3>
         <ul class="ft-nav__list">
           <li
-            v-for="link in NAV_LINKS"
-            :key="link.label"
+            v-for="link in NAV_LINK_KEYS"
+            :key="link.key"
           >
             <a
               :href="link.href"
@@ -111,7 +108,7 @@
                 class="ft-nav__link-arrow"
                 aria-hidden="true"
               >→</span>
-              {{ link.label }}
+              {{ t(`common.footer.${link.key}`) }}
             </a>
           </li>
         </ul>
@@ -123,23 +120,21 @@
         class="ft-nav"
         aria-label="Services"
       >
-        <h3 class="ft-nav__heading">
-          Services
-        </h3>
+        <h3 class="ft-nav__heading">{{ t('common.footer.services') }}</h3>
         <ul class="ft-nav__list">
           <li
-            v-for="s in SERVICE_LINKS"
-            :key="s"
+            v-for="key in SERVICE_LINK_KEYS"
+            :key="key"
           >
             <a
-              href="/#services"
+              href="/services"
               class="ft-nav__link"
             >
               <span
                 class="ft-nav__link-arrow"
                 aria-hidden="true"
               >→</span>
-              {{ s }}
+              {{ t(`common.footer.${key}`) }}
             </a>
           </li>
         </ul>
@@ -151,13 +146,11 @@
         class="ft-resources"
       >
         <nav aria-label="Resources">
-          <h3 class="ft-nav__heading">
-            Resources
-          </h3>
+          <h3 class="ft-nav__heading">{{ t('common.footer.resources') }}</h3>
           <ul class="ft-nav__list">
             <li
-              v-for="r in RESOURCE_LINKS"
-              :key="r.label"
+              v-for="r in RESOURCE_LINK_KEYS"
+              :key="r.key"
             >
               <a
                 :href="r.href"
@@ -169,7 +162,7 @@
                   class="ft-nav__link-arrow"
                   aria-hidden="true"
                 >→</span>
-                {{ r.label }}
+                {{ t(`common.footer.${r.key}`) }}
                 <span
                   v-if="r.external"
                   class="ft-nav__ext"
@@ -185,15 +178,8 @@
           class="ft-newsletter"
           aria-label="Newsletter signup"
         >
-          <h3
-            class="ft-nav__heading"
-            style="margin-top: 32px;"
-          >
-            Stay in the loop
-          </h3>
-          <p class="ft-newsletter__sub">
-            Occasional posts on architecture, engineering, and shipping fast.
-          </p>
+          <h3 class="ft-nav__heading" style="margin-top: 32px;">{{ t('common.footer.stayInLoop') }}</h3>
+          <p class="ft-newsletter__sub">{{ t('common.footer.newsletterSub') }}</p>
           <form
             class="ft-newsletter__form"
             novalidate
@@ -203,7 +189,7 @@
               <input
                 v-model="email"
                 type="email"
-                placeholder="your@email.com"
+              :placeholder="t('common.footer.emailPlaceholder')"
                 class="ft-newsletter__input"
                 :class="{ 'ft-newsletter__input--error': emailError }"
                 aria-label="Email address"
@@ -232,13 +218,7 @@
             >
               {{ emailError }}
             </p>
-            <p
-              v-if="subscribed"
-              class="ft-newsletter__success"
-              role="status"
-            >
-              You're on the list. 🎉
-            </p>
+            <p v-if="subscribed" class="ft-newsletter__success" role="status">{{ t('common.status.onList') }}</p>
           </form>
         </div>
       </div>
@@ -251,27 +231,15 @@
     >
       <div class="ft__bottom-inner">
         <p class="ft-copy">
-          © {{ year }} {{ APP_NAME }}. Crafted with
-          <span
-            class="ft-copy__heart"
-            aria-label="love"
-          >♥</span>
-          in India.
+          {{ t('common.footer.copyright', { year, name: APP_NAME }) }}
+          <span class="ft-copy__heart" aria-label="love">♥</span>
+          {{ t('common.footer.inIndia') }}
         </p>
 
         <div class="ft-bottom-links">
-          <a
-            href="/privacy"
-            class="ft-bottom-link"
-          >Privacy</a>
-          <span
-            class="ft-bottom-sep"
-            aria-hidden="true"
-          >·</span>
-          <a
-            href="/terms"
-            class="ft-bottom-link"
-          >Terms</a>
+          <a href="/privacy" class="ft-bottom-link">{{ t('common.footer.privacy') }}</a>
+          <span class="ft-bottom-sep" aria-hidden="true">·</span>
+          <a href="/terms" class="ft-bottom-link">{{ t('common.footer.terms') }}</a>
           <span
             class="ft-bottom-sep"
             aria-hidden="true"
@@ -315,6 +283,9 @@ import { gsap } from '@/plugins/gsap'
 import {
   APP_NAME, APP_TITLE, APP_LOCATION, APP_AVAILABILITY_TEXT, SOCIAL_LINKS, APP_RESUME_URL, APP_CALENDLY_URL,
 } from '@/constants/app.constants'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 // ── Constants ──────────────────────────────────────────────────
 const SOCIALS = [
@@ -323,32 +294,27 @@ const SOCIALS = [
   { label: 'Email',    href: SOCIAL_LINKS.email,     icon: 'pi pi-envelope' },
 ]
 
-const NAV_LINKS = [
-  { label: 'About',      href: '/#about'      },
-  { label: 'Skills',     href: '/#skills'     },
-  { label: 'Experience', href: '/#experience' },
-  { label: 'Projects',   href: '/#projects'   },
-  { label: 'Services',   href: '/#services'   },
-  { label: 'Blog',       href: '/#blog'       },
-  { label: 'Contact',    href: '/#contact'    },
+const NAV_LINK_KEYS = [
+  { key: 'about',        href: '/about'        },
+  { key: 'skills',       href: '/#skills'      },
+  { key: 'experience',   href: '/experience'   },
+  { key: 'projects',     href: '/projects'     },
+  { key: 'services',     href: '/services'     },
+  { key: 'blog',         href: '/blog'         },
+  { key: 'contact',      href: '/contact'      },
 ]
 
-const SERVICE_LINKS = [
-  'Backend Engineering',
-  'API Design & Integration',
-  'Cloud Infrastructure',
-  'Database Architecture',
-  'Performance Optimization',
-  'Technical Consulting',
+const SERVICE_LINK_KEYS = [
+  'backendEng', 'apiDesign', 'cloudInfra', 'dbArch', 'perfOpt', 'techConsulting',
 ]
 
-const RESOURCE_LINKS = [
-  { label: 'Blog',           href: '/#blog',          external: false },
-  { label: 'Resume',         href: APP_RESUME_URL,    external: true  },
-  { label: 'GitHub Profile', href: SOCIAL_LINKS.github,   external: true  },
-  { label: 'LinkedIn',       href: SOCIAL_LINKS.linkedin,  external: true  },
-  { label: 'Book a Call',    href: APP_CALENDLY_URL,  external: true  },
-  { label: 'Contact',        href: '/#contact',       external: false },
+const RESOURCE_LINK_KEYS = [
+  { key: 'blog',          href: '/blog',               external: false },
+  { key: 'resume',        href: APP_RESUME_URL,         external: true  },
+  { key: 'githubProfile', href: SOCIAL_LINKS.github,    external: true  },
+  { key: 'linkedin',      href: SOCIAL_LINKS.linkedin,  external: true  },
+  { key: 'bookCall',      href: APP_CALENDLY_URL,       external: true  },
+  { key: 'contact',       href: '/contact',             external: false },
 ]
 
 // ── State ──────────────────────────────────────────────────────
@@ -370,7 +336,7 @@ const bottomEl    = ref<HTMLElement | null>(null)
 function handleSubscribe() {
   emailError.value = ''
   if (!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-    emailError.value = 'Please enter a valid email address.'
+    emailError.value = t('common.errors.invalidEmail')
     return
   }
   subscribed.value = true

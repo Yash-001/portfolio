@@ -21,7 +21,7 @@
             <button
               ref="closeBtn"
               class="cs-dialog__close"
-              aria-label="Close dialog"
+              :aria-label="t('common.aria.closeDialog')"
               @click="close"
             >
               <i
@@ -59,14 +59,13 @@
               id="cs-dialog-title"
               class="cs-dialog__title"
             >
-              Message sent.
+              {{ t('contact.success.title') }}
             </h3>
             <p
               id="cs-dialog-desc"
               class="cs-dialog__sub"
             >
-              I'll get back to you within 24 hours. In the meantime, feel free to
-              connect on LinkedIn or check out my latest work on GitHub.
+              {{ t('contact.success.sub') }}
             </p>
 
             <!-- Meta -->
@@ -76,7 +75,7 @@
                   class="pi pi-clock"
                   aria-hidden="true"
                 />
-                <span>Response within 24 hours</span>
+                <span>{{ t('contact.success.responseTime') }}</span>
               </div>
               <div class="cs-dialog__meta-item">
                 <i
@@ -99,13 +98,13 @@
                   class="pi pi-linkedin"
                   aria-hidden="true"
                 />
-                <span>Connect on LinkedIn</span>
+                <span>{{ t('contact.success.connectBtn') }}</span>
               </a>
               <button
                 class="cs-dialog__btn cs-dialog__btn--secondary"
                 @click="close"
               >
-                Done
+                {{ t('contact.success.doneBtn') }}
               </button>
             </div>
           </div>
@@ -118,6 +117,9 @@
 <script setup lang="ts">
 import { ref, watch, nextTick, onUnmounted } from 'vue'
 import { SOCIAL_LINKS, APP_LOCATION } from '@/constants'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 const props = defineProps<{ modelValue: boolean }>()
 const emit  = defineEmits<{ (e: 'update:modelValue', v: boolean): void }>()

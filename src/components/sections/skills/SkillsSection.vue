@@ -20,23 +20,22 @@
         class="section-label"
       >
         <span class="label-line" />
-        <span class="label-text">Expertise</span>
+        <span class="label-text">{{ t('skills.label') }}</span>
       </div>
 
       <h2
         ref="headingEl"
         class="skills-section__heading"
       >
-        The full technical picture.
-        <span class="heading-accent">No fluff.</span>
+        {{ t('skills.heading') }}
+        <span class="heading-accent">{{ t('skills.headingAccent') }}</span>
       </h2>
 
       <p
         ref="subEl"
         class="skills-section__sub"
       >
-        Seven years of production systems across the full stack.
-        Every skill here has been used in anger, not just tutorials.
+        {{ t('skills.sub') }}
       </p>
 
       <!-- Filter -->
@@ -74,11 +73,11 @@
     >
       <div
         v-for="item in SUMMARY"
-        :key="item.label"
+        :key="item.key"
         class="summary-item"
       >
-        <span class="summary-item__value">{{ item.value }}</span>
-        <span class="summary-item__label">{{ item.label }}</span>
+        <span class="summary-item__value">{{ t(`skills.summary.${item.key}.value`) }}</span>
+        <span class="summary-item__label">{{ t(`skills.summary.${item.key}.label`) }}</span>
       </div>
     </div>
   </section>
@@ -91,12 +90,15 @@ import { gsap } from '@/plugins/gsap'
 import { SKILL_GROUPS } from '@/constants'
 import SkillCard from './SkillCard.vue'
 import SkillCategoryFilter from './SkillCategoryFilter.vue'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 const SUMMARY = [
-  { value: '7+',  label: 'Years in production' },
-  { value: '17',  label: 'Technologies' },
-  { value: '7',   label: 'Skill categories' },
-  { value: '6+', label: 'Enterprise clients' },
+  { key: 'years'      },
+  { key: 'tech'       },
+  { key: 'categories' },
+  { key: 'clients'    },
 ] as const
 
 const activeCategory = ref<SkillCategory | 'all'>('all')

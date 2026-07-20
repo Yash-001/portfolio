@@ -2,7 +2,7 @@
   <section
     id="hero"
     class="hero"
-    aria-label="Introduction"
+    :aria-label="t('common.aria.introduction')"
   >
     <HeroBackground />
 
@@ -16,7 +16,7 @@
         <div class="hero__badge reveal-item">
           <span class="badge-dot" />
           <span class="font-mono text-label-md text-success-400 tracking-widest uppercase">
-            {{ APP_AVAILABILITY_TEXT }}
+            {{ t('hero.badge') }}
           </span>
         </div>
 
@@ -24,7 +24,7 @@
         <div class="hero__headline">
           <h1 class="reveal-item">
             <span class="block text-content-secondary text-heading-sm font-mono tracking-widest uppercase mb-2">
-              Hi, I'm
+              {{ t('hero.greeting') }}
             </span>
             <span class="hero__name reveal-item">{{ APP_NAME }}</span>
           </h1>
@@ -34,7 +34,7 @@
             class="hero__role reveal-item"
             aria-label="Role"
           >
-            <span class="hero__role-prefix">I build&nbsp;</span>
+            <span class="hero__role-prefix">{{ t('hero.rolePrefix') }}</span>
             <span
               ref="typewriterEl"
               class="hero__role-typed"
@@ -48,14 +48,13 @@
 
         <!-- Subheadline -->
         <p class="hero__sub reveal-item">
-          Seven years deep in enterprise systems — Java, Spring Boot, AWS, Vue.
-          I care about the code that runs at 3 AM and doesn't wake anyone up.
+          {{ t('hero.sub') }}
         </p>
 
         <!-- Tech stack pills -->
         <div
           class="hero__stack reveal-item"
-          aria-label="Core technologies"
+          :aria-label="t('common.aria.coreTech')"
         >
           <span
             v-for="tech in TECH_STACK"
@@ -69,10 +68,10 @@
           <RouterLink
             to="/contact"
             class="hero__btn-primary"
-            aria-label="Hire Me"
+            :aria-label="t('common.cta.hireMe')"
           >
             <i class="pi pi-send" aria-hidden="true" />
-            <span>Hire Me</span>
+            <span>{{ t('common.cta.hireMe') }}</span>
           </RouterLink>
 
           <a
@@ -80,17 +79,17 @@
             target="_blank"
             rel="noopener noreferrer"
             class="hero__btn-outline"
-            aria-label="Download resume"
+            :aria-label="t('common.aria.downloadCv')"
           >
             <i class="pi pi-download" aria-hidden="true" />
-            <span>Resume</span>
+            <span>{{ t('common.cta.resume') }}</span>
           </a>
         </div>
 
         <!-- Social links -->
         <div
           class="hero__social reveal-item"
-          aria-label="Social links"
+          :aria-label="t('common.aria.socialLinks')"
         >
           <a
             v-for="s in SOCIAL_LINKS_NAV"
@@ -131,7 +130,7 @@
             <div
               v-else
               class="avatar-placeholder"
-              aria-label="Profile photo placeholder"
+              :aria-label="t('common.aria.profilePhoto')"
             >
               <i
                 class="pi pi-user"
@@ -179,7 +178,7 @@
           <div class="profile-card__open">
             <span class="open-dot" />
             <span class="font-mono text-label-sm text-content-secondary">
-              Open to new projects · Responds in {{ APP_RESPONSE_TIME }}
+              {{ t('hero.openTo', { time: APP_RESPONSE_TIME }) }}
             </span>
           </div>
         </div>
@@ -191,7 +190,7 @@
       class="hero__scroll-hint"
       aria-hidden="true"
     >
-      <span class="font-mono text-label-sm text-content-tertiary tracking-widest uppercase">Scroll</span>
+      <span class="font-mono text-label-sm text-content-tertiary tracking-widest uppercase">{{ t('common.misc.scroll') }}</span>
       <div class="scroll-line">
         <div class="scroll-line__inner" />
       </div>
@@ -200,33 +199,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { gsap } from '@/plugins/gsap'
 import HeroBackground from './HeroBackground.vue'
 import HeroStats from './HeroStats.vue'
 import { useTypewriter } from '@/composables/useTypewriter'
+import { useLocale } from '@/composables/useLocale'
 import {
-  APP_NAME, APP_TITLE, APP_LOCATION, APP_AVAILABILITY_TEXT, APP_RESPONSE_TIME, APP_RESUME_URL,
+  APP_NAME, APP_TITLE, APP_LOCATION, APP_RESPONSE_TIME, APP_RESUME_URL,
 } from '@/constants'
 import { SOCIAL_LINKS_NAV } from '@/constants'
 import { PROFILE_IMAGE } from '@/config/portfolio.config'
 
+const { t, tm } = useLocale()
+
 const TECH_STACK = ['Java', 'Spring Boot', 'Vue 3', 'AWS', 'PostgreSQL', 'Docker', 'Kubernetes', 'Redis']
 
-const ROLES = [
-  'enterprise backends.',
-  'cloud infrastructure.',
-  'AI-assisted systems.',
-  'things that scale.',
-  'the code that ships.',
-]
+const ROLES = computed(() => tm('hero.roles') as string[])
 
 const leftCol      = ref<HTMLElement | null>(null)
 const rightCol     = ref<HTMLElement | null>(null)
 const typewriterEl = ref<HTMLElement | null>(null)
 const currentTime  = ref('')
 
-useTypewriter(typewriterEl, ROLES, { typingSpeed: 0.055, deletingSpeed: 0.028, pauseMs: 2400 })
+useTypewriter(typewriterEl, ROLES.value, { typingSpeed: 0.055, deletingSpeed: 0.028, pauseMs: 2400 })
 
 // Live clock
 let clockInterval: ReturnType<typeof setInterval>

@@ -1,11 +1,11 @@
 import type { NavLink, SocialLink } from '@/types'
 import { GITHUB_URL, LINKEDIN_URL, OWNER_EMAIL } from '@/config/portfolio.config'
 
-export const NAV_LINKS: NavLink[] = [
-  { label: 'Work',      to: '/#projects' },
-  { label: 'Expertise', to: '/#skills'   },
-  { label: 'Process',   to: '/services'  },
-  { label: 'Contact',   to: '/contact'   },
+export const NAV_LINKS: (NavLink & { labelKey: string })[] = [
+  { label: 'Work',      labelKey: 'work',      to: '/#projects' },
+  { label: 'Expertise', labelKey: 'expertise', to: '/#skills'   },
+  { label: 'Process',   labelKey: 'process',   to: '/services'  },
+  { label: 'Contact',   labelKey: 'contact',   to: '/contact'   },
 ]
 
 export const FOOTER_LINKS: NavLink[] = [

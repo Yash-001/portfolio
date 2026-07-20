@@ -50,12 +50,17 @@ import AppCursor from '@/components/layout/AppCursor.vue'
 import AppToast  from '@/components/layout/AppToast.vue'
 import { isNavigating } from '@/router'
 import { useUiStore } from '@/stores/ui.store'
+import { useLocale } from '@/composables/useLocale'
 
 const ui = useUiStore()
+const { initLocale } = useLocale()
 const isMobile = useMediaQuery('(max-width: 768px)')
 const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
-onMounted(() => ui.initTheme())
+onMounted(() => {
+  ui.initTheme()
+  initLocale()
+})
 </script>
 
 <style>

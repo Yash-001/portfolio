@@ -22,23 +22,22 @@
         class="svc-section__label"
       >
         <span class="svc-label-line" />
-        <span class="svc-label-text">Services</span>
+        <span class="svc-label-text">{{ t('services.label') }}</span>
       </div>
 
       <h2
         ref="headingEl"
         class="svc-section__heading"
       >
-        What I build.<br />
-        <span class="svc-heading-accent">What you get.</span>
+        {{ t('services.heading') }}<br />
+        <span class="svc-heading-accent">{{ t('services.headingAccent') }}</span>
       </h2>
 
       <p
         ref="subEl"
         class="svc-section__sub"
       >
-        Seven years of production systems across the full stack.
-        Every engagement is direct — no account managers, no handoffs, no surprises.
+        {{ t('services.sub') }}
       </p>
 
       <!-- Availability strip -->
@@ -60,7 +59,7 @@
           class="svc-avail-sep"
           aria-hidden="true"
         >·</span>
-        <span class="svc-avail-remote">Remote worldwide</span>
+        <span class="svc-avail-remote">{{ t('common.misc.remoteWorldwide') }}</span>
       </div>
     </div>
 
@@ -92,15 +91,10 @@
               class="svc-avail-dot"
               aria-hidden="true"
             />
-            <span>Open to new work</span>
+            <span>{{ t('common.misc.openToNewWork') }}</span>
           </div>
-          <h3 class="svc-cta-panel__heading">
-            Have a project in mind?
-          </h3>
-          <p class="svc-cta-panel__sub">
-            Tell me what you're building. I'll tell you if I can help and how long it will take.
-            No sales call required — just a direct conversation.
-          </p>
+          <h3 class="svc-cta-panel__heading">{{ t('services.cta.heading') }}</h3>
+          <p class="svc-cta-panel__sub">{{ t('services.cta.sub') }}</p>
         </div>
 
         <div class="svc-cta-panel__right">
@@ -109,21 +103,21 @@
             class="svc-cta-btn svc-cta-btn--primary"
           >
             <i class="pi pi-send" />
-            <span>Start a conversation</span>
+            <span>{{ t('common.cta.startConvo') }}</span>
           </a>
           <a
             :href="`mailto:${APP_EMAIL}`"
             class="svc-cta-btn svc-cta-btn--secondary"
           >
             <i class="pi pi-envelope" />
-            <span>Email directly</span>
+            <span>{{ t('common.cta.emailDirect') }}</span>
           </a>
           <div class="svc-cta-panel__response">
             <i
               class="pi pi-clock"
               style="font-size:11px; color:#555;"
             />
-            <span>Typically responds within 24 hours</span>
+            <span>{{ t('services.cta.response') }}</span>
           </div>
         </div>
       </div>
@@ -137,6 +131,9 @@ import { gsap } from '@/plugins/gsap'
 import { SERVICES } from '@/constants/services.constants'
 import { APP_EMAIL, APP_AVAILABILITY_TEXT, APP_LOCATION } from '@/constants/app.constants'
 import ServiceCard from './ServiceCard.vue'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 const sectionEl = ref<HTMLElement | null>(null)
 const labelEl   = ref<HTMLElement | null>(null)

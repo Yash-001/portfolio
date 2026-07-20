@@ -21,23 +21,22 @@
         class="section-label"
       >
         <span class="label-line" />
-        <span class="label-text">Experience</span>
+        <span class="label-text">{{ t('experience.label') }}</span>
       </div>
 
       <h2
         ref="headingEl"
         class="exp-section__heading"
       >
-        Seven years of systems<br />
-        <span class="heading-accent">that run in production.</span>
+        {{ t('experience.heading') }}<br />
+        <span class="heading-accent">{{ t('experience.headingAccent') }}</span>
       </h2>
 
       <p
         ref="subEl"
         class="exp-section__sub"
       >
-        Every role here left a mark — on the codebase, on the team,
-        and on how I think about building software.
+        {{ t('experience.sub') }}
       </p>
     </div>
 
@@ -102,11 +101,11 @@
     >
       <div
         v-for="item in SUMMARY"
-        :key="item.label"
+        :key="item.key"
         class="exp-summary__item"
       >
-        <span class="exp-summary__value">{{ item.value }}</span>
-        <span class="exp-summary__label">{{ item.label }}</span>
+        <span class="exp-summary__value">{{ t(`experience.summary.${item.key}.value`) }}</span>
+        <span class="exp-summary__label">{{ t(`experience.summary.${item.key}.label`) }}</span>
       </div>
     </div>
   </section>
@@ -117,12 +116,15 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap, ScrollTrigger } from '@/plugins/gsap'
 import { EXPERIENCES } from '@/constants'
 import ExperienceCard from './ExperienceCard.vue'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 const SUMMARY = [
-  { value: '7+',  label: 'Years in industry'    },
-  { value: '4',   label: 'Companies'             },
-  { value: '₹40Cr', label: 'Transactions / month' },
-  { value: '60%', label: 'Avg latency reduction' },
+  { key: 'years'     },
+  { key: 'companies' },
+  { key: 'txn'       },
+  { key: 'latency'   },
 ] as const
 
 // ── Refs ──────────────────────────────────────────────────────────

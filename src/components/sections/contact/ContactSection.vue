@@ -23,17 +23,16 @@
       >
         <div class="cs-info__label">
           <span class="cs-label-line" />
-          <span class="cs-label-text">Contact</span>
+          <span class="cs-label-text">{{ t('contact.label') }}</span>
         </div>
 
         <h2 class="cs-info__heading">
-          Let's build<br />
-          <span class="cs-heading-accent">something great.</span>
+          {{ t('contact.heading') }}<br />
+          <span class="cs-heading-accent">{{ t('contact.headingAccent') }}</span>
         </h2>
 
         <p class="cs-info__sub">
-          Have a project in mind? I'm available for freelance and contract work.
-          Drop a message and I'll get back within 24 hours.
+          {{ t('contact.sub') }}
         </p>
 
         <!-- Availability -->
@@ -55,7 +54,7 @@
           <li class="cs-detail">
             <span class="cs-detail__icon"><i class="pi pi-envelope" /></span>
             <div>
-              <span class="cs-detail__label">Email</span>
+              <span class="cs-detail__label">{{ t('contact.details.email') }}</span>
               <a
                 :href="`mailto:${APP_EMAIL}`"
                 class="cs-detail__value"
@@ -65,15 +64,15 @@
           <li class="cs-detail">
             <span class="cs-detail__icon"><i class="pi pi-map-marker" /></span>
             <div>
-              <span class="cs-detail__label">Location</span>
+              <span class="cs-detail__label">{{ t('contact.details.location') }}</span>
               <span class="cs-detail__value">{{ APP_LOCATION }}</span>
             </div>
           </li>
           <li class="cs-detail">
             <span class="cs-detail__icon"><i class="pi pi-clock" /></span>
             <div>
-              <span class="cs-detail__label">Response time</span>
-              <span class="cs-detail__value">Within {{ APP_RESPONSE_TIME }}</span>
+              <span class="cs-detail__label">{{ t('contact.details.responseTime') }}</span>
+              <span class="cs-detail__value">{{ t('contact.details.within', { time: APP_RESPONSE_TIME }) }}</span>
             </div>
           </li>
         </ul>
@@ -116,7 +115,7 @@
           class="cs-calendly"
         >
           <i class="pi pi-calendar" />
-          <span>Book a 30-min call</span>
+          <span>{{ t('common.cta.bookCall') }}</span>
           <i class="pi pi-arrow-up-right cs-calendly__ext" />
         </a>
       </div>
@@ -142,9 +141,9 @@
               aria-live="polite"
               aria-atomic="true"
             >
-              <template v-if="isLoading">Sending your message…</template>
-              <template v-else-if="status === 'success'">Message sent successfully.</template>
-              <template v-else-if="hasError">Failed to send. Please try again.</template>
+              <template v-if="isLoading">{{ t('common.status.sending') }}</template>
+              <template v-else-if="status === 'success'">{{ t('common.status.messageSent') }}</template>
+              <template v-else-if="hasError">{{ t('common.status.sendFailed') }}</template>
             </div>
 
             <!-- Honeypot — visually hidden, never filled by real users -->
@@ -163,16 +162,13 @@
               class="cs-field"
               :class="{ 'cs-field--error': errors.name && touched.name }"
             >
-              <label
-                class="cs-field__label"
-                for="cs-name"
-              >Full name <span aria-hidden="true">*</span></label>
+              <label class="cs-field__label" for="cs-name">{{ t('contact.form.name') }} <span aria-hidden="true">*</span></label>
               <input
                 id="cs-name"
                 v-model="form.name"
                 type="text"
                 class="cs-input"
-                placeholder="Yash Ranjan"
+              :placeholder="t('contact.form.placeholder.name')"
                 autocomplete="name"
                 :aria-invalid="!!(errors.name && touched.name)"
                 :aria-describedby="errors.name && touched.name ? 'cs-name-err' : undefined"
@@ -192,16 +188,13 @@
               class="cs-field"
               :class="{ 'cs-field--error': errors.email && touched.email }"
             >
-              <label
-                class="cs-field__label"
-                for="cs-email"
-              >Email address <span aria-hidden="true">*</span></label>
+              <label class="cs-field__label" for="cs-email">{{ t('contact.form.email') }} <span aria-hidden="true">*</span></label>
               <input
                 id="cs-email"
                 v-model="form.email"
                 type="email"
                 class="cs-input"
-                placeholder="you@company.com"
+              :placeholder="t('contact.form.placeholder.email')"
                 autocomplete="email"
                 :aria-invalid="!!(errors.email && touched.email)"
                 :aria-describedby="errors.email && touched.email ? 'cs-email-err' : undefined"
@@ -222,10 +215,7 @@
                 class="cs-field"
                 :class="{ 'cs-field--error': errors.projectType && touched.projectType }"
               >
-                <label
-                  class="cs-field__label"
-                  for="cs-type"
-                >Project type <span aria-hidden="true">*</span></label>
+              <label class="cs-field__label" for="cs-type">{{ t('contact.form.projectType') }} <span aria-hidden="true">*</span></label>
                 <select
                   id="cs-type"
                   v-model="form.projectType"
@@ -235,12 +225,7 @@
                   :disabled="isDisabled"
                   @blur="onBlur('projectType')"
                 >
-                  <option
-                    value=""
-                    disabled
-                  >
-                    Select type…
-                  </option>
+                  <option value="" disabled>{{ t('contact.form.selectType') }}</option>
                   <option
                     v-for="o in PROJECT_TYPE_OPTIONS"
                     :key="o.value"
@@ -258,22 +243,14 @@
               </div>
 
               <div class="cs-field">
-                <label
-                  class="cs-field__label"
-                  for="cs-budget"
-                >Budget range</label>
+              <label class="cs-field__label" for="cs-budget">{{ t('contact.form.budget') }}</label>
                 <select
                   id="cs-budget"
                   v-model="form.budget"
                   class="cs-input cs-select"
                   :disabled="isDisabled"
                 >
-                  <option
-                    value=""
-                    disabled
-                  >
-                    Select range…
-                  </option>
+                  <option value="" disabled>{{ t('contact.form.selectRange') }}</option>
                   <option
                     v-for="o in BUDGET_OPTIONS"
                     :key="o.value"
@@ -290,15 +267,12 @@
               class="cs-field"
               :class="{ 'cs-field--error': errors.message && touched.message }"
             >
-              <label
-                class="cs-field__label"
-                for="cs-message"
-              >Message <span aria-hidden="true">*</span></label>
+              <label class="cs-field__label" for="cs-message">{{ t('contact.form.message') }} <span aria-hidden="true">*</span></label>
               <textarea
                 id="cs-message"
                 v-model="form.message"
                 class="cs-input cs-textarea"
-                placeholder="Tell me about your project, timeline, and goals…"
+              :placeholder="t('contact.form.placeholder.message')"
                 rows="5"
                 :aria-invalid="!!(errors.message && touched.message)"
                 :aria-describedby="errors.message && touched.message ? 'cs-msg-err' : undefined"
@@ -338,7 +312,7 @@
                 class="pi pi-send"
                 aria-hidden="true"
               />
-              <span>{{ isLoading ? 'Sending…' : 'Send message' }}</span>
+              <span>{{ isLoading ? t('common.cta.sending') : t('common.cta.sendMessage') }}</span>
             </button>
 
             <!-- Inline error banner (shown below button on failure) -->
@@ -353,11 +327,8 @@
                   class="pi pi-exclamation-circle"
                   aria-hidden="true"
                 />
-                <span>Failed to send. Please try again or
-                  <a
-                    :href="`mailto:${APP_EMAIL}`"
-                    class="cs-form-error__link"
-                  >email me directly</a>.
+                <span>{{ t('common.errors.sendFailed') }}
+                  <a :href="`mailto:${APP_EMAIL}`" class="cs-form-error__link">{{ t('common.errors.emailDirect') }}</a>.
                 </span>
               </div>
             </Transition>
@@ -384,6 +355,9 @@ import {
 import { PROJECT_TYPE_OPTIONS, BUDGET_OPTIONS } from '@/types/contact.types'
 import { useContactForm } from '@/composables/useContactForm'
 import ContactSuccessDialog from './ContactSuccessDialog.vue'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 const {
   form, errors, touched, status,

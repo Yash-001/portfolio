@@ -31,23 +31,24 @@
             class="nav-link"
             :class="{ 'nav-link--active': isActive(link.to) }"
             @click="(e) => link.to.startsWith('/#') ? handleNavClick(e, link.to) : navigate(e)"
-          >{{ link.label }}</a>
+          >{{ t(`common.nav.${link.labelKey}`) }}</a>
         </RouterLink>
       </nav>
 
       <!-- Actions -->
       <div class="app-navbar__actions">
         <AppThemeSwitcher />
+        <LocaleSwitcher />
 
         <a
           :href="APP_RESUME_URL"
           target="_blank"
           rel="noopener noreferrer"
           class="resume-link hidden md:flex"
-          aria-label="Download resume"
+          :aria-label="t('common.aria.downloadCv')"
         >
           <i class="pi pi-download" style="font-size: 13px;" />
-          <span>Resume</span>
+          <span>{{ t('common.cta.resume') }}</span>
         </a>
 
         <!-- Hamburger (mobile) -->
@@ -72,10 +73,13 @@ import Button from 'primevue/button'
 import { useUiStore } from '@/stores/ui.store'
 import { NAV_LINKS, APP_NAME, APP_RESUME_URL } from '@/constants'
 import AppThemeSwitcher from '@/components/layout/AppThemeSwitcher.vue'
+import LocaleSwitcher from '@/components/layout/LocaleSwitcher.vue'
+import { useLocale } from '@/composables/useLocale'
 
 const ui     = useUiStore()
 const route  = useRoute()
 const router = useRouter()
+const { t }  = useLocale()
 const scrolled = ref(false)
 const hamburgerBtn = ref<{ $el: HTMLElement } | null>(null)
 

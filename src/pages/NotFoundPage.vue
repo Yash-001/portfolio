@@ -13,10 +13,10 @@
       </div>
 
       <h1 class="not-found__heading">
-        Page not found.
+        {{ t('common.notFound.heading') }}
       </h1>
       <p class="not-found__sub">
-        The page you're looking for doesn't exist or has been moved.
+        {{ t('common.notFound.sub') }}
       </p>
 
       <div class="not-found__actions">
@@ -25,25 +25,25 @@
           class="not-found__btn not-found__btn--primary"
         >
           <i class="pi pi-home" />
-          <span>Back to home</span>
+          <span>{{ t('common.notFound.backHome') }}</span>
         </RouterLink>
         <RouterLink
           to="/contact"
           class="not-found__btn not-found__btn--secondary"
         >
           <i class="pi pi-envelope" />
-          <span>Contact me</span>
+          <span>{{ t('common.notFound.contactMe') }}</span>
         </RouterLink>
       </div>
 
       <nav
         class="not-found__links"
-        aria-label="Quick navigation"
+        :aria-label="t('common.aria.quickNav')"
       >
-        <a href="/#projects">Work</a>
-        <a href="/#skills">Skills</a>
-        <RouterLink to="/services">Services</RouterLink>
-        <RouterLink to="/blog">Blog</RouterLink>
+        <a href="/#projects">{{ t('common.nav.work') }}</a>
+        <a href="/#skills">{{ t('common.nav.expertise') }}</a>
+        <RouterLink to="/services">{{ t('common.nav.process') }}</RouterLink>
+        <RouterLink to="/contact">{{ t('common.nav.contact') }}</RouterLink>
       </nav>
     </div>
   </div>
@@ -51,6 +51,9 @@
 
 <script setup lang="ts">
 import { usePageMeta } from '@/composables/usePageMeta'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 usePageMeta({
   title: '404 — Page Not Found | Yash Ranjan',

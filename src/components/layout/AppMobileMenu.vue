@@ -6,7 +6,7 @@
     class="app-mobile-menu"
   >
     <template #header>
-      <span class="font-mono text-label-md tracking-widest text-content-secondary uppercase">Menu</span>
+      <span class="font-mono text-label-md tracking-widest text-content-secondary uppercase">{{ t('common.aria.mobileMenu') }}</span>
     </template>
 
     <nav class="flex flex-col gap-1 mt-4">
@@ -52,6 +52,9 @@ import Divider from 'primevue/divider'
 import { useUiStore } from '@/stores/ui.store'
 import { FOOTER_LINKS, SOCIAL_LINKS_NAV } from '@/constants'
 import { APP_NAME } from '@/constants'
+import { useLocale } from '@/composables/useLocale'
+
+const { t } = useLocale()
 
 const ui   = useUiStore()
 const open = computed({

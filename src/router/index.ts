@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { createRouter, createWebHistory, type RouteRecordRaw, type RouteMeta } from 'vue-router'
 import { PAGE_META, DEFAULT_META, APP_URL } from '@/constants'
+import { i18n } from '@/i18n'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -105,14 +106,16 @@ router.beforeEach(() => {
 router.afterEach((to) => {
   isNavigating.value = false
 
-  // Title
-  if (to.meta.title) document.title = to.meta.title
+  const g = i18n.global as any
+  const name = String(to.name ?? '')
+  const metaKey = `meta.${name}.title`
+  const descKey = `meta.${name}.description`
 
-  // Meta description
-  setMetaTag('name', 'description', to.meta.description ?? DEFAULT_META.description!)
-
-  // Canonical
-  const canonical = to.meta.canonical ?? `${APP_URL}${to.path}`
+  const title       = g.te(metaKey) ? g.t(metaKey) : (to.meta.title       ?? DEFAULT_META.title ?? '')
+  const description = g.te(descKey) ? g.t(descKey) : (to.meta.description ?? DEFAULT_META.description ?? '')
+  const canonical   = to.meta.canonical ?? `${APP_URL}${to.path}`
+  document.title = title as string
+  setMetaTag('name',     'description',   description as string)
   setLinkTag('canonical', canonical)
 
   // Open Graph
