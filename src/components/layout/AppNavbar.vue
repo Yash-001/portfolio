@@ -23,9 +23,15 @@
           v-for="link in NAV_LINKS"
           :key="link.to"
           :to="link.to"
-          class="nav-link"
+          custom
+          v-slot="{ href, navigate }"
         >
-          {{ link.label }}
+          <a
+            :href="href"
+            class="nav-link"
+            :class="{ 'nav-link--active': isActive(link.to) }"
+            @click="(e) => link.to.startsWith('/#') ? handleNavClick(e, link.to) : navigate(e)"
+          >{{ link.label }}</a>
         </RouterLink>
       </nav>
 
@@ -61,14 +67,72 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import { useUiStore } from '@/stores/ui.store'
 import { NAV_LINKS, APP_NAME, APP_RESUME_URL } from '@/constants'
 import AppThemeSwitcher from '@/components/layout/AppThemeSwitcher.vue'
 
-const ui      = useUiStore()
+const ui     = useUiStore()
+const route  = useRoute()
+const router = useRouter()
 const scrolled = ref(false)
 const hamburgerBtn = ref<{ $el: HTMLElement } | null>(null)
+
+// Track which section is in view (only meaningful on homepage)
+const activeSection = ref<string>('')
+
+function updateActiveSection() {
+  if (route.path !== '/') { activeSection.value = ''; return }
+  const ids = ['skills', 'projects'] // page order: skills is above projects
+  const mid = window.innerHeight / 2
+  let active = ''
+  for (const id of ids) {
+    const el = document.getElementById(id)
+    if (!el) continue
+    const { top } = el.getBoundingClientRect()
+    if (top <= mid) active = id // last one whose top is above midpoint wins
+  }
+  activeSection.value = active
+}
+
+// Map hash links to their section id
+const HASH_SECTION: Record<string, string> = {
+  '/#projects': 'projects',
+  '/#skills':   'skills',
+}
+
+function isActive(to: string): boolean {
+  if (to.startsWith('/#')) {
+    // Only active when on homepage AND that section is in view
+    return route.path === '/' && activeSection.value === HASH_SECTION[to]
+  }
+  return route.path === to
+}
+
+// Scroll to a section by id, retrying until the element exists in the DOM
+function scrollToSection(id: string, attempts = 0) {
+  const el = document.getElementById(id)
+  if (el) {
+    const top = el.getBoundingClientRect().top + window.scrollY - 72
+    window.scrollTo({ top, behavior: 'smooth' })
+    return
+  }
+  // Element not yet mounted (lazy section) — retry up to 20 times (2s total)
+  if (attempts < 20) setTimeout(() => scrollToSection(id, attempts + 1), 100)
+}
+
+function handleNavClick(e: MouseEvent, to: string) {
+  if (!to.startsWith('/#')) return // let RouterLink handle normal routes
+  e.preventDefault()
+  const id = to.slice(2) // '/#projects' → 'projects'
+  if (route.path !== '/') {
+    // Navigate to homepage first, then scroll after it mounts
+    router.push('/').then(() => nextTick(() => scrollToSection(id)))
+  } else {
+    scrollToSection(id)
+  }
+}
 
 // Return focus to hamburger when mobile menu closes
 watch(() => ui.mobileMenuOpen, async (isOpen) => {
@@ -78,7 +142,10 @@ watch(() => ui.mobileMenuOpen, async (isOpen) => {
   }
 })
 
-function onScroll() { scrolled.value = window.scrollY > 20 }
+function onScroll() {
+  scrolled.value = window.scrollY > 20
+  updateActiveSection()
+}
 
 onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
@@ -169,7 +236,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   background: rgba(255, 255, 255, 0.05);
 }
 
-.nav-link.router-link-active {
+.nav-link--active {
   color: #6366f1;
 }
 

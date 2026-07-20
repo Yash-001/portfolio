@@ -1,6 +1,5 @@
 <template>
   <section
-    id="skills"
     ref="sectionEl"
     class="skills-section"
     aria-label="Skills and expertise"

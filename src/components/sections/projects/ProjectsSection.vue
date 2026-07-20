@@ -1,6 +1,5 @@
 <template>
   <section
-    id="projects"
     ref="sectionEl"
     class="projects-section"
     aria-label="Projects showcase"

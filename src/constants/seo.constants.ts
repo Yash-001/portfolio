@@ -14,7 +14,7 @@ export const DEFAULT_META: PageMeta = {
 export const PAGE_META: Record<string, PageMeta> = {
   home: {
     title:       SEO_TITLE_DEFAULT,
-    description: `I build the backend that startups bet their product on. ${OWNER_YEARS_EXP}+ years of enterprise engineering.`,
+    description: `I build the full stack solutions that startups bet their product on. ${OWNER_YEARS_EXP}+ years of enterprise engineering.`,
   },
   about: {
     title:       `About | ${OWNER_NAME}`,
@@ -22,7 +22,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
   experience: {
     title:       `Experience | ${OWNER_NAME}`,
-    description: `${OWNER_YEARS_EXP}+ years of enterprise software engineering across Java, Spring Boot, AWS, and cloud infrastructure.`,
+    description: `${OWNER_YEARS_EXP}+ years of enterprise software engineering across Java, Spring Boot, Angular, Vue.js, AWS, and cloud infrastructure.`,
   },
   projects: {
     title:       `Projects | ${OWNER_NAME}`,
@@ -30,11 +30,11 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
   skills: {
     title:       `Skills | ${OWNER_NAME}`,
-    description: 'Full technical picture — Java, Spring Boot, Vue.js, PostgreSQL, Oracle, Docker, AWS, Jenkins.',
+    description: 'Full technical picture — Java, Spring Boot, Angular, Vue.js, MySQL, PostgreSQL, Oracle, Docker, GCP, AWS, Jenkins.',
   },
   services: {
     title:       `Services | ${OWNER_NAME}`,
-    description: 'Backend engineering, cloud architecture, and technical consulting for startups and enterprises.',
+    description: 'Full stack engineering, cloud architecture, AI integration and technical consulting for startups and enterprises.',
   },
   testimonials: {
     title:       `Testimonials | ${OWNER_NAME}`,
