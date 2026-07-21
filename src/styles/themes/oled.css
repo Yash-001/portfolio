@@ -1,0 +1,37 @@
+/* ── OLED Theme (pure black for OLED displays) ───────────────────────────── */
+[data-theme="oled"] {
+  --bg-base:      #000000;
+  --bg-primary:   #000000;
+  --bg-secondary: #050505;
+  --bg-elevated:  #0d0d0d;
+  --bg-overlay:   #141414;
+
+  --text-primary:   #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-tertiary:  #606060;
+  --text-disabled:  #404040;
+  --text-inverse:   #000000;
+
+  --color-primary:       #6366f1;
+  --color-primary-hover: #8183ff;
+  --color-primary-muted: rgba(99,102,241,0.15);
+  --color-accent:        #8b5cf6;
+
+  --border-subtle:  #0d0d0d;
+  --border-default: #1a1a1a;
+  --border-active:  #2a2a2a;
+  --border-focus:   #6366f1;
+
+  --shadow-card:     0 1px 3px rgba(0,0,0,0.8);
+  --shadow-elevated: 0 4px 24px rgba(0,0,0,0.9);
+  --shadow-modal:    0 24px 80px rgba(0,0,0,0.95);
+  --shadow-glow:     0 0 40px rgba(99,102,241,0.25);
+  --shadow-focus:    0 0 0 2px #000000, 0 0 0 4px #6366f1;
+
+  --navbar-bg-scrolled: rgba(0,0,0,0.95);
+  --navbar-border:      #1a1a1a;
+
+  --scrollbar-track:       #000000;
+  --scrollbar-thumb:       #2a2a2a;
+  --scrollbar-thumb-hover: #444444;
+}

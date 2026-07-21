@@ -2,50 +2,13 @@ import type { App } from 'vue'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import Tooltip from 'primevue/tooltip'
-import Aura from '@primevue/themes/aura'
-import { definePreset } from '@primevue/themes'
-
-const PortfolioPreset = definePreset(Aura, {
-  semantic: {
-    primary: {
-      50:  '#EEEEFF',
-      100: '#E0E0FF',
-      200: '#C7C8FF',
-      300: '#A5A6FF',
-      400: '#8183FF',
-      500: '#6366F1',
-      600: '#4F46E5',
-      700: '#4338CA',
-      800: '#3730A3',
-      900: '#312E81',
-      950: '#1E1B4B',
-    },
-    colorScheme: {
-      dark: {
-        surface: {
-          0:   '#FFFFFF',
-          50:  '#F5F5F5',
-          100: '#E5E5E5',
-          200: '#A0A0A0',
-          300: '#737373',
-          400: '#555555',
-          500: '#404040',
-          600: '#333333',
-          700: '#222222',
-          800: '#1A1A1A',
-          900: '#111111',
-          950: '#0A0A0A',
-        },
-      },
-    },
-  },
-})
+import { DarkPreset } from '@/plugins/theme.presets'
 
 export const primevue = {
   install(app: App) {
     app.use(PrimeVue, {
       theme: {
-        preset: PortfolioPreset,
+        preset: DarkPreset,
         options: {
           darkModeSelector: '.dark',
           cssLayer: false,
@@ -55,5 +18,15 @@ export const primevue = {
     })
     app.use(ToastService)
     app.directive('tooltip', Tooltip)
+
+    // Expose PrimeVue instance for theme store preset swapping
+    app.config.globalProperties.$primevue = app.config.globalProperties.$primevue
+    app.mixin({
+      mounted() {
+        if (this.$primevue && !(window as any).__primevue_instance__) {
+          ;(window as any).__primevue_instance__ = this.$primevue
+        }
+      },
+    })
   },
 }

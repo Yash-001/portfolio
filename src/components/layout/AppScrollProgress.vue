@@ -32,8 +32,8 @@ const { progress } = useScrollProgress()
 
 .scroll-progress__bar {
   height: 100%;
-  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
   transition: width 0.1s linear;
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-primary) 60%, transparent);
 }
 </style>

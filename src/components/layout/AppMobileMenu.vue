@@ -84,17 +84,17 @@ const pt = {
   border-radius: 8px;
   font-size: 18px;
   font-weight: 500;
-  color: var(--p-surface-200);
+  color: var(--text-secondary);
   text-decoration: none;
-  transition: background 0.15s, color 0.15s;
+  transition: background-color 0.15s, color 0.15s;
 }
 .mobile-nav-link:hover,
 .mobile-nav-link.router-link-active {
-  background: rgba(99, 102, 241, 0.08);
-  color: #6366f1;
+  background-color: var(--color-primary-muted);
+  color: var(--color-primary);
 }
 .mobile-nav-link:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 
@@ -105,20 +105,20 @@ const pt = {
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  border: 1px solid var(--p-surface-700);
-  color: var(--p-surface-300);
+  border: 1px solid var(--border-active);
+  color: var(--text-secondary);
   transition: border-color 0.2s, color 0.2s;
 }
 .social-icon-btn:hover {
-  border-color: #6366f1;
-  color: #6366f1;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 </style>
 
 <style>
 .app-mobile-menu__root {
-  background: #111111 !important;
-  border-left: 1px solid #222222 !important;
+  background: var(--bg-primary) !important;
+  border-left: 1px solid var(--border-default) !important;
   width: min(320px, 85vw) !important;
 }
 </style>

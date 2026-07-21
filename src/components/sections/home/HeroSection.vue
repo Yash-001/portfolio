@@ -276,7 +276,7 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  background: #0a0a0a;
+  background: var(--bg-base);
 }
 
 .hero__inner {
@@ -312,8 +312,8 @@ onUnmounted(() => {
   gap: 8px;
   padding: 6px 14px;
   border-radius: 9999px;
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid var(--color-success-border);
+  background: var(--color-success-bg);
   width: fit-content;
 }
 
@@ -321,7 +321,7 @@ onUnmounted(() => {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #10b981;
+  background: var(--color-success);
   animation: pulseDot 2s ease-in-out infinite;
 }
 
@@ -338,7 +338,7 @@ onUnmounted(() => {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
-  background: linear-gradient(135deg, #f5f5f5 0%, #a0a0a0 100%);
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -351,19 +351,19 @@ onUnmounted(() => {
   font-size: clamp(22px, 3vw, 36px);
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #737373;
+  color: var(--text-tertiary);
   min-height: 1.3em;
 }
 
-.hero__role-prefix { color: #737373; }
+.hero__role-prefix { color: var(--text-tertiary); }
 
 .hero__role-typed {
-  color: #6366f1;
+  color: var(--color-primary);
   min-width: 2px;
 }
 
 .hero__cursor {
-  color: #6366f1;
+  color: var(--color-primary);
   animation: blink 1s step-end infinite;
   margin-left: 1px;
 }
@@ -376,7 +376,7 @@ onUnmounted(() => {
 .hero__sub {
   font-size: 17px;
   line-height: 1.75;
-  color: #737373;
+  color: var(--text-tertiary);
   max-width: 520px;
 }
 
@@ -389,19 +389,19 @@ onUnmounted(() => {
 .tech-pill {
   padding: 4px 12px;
   border-radius: 6px;
-  border: 1px solid #222222;
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-default);
+  background: var(--bg-primary);
   font-size: 12px;
   font-weight: 500;
   font-family: 'Geist Mono', monospace;
-  color: #737373;
+  color: var(--text-tertiary);
   letter-spacing: 0.02em;
   transition: border-color 0.2s, color 0.2s;
 }
 
 .tech-pill:hover {
-  border-color: rgba(99, 102, 241, 0.4);
-  color: #a5a6ff;
+  border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  color: var(--color-primary-hover);
 }
 
 .hero__cta {
@@ -421,14 +421,14 @@ onUnmounted(() => {
   color: #fff;
   text-decoration: none;
   letter-spacing: 0.02em;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent)) !important;
   border: none !important;
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35) !important;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-primary) 35%, transparent) !important;
   transition: box-shadow 0.3s, transform 0.2s !important;
 }
 
 .hero__btn-primary:hover {
-  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.55) !important;
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--color-primary) 55%, transparent) !important;
   transform: translateY(-2px);
 }
 
@@ -442,15 +442,15 @@ onUnmounted(() => {
   font-weight: 700;
   text-decoration: none;
   letter-spacing: 0.02em;
-  border: 1px solid #333333 !important;
-  color: #a0a0a0 !important;
+  border: 1px solid var(--border-active) !important;
+  color: var(--text-secondary) !important;
   background: transparent;
   transition: border-color 0.2s, color 0.2s, transform 0.2s !important;
 }
 
 .hero__btn-outline:hover {
-  border-color: #6366f1 !important;
-  color: #f5f5f5 !important;
+  border-color: var(--color-primary) !important;
+  color: var(--text-primary) !important;
   transform: translateY(-2px);
 }
 
@@ -466,12 +466,12 @@ onUnmounted(() => {
   gap: 6px;
   font-size: 13px;
   font-weight: 500;
-  color: #555555;
+  color: var(--text-disabled);
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.social-link:hover { color: #6366f1; }
+.social-link:hover { color: var(--color-primary); }
 
 .social-link i { font-size: 15px; }
 
@@ -488,14 +488,14 @@ onUnmounted(() => {
   max-width: 380px;
   padding: 32px;
   border-radius: 24px;
-  border: 1px solid rgba(99, 102, 241, 0.15);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
+  background: var(--bg-primary);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 0 60px rgba(99, 102, 241, 0.08), 0 24px 80px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-glow), var(--shadow-modal);
 }
 
 .profile-card__glow {
@@ -518,8 +518,8 @@ onUnmounted(() => {
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1a1a1a, #111111);
-  border: 2px solid rgba(99, 102, 241, 0.3);
+  background: var(--bg-elevated);
+  border: 2px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -530,7 +530,7 @@ onUnmounted(() => {
   height: 88px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(99, 102, 241, 0.3);
+  border: 2px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
   display: block;
 }
 
@@ -557,13 +557,13 @@ onUnmounted(() => {
 .profile-card__name {
   font-size: 18px;
   font-weight: 700;
-  color: #f5f5f5;
+  color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 
 .profile-card__title {
   font-size: 12px;
-  color: #6366f1;
+  color: var(--color-primary);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-top: 4px;
@@ -580,14 +580,14 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #737373;
+  color: var(--text-tertiary);
 }
 
-.meta-item i { color: #555555; font-size: 12px; }
+.meta-item i { color: var(--text-disabled); font-size: 12px; }
 
 .profile-card__divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #222222, transparent);
+  background: linear-gradient(90deg, transparent, var(--border-default), transparent);
 }
 
 .profile-card__open {
@@ -596,15 +596,15 @@ onUnmounted(() => {
   gap: 8px;
   padding: 10px 14px;
   border-radius: 8px;
-  background: rgba(16, 185, 129, 0.05);
-  border: 1px solid rgba(16, 185, 129, 0.15);
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
 }
 
 .open-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #10b981;
+  background: var(--color-success);
   flex-shrink: 0;
   animation: pulseDot 2s ease-in-out infinite;
 }
@@ -625,7 +625,7 @@ onUnmounted(() => {
 .scroll-line {
   width: 1px;
   height: 48px;
-  background: #222222;
+  background: var(--border-default);
   overflow: hidden;
   border-radius: 1px;
 }
@@ -633,7 +633,7 @@ onUnmounted(() => {
 .scroll-line__inner {
   width: 100%;
   height: 50%;
-  background: linear-gradient(to bottom, #6366f1, transparent);
+  background: linear-gradient(to bottom, var(--color-primary), transparent);
   animation: scrollDrop 1.8s ease-in-out infinite;
 }
 

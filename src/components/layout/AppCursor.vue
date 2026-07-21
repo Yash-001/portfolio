@@ -10,8 +10,8 @@
         translate: `${rx}px ${ry}px`,
         scale: hovering ? '1.375' : '1',
         opacity: visible ? 1 : 0,
-        borderColor: hovering ? 'rgba(99,102,241,0.9)' : 'rgba(99,102,241,0.5)',
       }"
+      :class="{ 'cursor-ring--hovering': hovering }"
     />
   </Teleport>
 </template>
@@ -77,7 +77,7 @@ onUnmounted(() => {
 .cursor-dot {
   width: 8px;
   height: 8px;
-  background: #6366f1;
+  background: var(--color-primary);
   margin-left: -4px;
   margin-top: -4px;
 }
@@ -86,8 +86,13 @@ onUnmounted(() => {
   width: 32px;
   height: 32px;
   border: 1.5px solid rgba(99, 102, 241, 0.5);
+  border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
   margin-left: -16px;
   margin-top: -16px;
   transition: opacity 0.3s, scale 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
+}
+
+.cursor-ring--hovering {
+  border-color: color-mix(in srgb, var(--color-primary) 90%, transparent);
 }
 </style>

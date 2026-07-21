@@ -119,7 +119,8 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  background: rgba(10, 10, 10, 0.85);
+  background: rgba(var(--bg-base), 0.85);
+  background: color-mix(in srgb, var(--bg-base) 85%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }

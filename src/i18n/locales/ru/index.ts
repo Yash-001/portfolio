@@ -42,6 +42,16 @@ const ru = {
       closeDialog:     'Закрыть диалог',
       mobileMenu:      'Меню',
       quickNav:        'Быстрая навигация',
+      switchTheme:     'Сменить тему',
+    },
+    theme: {
+      dark:         'Тёмная',
+      light:        'Светлая',
+      oled:         'OLED',
+      glass:        'Стекло',
+      cyberpunk:    'Киберпанк',
+      highContrast: 'Высокий контраст',
+      auto:         'Авто',
     },
     errors: {
       required:     'Это поле обязательно',

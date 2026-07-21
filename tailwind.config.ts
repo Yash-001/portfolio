@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss'
 import typography from '@tailwindcss/typography'
+import plugin from 'tailwindcss/plugin'
 
 export default {
   content: ['./index.html', './src/**/*.{vue,ts,tsx}'],
@@ -55,28 +56,40 @@ export default {
           500: '#F59E0B',
           600: '#D97706',
         },
-        // Dark mode surfaces
+        // Surfaces — driven by CSS vars (theme-aware)
         surface: {
-          base:      '#0A0A0A',
-          primary:   '#111111',
-          secondary: '#141414',
-          elevated:  '#1A1A1A',
-          overlay:   '#222222',
+          base:      'var(--bg-base)',
+          primary:   'var(--bg-primary)',
+          secondary: 'var(--bg-secondary)',
+          elevated:  'var(--bg-elevated)',
+          overlay:   'var(--bg-overlay)',
         },
-        // Border tokens
+        // Border tokens — driven by CSS vars
         border: {
-          subtle: '#222222',
-          default: '#2A2A2A',
-          active: '#333333',
-          focus: '#6366F1',
+          subtle:  'var(--border-subtle)',
+          default: 'var(--border-default)',
+          active:  'var(--border-active)',
+          focus:   'var(--border-focus)',
         },
-        // Text tokens
+        // Text tokens — driven by CSS vars
         content: {
-          primary:   '#F5F5F5',
-          secondary: '#A0A0A0',
-          tertiary:  '#555555',
-          disabled:  '#404040',
-          inverse:   '#0A0A0A',
+          primary:   'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          tertiary:  'var(--text-tertiary)',
+          disabled:  'var(--text-disabled)',
+          inverse:   'var(--text-inverse)',
+        },
+        // Brand tokens — driven by CSS vars
+        brand: {
+          DEFAULT: 'var(--color-primary)',
+          hover:   'var(--color-primary-hover)',
+          muted:   'var(--color-primary-muted)',
+          accent:  'var(--color-accent)',
+        },
+        // Neon tokens (cyberpunk)
+        neon: {
+          primary:   'var(--neon-primary)',
+          secondary: 'var(--neon-secondary)',
         },
       },
       fontFamily: {
@@ -278,5 +291,15 @@ export default {
       },
     },
   },
-  plugins: [typography],
+  plugins: [
+    typography,
+    // Theme-specific Tailwind variants
+    plugin(({ addVariant }) => {
+      addVariant('theme-light',         '[data-theme="light"] &')
+      addVariant('theme-oled',          '[data-theme="oled"] &')
+      addVariant('theme-glass',         '[data-theme="glass"] &')
+      addVariant('theme-cyberpunk',     '[data-theme="cyberpunk"] &')
+      addVariant('theme-high-contrast', '[data-theme="high-contrast"] &')
+    }),
+  ],
 } satisfies Config

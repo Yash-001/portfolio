@@ -279,7 +279,7 @@ export const SectionSkeleton = defineComponent({
 
 /* ── Page shell ────────────────────────────────────────────────── */
 .hp {
-  background: #0a0a0a;
+  background: var(--bg-base);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -305,7 +305,7 @@ export const SectionSkeleton = defineComponent({
 .hp-spy-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid var(--border-active);
   background: transparent;
   cursor: pointer;
   padding: 0;
@@ -313,19 +313,19 @@ export const SectionSkeleton = defineComponent({
   display: block;
 }
 .hp-spy-dot:hover {
-  border-color: #6366f1;
-  background: rgba(99,102,241,0.3);
+  border-color: var(--color-primary);
+  background: var(--color-primary-muted);
   transform: scale(1.3);
 }
 .hp-spy-dot:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--border-focus);
   outline-offset: 3px;
 }
 .hp-spy-dot--active {
-  background: #6366f1;
-  border-color: #6366f1;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   transform: scale(1.25);
-  box-shadow: 0 0 8px rgba(99,102,241,0.6);
+  box-shadow: 0 0 8px var(--color-primary-muted);
 }
 
 /* ── Section shell ─────────────────────────────────────────────── */
@@ -344,9 +344,9 @@ export const SectionSkeleton = defineComponent({
 :deep(.hp-skeleton) {
   background: linear-gradient(
     90deg,
-    #111 25%,
-    #1a1a1a 50%,
-    #111 75%
+    var(--bg-primary) 25%,
+    var(--bg-elevated) 50%,
+    var(--bg-primary) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.6s ease-in-out infinite;

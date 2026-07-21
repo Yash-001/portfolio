@@ -168,10 +168,10 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 }
 
 .app-navbar--scrolled {
-  background: rgba(10, 10, 10, 0.85);
+  background: var(--navbar-bg-scrolled);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom-color: #222222;
+  border-bottom-color: var(--navbar-border);
 }
 
 .app-navbar__inner {
@@ -210,7 +210,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 .logo-text {
   font-size: 15px;
   font-weight: 600;
-  color: #f5f5f5;
+  color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 
@@ -230,22 +230,22 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.2s, background 0.2s;
 }
 
 .nav-link:hover {
-  color: #f5f5f5;
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  background: var(--bg-overlay);
 }
 
 .nav-link--active {
-  color: #6366f1;
+  color: var(--color-primary);
 }
 
 .nav-link:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 
@@ -263,19 +263,19 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
-  color: #a0a0a0;
-  border: 1px solid #333333;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-active);
   text-decoration: none;
   transition: border-color 0.2s, color 0.2s;
 }
 
 .resume-link:hover {
-  border-color: #6366f1;
-  color: #f5f5f5;
+  border-color: var(--color-primary);
+  color: var(--text-primary);
 }
 
 .resume-link:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
   border-radius: 6px;
 }

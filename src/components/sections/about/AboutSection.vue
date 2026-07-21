@@ -261,11 +261,10 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ── Section shell ─────────────────────────────────────────────── */
 .about-section {
   position: relative;
   padding: 120px 0 100px;
-  background: #0a0a0a;
+  background: var(--bg-base);
   overflow: hidden;
 }
 
@@ -277,11 +276,10 @@ onUnmounted(() => {
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary) 5%, transparent) 0%, transparent 70%);
   pointer-events: none;
 }
 
-/* ── Section label ─────────────────────────────────────────────── */
 .section-label {
   max-width: 1280px;
   margin: 0 auto 56px;
@@ -295,7 +293,7 @@ onUnmounted(() => {
   display: block;
   width: 40px;
   height: 1px;
-  background: #6366f1;
+  background: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -304,11 +302,10 @@ onUnmounted(() => {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #6366f1;
+  color: var(--color-primary);
   font-family: 'Geist Mono', monospace;
 }
 
-/* ── Two-column layout ─────────────────────────────────────────── */
 .about-inner {
   max-width: 1280px;
   margin: 0 auto;
@@ -326,7 +323,6 @@ onUnmounted(() => {
   }
 }
 
-/* ── Story ─────────────────────────────────────────────────────── */
 .about-story {
   display: flex;
   flex-direction: column;
@@ -338,11 +334,11 @@ onUnmounted(() => {
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.025em;
-  color: #f5f5f5;
+  color: var(--text-primary);
 }
 
 .heading-accent {
-  background: linear-gradient(135deg, #6366f1 0%, #a78bfa 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -357,16 +353,15 @@ onUnmounted(() => {
 .story-body p {
   font-size: 16px;
   line-height: 1.85;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   max-width: 62ch;
 }
 
 .story-body p:first-child {
   font-size: 17px;
-  color: #c0c0c0;
+  color: var(--text-secondary);
 }
 
-/* ── Signature ─────────────────────────────────────────────────── */
 .signature-block {
   display: flex;
   align-items: center;
@@ -377,7 +372,7 @@ onUnmounted(() => {
 .signature-line {
   width: 48px;
   height: 2px;
-  background: linear-gradient(90deg, #6366f1, transparent);
+  background: linear-gradient(90deg, var(--color-primary), transparent);
   flex-shrink: 0;
 }
 
@@ -390,18 +385,17 @@ onUnmounted(() => {
 .signature-name {
   font-size: 15px;
   font-weight: 600;
-  color: #f5f5f5;
+  color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 
 .signature-title {
   font-size: 12px;
-  color: #555555;
+  color: var(--text-tertiary);
   font-family: 'Geist Mono', monospace;
   letter-spacing: 0.04em;
 }
 
-/* ── Aside (sticky on desktop) ─────────────────────────────────── */
 .about-aside {
   display: flex;
   flex-direction: column;
@@ -415,7 +409,6 @@ onUnmounted(() => {
   }
 }
 
-/* ── Philosophy cards ──────────────────────────────────────────── */
 .philosophy-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -429,17 +422,17 @@ onUnmounted(() => {
 .philosophy-card {
   padding: 20px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+  transition: border-color 0.3s, background-color 0.3s, transform 0.3s;
   cursor: default;
 }
 
 .philosophy-card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
-  background: rgba(99, 102, 241, 0.05);
+  border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 5%, var(--bg-primary));
   transform: translateY(-3px);
 }
 
@@ -447,7 +440,7 @@ onUnmounted(() => {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: rgba(99, 102, 241, 0.12);
+  background: var(--color-primary-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -456,13 +449,13 @@ onUnmounted(() => {
 
 .card-icon {
   font-size: 16px;
-  color: #6366f1;
+  color: var(--color-primary);
 }
 
 .card-title {
   font-size: 13px;
   font-weight: 600;
-  color: #f5f5f5;
+  color: var(--text-primary);
   margin-bottom: 8px;
   letter-spacing: -0.01em;
 }
@@ -470,10 +463,9 @@ onUnmounted(() => {
 .card-body {
   font-size: 12.5px;
   line-height: 1.65;
-  color: #737373;
+  color: var(--text-tertiary);
 }
 
-/* ── Tech stack ────────────────────────────────────────────────── */
 .stack-block {
   display: flex;
   flex-direction: column;
@@ -485,7 +477,7 @@ onUnmounted(() => {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #555555;
+  color: var(--text-tertiary);
   font-family: 'Geist Mono', monospace;
 }
 
@@ -501,20 +493,19 @@ onUnmounted(() => {
   font-size: 12px;
   font-weight: 500;
   font-family: 'Geist Mono', monospace;
-  color: #a0a0a0;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
   cursor: default;
 }
 
 .stack-pill:hover {
-  border-color: var(--pill-color, #6366f1);
-  color: var(--pill-color, #6366f1);
-  background: color-mix(in srgb, var(--pill-color, #6366f1) 8%, transparent);
+  border-color: var(--pill-color, var(--color-primary));
+  color: var(--pill-color, var(--color-primary));
+  background: color-mix(in srgb, var(--pill-color, var(--color-primary)) 8%, transparent);
 }
 
-/* ── Meta strip ────────────────────────────────────────────────── */
 .meta-strip {
   display: flex;
   align-items: center;
@@ -522,8 +513,8 @@ onUnmounted(() => {
   gap: 12px;
   padding: 14px 18px;
   border-radius: 10px;
-  border: 1px solid #1a1a1a;
-  background: #111111;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
 }
 
 .meta-item {
@@ -531,38 +522,37 @@ onUnmounted(() => {
   align-items: center;
   gap: 7px;
   font-size: 12px;
-  color: #737373;
+  color: var(--text-tertiary);
   font-family: 'Geist Mono', monospace;
 }
 
 .meta-icon {
   font-size: 12px;
-  color: #555555;
+  color: var(--text-disabled);
 }
 
 .meta-divider {
   width: 1px;
   height: 14px;
-  background: #2a2a2a;
+  background: var(--border-active);
 }
 
 .avail-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #10b981;
+  background: var(--color-success);
   animation: pulseDot 2s ease-in-out infinite;
   flex-shrink: 0;
 }
 
-.avail-text { color: #10b981; }
+.avail-text { color: var(--color-success); }
 
 @keyframes pulseDot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.5; transform: scale(0.8); }
 }
 
-/* ── Timeline ──────────────────────────────────────────────────── */
 .timeline {
   position: relative;
   max-width: 1280px;
@@ -589,7 +579,7 @@ onUnmounted(() => {
     top: 0;
     bottom: 0;
     width: 1px;
-    background: linear-gradient(to bottom, transparent, #2a2a2a 10%, #2a2a2a 90%, transparent);
+    background: linear-gradient(to bottom, transparent, var(--border-active) 10%, var(--border-active) 90%, transparent);
     transform: translateX(-50%);
     transform-origin: top center;
   }
@@ -629,8 +619,8 @@ onUnmounted(() => {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid #6366f1;
-    background: #0a0a0a;
+    border: 2px solid var(--color-primary);
+    background: var(--bg-base);
     z-index: 1;
   }
 
@@ -644,27 +634,27 @@ onUnmounted(() => {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #6366f1;
+  background: var(--color-primary);
 }
 
 .timeline-card {
   padding: 20px 24px;
   border-radius: 12px;
-  border: 1px solid #1a1a1a;
-  background: #111111;
-  transition: border-color 0.3s, background 0.3s;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+  transition: border-color 0.3s, background-color 0.3s;
 }
 
 .timeline-card:hover {
-  border-color: rgba(99, 102, 241, 0.25);
-  background: rgba(99, 102, 241, 0.04);
+  border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 4%, var(--bg-primary));
 }
 
 .timeline-year {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.1em;
-  color: #6366f1;
+  color: var(--color-primary);
   font-family: 'Geist Mono', monospace;
   text-transform: uppercase;
 }
@@ -672,14 +662,14 @@ onUnmounted(() => {
 .timeline-role {
   font-size: 15px;
   font-weight: 600;
-  color: #f5f5f5;
+  color: var(--text-primary);
   margin: 6px 0 2px;
   letter-spacing: -0.01em;
 }
 
 .timeline-company {
   font-size: 12px;
-  color: #555555;
+  color: var(--text-tertiary);
   font-family: 'Geist Mono', monospace;
   margin-bottom: 10px;
 }
@@ -687,6 +677,6 @@ onUnmounted(() => {
 .timeline-desc {
   font-size: 13px;
   line-height: 1.65;
-  color: #737373;
+  color: var(--text-tertiary);
 }
 </style>

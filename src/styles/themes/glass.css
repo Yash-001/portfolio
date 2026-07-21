@@ -1,0 +1,53 @@
+/* ── Glass Theme ─────────────────────────────────────────────────────────── */
+[data-theme="glass"] {
+  --bg-base:      #0d0d1a;
+  --bg-primary:   rgba(255,255,255,0.04);
+  --bg-secondary: rgba(255,255,255,0.06);
+  --bg-elevated:  rgba(255,255,255,0.08);
+  --bg-overlay:   rgba(255,255,255,0.10);
+
+  --text-primary:   #f0f0ff;
+  --text-secondary: #9090c0;
+  --text-tertiary:  #5050a0;
+  --text-disabled:  #303060;
+  --text-inverse:   #0d0d1a;
+
+  --color-primary:       #818cf8;
+  --color-primary-hover: #a5b4fc;
+  --color-primary-muted: rgba(129,140,248,0.15);
+  --color-accent:        #a78bfa;
+
+  --border-subtle:  rgba(255,255,255,0.04);
+  --border-default: rgba(255,255,255,0.08);
+  --border-active:  rgba(255,255,255,0.16);
+  --border-focus:   #818cf8;
+
+  --shadow-card:     0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  --shadow-elevated: 0 8px 40px rgba(0,0,0,0.5);
+  --shadow-modal:    0 24px 80px rgba(0,0,0,0.7);
+  --shadow-glow:     0 0 60px rgba(129,140,248,0.2);
+  --shadow-focus:    0 0 0 2px #0d0d1a, 0 0 0 4px #818cf8;
+
+  /* Glass-specific tokens */
+  --glass-bg:     rgba(255,255,255,0.05);
+  --glass-blur:   20px;
+  --glass-border: rgba(255,255,255,0.1);
+
+  --navbar-bg-scrolled: rgba(13,13,26,0.7);
+  --navbar-border:      rgba(255,255,255,0.08);
+
+  --scrollbar-track:       #0d0d1a;
+  --scrollbar-thumb:       rgba(255,255,255,0.15);
+  --scrollbar-thumb-hover: rgba(255,255,255,0.25);
+}
+
+/* Apply glass effect to card-like surfaces */
+[data-theme="glass"] .p-card,
+[data-theme="glass"] .p-dialog,
+[data-theme="glass"] .p-panel,
+[data-theme="glass"] .p-overlaypanel {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  border: 1px solid var(--glass-border) !important;
+}

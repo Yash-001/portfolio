@@ -1,0 +1,67 @@
+/* ── High Contrast Theme (WCAG AAA) ─────────────────────────────────────── */
+[data-theme="high-contrast"] {
+  --bg-base:      #000000;
+  --bg-primary:   #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-elevated:  #111111;
+  --bg-overlay:   #1a1a1a;
+
+  --text-primary:   #ffffff;
+  --text-secondary: #ffffff;
+  --text-tertiary:  #cccccc;
+  --text-disabled:  #888888;
+  --text-inverse:   #000000;
+
+  --color-primary:       #ffff00;
+  --color-primary-hover: #ffff66;
+  --color-primary-muted: rgba(255,255,0,0.15);
+  --color-accent:        #ffff00;
+
+  --border-subtle:  #444444;
+  --border-default: #888888;
+  --border-active:  #ffffff;
+  --border-focus:   #ffff00;
+
+  --shadow-card:     0 0 0 2px #ffffff;
+  --shadow-elevated: 0 0 0 2px #ffffff;
+  --shadow-modal:    0 0 0 3px #ffffff;
+  --shadow-glow:     none;
+  --shadow-focus:    0 0 0 3px #000000, 0 0 0 6px #ffff00;
+
+  --navbar-bg-scrolled: #000000;
+  --navbar-border:      #ffffff;
+
+  --scrollbar-track:       #000000;
+  --scrollbar-thumb:       #ffffff;
+  --scrollbar-thumb-hover: #ffff00;
+}
+
+/* Remove all decorative gradients */
+[data-theme="high-contrast"] * {
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+/* Restore functional backgrounds */
+[data-theme="high-contrast"] .logo-mark {
+  background: #ffff00 !important;
+  color: #000000 !important;
+}
+
+/* Thick borders on interactive elements */
+[data-theme="high-contrast"] .p-button,
+[data-theme="high-contrast"] .p-inputtext,
+[data-theme="high-contrast"] .p-select {
+  border-width: 2px !important;
+  border-color: #ffffff !important;
+}
+
+[data-theme="high-contrast"] :focus-visible {
+  outline: 3px solid #ffff00 !important;
+  outline-offset: 3px !important;
+}
+
+/* Ensure links are always underlined */
+[data-theme="high-contrast"] a:not(.p-button) {
+  text-decoration: underline !important;
+}

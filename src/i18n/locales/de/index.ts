@@ -42,6 +42,16 @@ const de = {
       closeDialog:     'Dialog schließen',
       mobileMenu:      'Menü',
       quickNav:        'Schnellnavigation',
+      switchTheme:     'Design wechseln',
+    },
+    theme: {
+      dark:         'Dunkel',
+      light:        'Hell',
+      oled:         'OLED',
+      glass:        'Glas',
+      cyberpunk:    'Cyberpunk',
+      highContrast: 'Hoher Kontrast',
+      auto:         'Automatisch',
     },
     errors: {
       required:     'Dieses Feld ist erforderlich',

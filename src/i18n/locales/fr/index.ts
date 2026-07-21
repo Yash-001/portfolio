@@ -42,6 +42,16 @@ const fr = {
       closeDialog:     'Fermer la boîte de dialogue',
       mobileMenu:      'Menu',
       quickNav:        'Navigation rapide',
+      switchTheme:     'Changer de thème',
+    },
+    theme: {
+      dark:         'Sombre',
+      light:        'Clair',
+      oled:         'OLED',
+      glass:        'Verre',
+      cyberpunk:    'Cyberpunk',
+      highContrast: 'Contraste élevé',
+      auto:         'Automatique',
     },
     errors: {
       required:     'Ce champ est obligatoire',

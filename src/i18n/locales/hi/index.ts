@@ -43,6 +43,16 @@ const hi = {
       closeDialog:     'डायलॉग बंद करें',
       mobileMenu:      'मेनू',
       quickNav:        'त्वरित नेविगेशन',
+      switchTheme:     'थीम बदलें',
+    },
+    theme: {
+      dark:         'डार्क',
+      light:        'लाइट',
+      oled:         'OLED',
+      glass:        'ग्लास',
+      cyberpunk:    'साइबरपंक',
+      highContrast: 'हाई कंट्रास्ट',
+      auto:         'ऑटो',
     },
     errors: {
       required:     'यह फ़ील्ड आवश्यक है',

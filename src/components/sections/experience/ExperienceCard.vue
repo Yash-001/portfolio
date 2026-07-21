@@ -279,8 +279,8 @@ const glowStyle = computed(() => ({
   z-index: 1;
   padding: 28px 32px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(17, 17, 17, 0.9);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   display: flex;
@@ -289,8 +289,8 @@ const glowStyle = computed(() => ({
 }
 
 .exp-card--current .exp-card__body {
-  border-color: rgba(99, 102, 241, 0.2);
-  background: rgba(17, 17, 17, 0.95);
+  border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  background: var(--bg-primary);
 }
 
 /* ── Header ────────────────────────────────────────────────────── */
@@ -340,7 +340,7 @@ const glowStyle = computed(() => ({
 .exp-card__role {
   font-size: 17px;
   font-weight: 700;
-  color: #f5f5f5;
+  color: var(--text-primary);
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
@@ -351,9 +351,9 @@ const glowStyle = computed(() => ({
   font-family: 'Geist Mono', monospace;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #6366f1;
-  background: rgba(99, 102, 241, 0.12);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--color-primary);
+  background: var(--color-primary-muted);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
   padding: 2px 8px;
   border-radius: 4px;
 }
@@ -368,17 +368,17 @@ const glowStyle = computed(() => ({
 .exp-card__company {
   font-size: 14px;
   font-weight: 600;
-  color: #a0a0a0;
+  color: var(--text-secondary);
 }
 
-.exp-card__sep { color: #333333; font-size: 12px; }
+.exp-card__sep { color: var(--border-active); font-size: 12px; }
 
 .exp-card__location {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: #555555;
+  color: var(--text-tertiary);
   font-family: 'Geist Mono', monospace;
 }
 
@@ -400,14 +400,14 @@ const glowStyle = computed(() => ({
 .exp-card__dates {
   font-size: 12px;
   font-family: 'Geist Mono', monospace;
-  color: #737373;
+  color: var(--text-tertiary);
   white-space: nowrap;
 }
 
 .exp-card__tenure {
   font-size: 11px;
   font-family: 'Geist Mono', monospace;
-  color: #555555;
+  color: var(--text-disabled);
   letter-spacing: 0.04em;
 }
 
@@ -425,7 +425,7 @@ const glowStyle = computed(() => ({
 .exp-card__desc {
   font-size: 14px;
   line-height: 1.8;
-  color: #737373;
+  color: var(--text-tertiary);
   max-width: 80ch;
 }
 
@@ -442,16 +442,16 @@ const glowStyle = computed(() => ({
   font-size: 11px;
   font-weight: 500;
   font-family: 'Geist Mono', monospace;
-  color: #737373;
-  border: 1px solid #222222;
-  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-default);
+  background: var(--bg-primary);
   transition: border-color 0.2s, color 0.2s;
   letter-spacing: 0.02em;
 }
 
 .exp-card:hover .tech-chip {
-  border-color: rgba(99, 102, 241, 0.2);
-  color: #a0a0a0;
+  border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  color: var(--text-secondary);
 }
 
 /* ── Expand trigger ────────────────────────────────────────────── */
@@ -461,10 +461,10 @@ const glowStyle = computed(() => ({
   justify-content: space-between;
   padding: 12px 16px;
   border-radius: 10px;
-  border: 1px solid #1a1a1a;
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;
   user-select: none;
   width: 100%;
   text-align: left;
@@ -472,28 +472,28 @@ const glowStyle = computed(() => ({
 }
 
 .exp-card__expand-trigger:hover {
-  border-color: rgba(99, 102, 241, 0.25);
-  background: rgba(99, 102, 241, 0.04);
+  border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 4%, var(--bg-primary));
 }
 
 .exp-card__expand-trigger:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 
 .expand-label {
   font-size: 13px;
   font-weight: 500;
-  color: #737373;
+  color: var(--text-tertiary);
   transition: color 0.2s;
 }
 
-.exp-card__expand-trigger:hover .expand-label { color: #a0a0a0; }
+.exp-card__expand-trigger:hover .expand-label { color: var(--text-secondary); }
 
 .expand-count {
   font-family: 'Geist Mono', monospace;
   font-size: 11px;
-  color: #555555;
+  color: var(--text-disabled);
   margin-left: 4px;
 }
 
@@ -501,19 +501,19 @@ const glowStyle = computed(() => ({
   width: 24px;
   height: 24px;
   border-radius: 6px;
-  border: 1px solid #222222;
+  border: 1px solid var(--border-default);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555555;
+  color: var(--text-disabled);
   font-size: 10px;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, color 0.2s;
 }
 
 .expand-icon--open {
   transform: rotate(180deg);
-  border-color: rgba(99, 102, 241, 0.3);
-  color: #6366f1;
+  border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  color: var(--color-primary);
 }
 
 /* ── Achievements ──────────────────────────────────────────────── */
@@ -548,8 +548,8 @@ const glowStyle = computed(() => ({
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  background: var(--color-primary-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -561,13 +561,13 @@ const glowStyle = computed(() => ({
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #6366f1;
+  background: var(--color-primary);
 }
 
 .achievement-text {
   font-size: 13.5px;
   line-height: 1.7;
-  color: #a0a0a0;
+  color: var(--text-secondary);
 }
 
 /* ── Transition: achievements expand ───────────────────────────── */

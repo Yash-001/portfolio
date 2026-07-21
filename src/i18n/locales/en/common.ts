@@ -42,6 +42,16 @@ export default {
     closeDialog:     'Close dialog',
     mobileMenu:      'Menu',
     quickNav:        'Quick navigation',
+    switchTheme:     'Switch theme',
+  },
+  theme: {
+    dark:          'Dark',
+    light:         'Light',
+    oled:          'OLED',
+    glass:         'Glass',
+    cyberpunk:     'Cyberpunk',
+    highContrast:  'High Contrast',
+    auto:          'Auto',
   },
   errors: {
     required:     'This field is required',

@@ -83,9 +83,9 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
   gap: 5px;
   padding: 5px 10px;
   border-radius: 6px;
-  border: 1px solid #333;
+  border: 1px solid var(--border-active);
   background: transparent;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   font-size: 12px;
   font-weight: 600;
   font-family: 'Geist Mono', monospace;
@@ -95,12 +95,12 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
 }
 
 .locale-switcher__trigger:hover {
-  border-color: #6366f1;
-  color: #f5f5f5;
+  border-color: var(--color-primary);
+  color: var(--text-primary);
 }
 
 .locale-switcher__trigger:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 
@@ -120,11 +120,11 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
   min-width: 160px;
   padding: 6px;
   border-radius: 10px;
-  border: 1px solid #222;
-  background: rgba(15, 15, 15, 0.96);
+  border: 1px solid var(--border-default);
+  background: var(--bg-elevated);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-elevated);
   list-style: none;
   margin: 0;
 }
@@ -137,24 +137,24 @@ onUnmounted(() => document.removeEventListener('click', onClickOutside))
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
-  color: #a0a0a0;
+  color: var(--text-secondary);
   transition: background 0.15s, color 0.15s;
 }
 
 .locale-switcher__option:hover {
-  background: rgba(99, 102, 241, 0.1);
-  color: #f5f5f5;
+  background: var(--color-primary-muted);
+  color: var(--text-primary);
 }
 
 .locale-switcher__option--active {
-  color: #6366f1;
+  color: var(--color-primary);
 }
 
 .locale-switcher__label { flex: 1; }
 
 .locale-switcher__check {
   font-size: 11px;
-  color: #6366f1;
+  color: var(--color-primary);
 }
 
 /* Dropdown transition */

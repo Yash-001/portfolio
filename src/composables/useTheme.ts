@@ -1,8 +1,20 @@
-import { computed } from 'vue'
-import { useUiStore } from '@/stores/ui.store'
+import { useThemeStore } from '@/stores/theme.store'
 
 export function useTheme() {
-  const ui = useUiStore()
-  // initTheme is called once in App.vue onMounted — do not call it here
-  return { isDark: computed(() => ui.isDark), toggleTheme: ui.toggleTheme }
+  const store = useThemeStore()
+  return {
+    // State
+    theme:          store.activeTheme,
+    resolvedTheme:  store.resolvedTheme,
+    isTransitioning: store.isTransitioning,
+    // Getters
+    isDark:         store.isDark,
+    currentConfig:  store.currentConfig,
+    themes:         store.themes,
+    // Actions
+    setTheme:       store.setTheme,
+    toggleDark:     store.toggleDark,
+    // Backward compat
+    toggleTheme:    store.toggleDark,
+  }
 }

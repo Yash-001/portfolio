@@ -206,7 +206,7 @@ onUnmounted(() => {
 .exp-section {
   position: relative;
   padding: 120px 0 100px;
-  background: #0a0a0a;
+  background: var(--bg-base);
   overflow: hidden;
 }
 
@@ -228,7 +228,7 @@ onUnmounted(() => {
   height: 600px;
   top: 0;
   left: -200px;
-  background: radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary) 6%, transparent) 0%, transparent 70%);
 }
 
 .bg-orb--2 {
@@ -236,7 +236,7 @@ onUnmounted(() => {
   height: 400px;
   bottom: 10%;
   right: -100px;
-  background: radial-gradient(circle, rgba(139,92,246,0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 5%, transparent) 0%, transparent 70%);
 }
 
 /* ── Header ────────────────────────────────────────────────────── */
@@ -259,7 +259,7 @@ onUnmounted(() => {
   display: block;
   width: 40px;
   height: 1px;
-  background: #6366f1;
+  background: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -268,7 +268,7 @@ onUnmounted(() => {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #6366f1;
+  color: var(--color-primary);
   font-family: 'Geist Mono', monospace;
 }
 
@@ -277,12 +277,12 @@ onUnmounted(() => {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: #f5f5f5;
+  color: var(--text-primary);
   max-width: 640px;
 }
 
 .heading-accent {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -291,7 +291,7 @@ onUnmounted(() => {
 .exp-section__sub {
   font-size: 16px;
   line-height: 1.7;
-  color: #737373;
+  color: var(--text-tertiary);
   max-width: 480px;
 }
 
@@ -333,9 +333,9 @@ onUnmounted(() => {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    #6366f1 8%,
-    #8b5cf6 50%,
-    #6366f1 92%,
+    var(--color-primary) 8%,
+    var(--color-accent) 50%,
+    var(--color-primary) 92%,
     transparent 100%
   );
   transform-origin: top center;
@@ -392,28 +392,28 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 2px solid #333333;
-  background: #0a0a0a;
+  border: 2px solid var(--border-active);
+  background: var(--bg-base);
   transition: border-color 0.3s;
 }
 
 .exp-timeline__dot-ring--active {
-  border-color: #6366f1;
-  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-primary) 40%, transparent);
 }
 
 .exp-timeline__dot-core {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #333333;
+  background: var(--border-active);
   position: relative;
   z-index: 1;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
 }
 
 .exp-timeline__dot-core--active {
-  background: #6366f1;
+  background: var(--color-primary);
   animation: dotPulse 2s ease-in-out infinite;
 }
 
@@ -432,7 +432,7 @@ onUnmounted(() => {
   font-weight: 700;
   font-family: 'Geist Mono', monospace;
   letter-spacing: 0.1em;
-  color: #555555;
+  color: var(--text-tertiary);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -454,10 +454,10 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  border: 1px solid #1a1a1a;
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
   overflow: hidden;
-  background: #1a1a1a;
+  background: var(--border-subtle);
 }
 
 @media (min-width: 640px) {
@@ -470,17 +470,17 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   padding: 28px 20px;
-  background: #0a0a0a;
-  transition: background 0.2s;
+  background: var(--bg-base);
+  transition: background-color 0.2s;
 }
 
-.exp-summary__item:hover { background: #111111; }
+.exp-summary__item:hover { background: var(--bg-primary); }
 
 .exp-summary__value {
   font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #f5f5f5, #a0a0a0);
+  background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -489,7 +489,7 @@ onUnmounted(() => {
 
 .exp-summary__label {
   font-size: 12px;
-  color: #555555;
+  color: var(--text-tertiary);
   font-family: 'Geist Mono', monospace;
   letter-spacing: 0.04em;
   text-align: center;

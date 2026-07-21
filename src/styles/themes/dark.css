@@ -1,0 +1,46 @@
+/* ── Dark Theme (baseline — matches existing design system) ─────────────── */
+[data-theme="dark"] {
+  --bg-base:      #0a0a0a;
+  --bg-primary:   #111111;
+  --bg-secondary: #141414;
+  --bg-elevated:  #1a1a1a;
+  --bg-overlay:   #222222;
+
+  --text-primary:   #f5f5f5;
+  --text-secondary: #a0a0a0;
+  --text-tertiary:  #555555;
+  --text-disabled:  #404040;
+  --text-inverse:   #0a0a0a;
+
+  --color-primary:       #6366f1;
+  --color-primary-hover: #8183ff;
+  --color-primary-muted: rgba(99,102,241,0.12);
+  --color-accent:        #8b5cf6;
+
+  --border-subtle:  #1a1a1a;
+  --border-default: #222222;
+  --border-active:  #333333;
+  --border-focus:   #6366f1;
+
+  --shadow-card:     0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-elevated: 0 4px 24px rgba(0,0,0,0.5);
+  --shadow-modal:    0 24px 80px rgba(0,0,0,0.7);
+  --shadow-glow:     0 0 40px rgba(99,102,241,0.2);
+  --shadow-focus:    0 0 0 2px #0a0a0a, 0 0 0 4px #6366f1;
+
+  --navbar-bg-scrolled: rgba(10,10,10,0.85);
+  --navbar-border:      #222222;
+
+  --scrollbar-track:       #0a0a0a;
+  --scrollbar-thumb:       #333333;
+  --scrollbar-thumb-hover: #555555;
+
+  /* Explicit resets for glass/neon/scanline tokens */
+  --glass-bg:         rgba(255,255,255,0);
+  --glass-blur:       0px;
+  --glass-border:     rgba(255,255,255,0);
+  --neon-primary:     transparent;
+  --neon-secondary:   transparent;
+  --neon-glow:        none;
+  --scanline-opacity: 0;
+}

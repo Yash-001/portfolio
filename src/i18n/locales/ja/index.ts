@@ -43,6 +43,16 @@ const ja = {
       closeDialog:     'ダイアログを閉じる',
       mobileMenu:      'メニュー',
       quickNav:        'クイックナビゲーション',
+      switchTheme:     'テーマを切り替える',
+    },
+    theme: {
+      dark:         'ダーク',
+      light:        'ライト',
+      oled:         'OLED',
+      glass:        'グラス',
+      cyberpunk:    'サイバーパンク',
+      highContrast: 'ハイコントラスト',
+      auto:         '自動',
     },
     errors: {
       required:     'このフィールドは必須です',

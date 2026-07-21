@@ -1,0 +1,51 @@
+/* ── Theme Transition Animations ────────────────────────────────────────────
+   Two-layer approach:
+   1. View Transition API (Chrome 111+) — smooth cross-fade
+   2. CSS fallback — property-level transitions on .theme-transitioning
+─────────────────────────────────────────────────────────────────────────── */
+
+/* ── View Transition API ─────────────────────────────────────────────────── */
+@keyframes theme-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes theme-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+::view-transition-old(root) {
+  animation: theme-fade-out 150ms ease-out forwards;
+}
+
+::view-transition-new(root) {
+  animation: theme-fade-in 300ms ease-in forwards;
+}
+
+/* ── CSS Fallback ────────────────────────────────────────────────────────── */
+/* NOTE: `background` shorthand is intentionally excluded — it resets all
+   background sub-properties (image, size, position) causing visual flash.
+   Only `background-color` is transitioned. */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color  var(--theme-transition-duration) var(--theme-transition-easing),
+    color             var(--theme-transition-duration) var(--theme-transition-easing),
+    border-color      var(--theme-transition-duration) var(--theme-transition-easing),
+    outline-color     var(--theme-transition-duration) var(--theme-transition-easing),
+    box-shadow        var(--theme-transition-duration) var(--theme-transition-easing),
+    fill              var(--theme-transition-duration) var(--theme-transition-easing),
+    stroke            var(--theme-transition-duration) var(--theme-transition-easing) !important;
+}
+
+/* Exclude elements where transitions cause visual glitches */
+html.theme-transitioning .p-progressspinner-circle,
+html.theme-transitioning canvas,
+html.theme-transitioning video,
+html.theme-transitioning img,
+html.theme-transitioning [data-theme-no-transition] {
+  transition: none !important;
+}

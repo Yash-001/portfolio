@@ -142,7 +142,7 @@ onUnmounted(() => {
   top: -200px;
   left: 50%;
   transform: translateX(-30%);
-  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary) 18%, transparent) 0%, transparent 70%);
   animation: orbFloat1 12s ease-in-out infinite;
 }
 
@@ -151,7 +151,7 @@ onUnmounted(() => {
   height: 400px;
   top: 10%;
   right: -100px;
-  background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 12%, transparent) 0%, transparent 70%);
   animation: orbFloat2 16s ease-in-out infinite;
 }
 
@@ -181,7 +181,7 @@ onUnmounted(() => {
 .hero-bg__grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(99,102,241,0.08) 1px, transparent 1px);
+  background-image: radial-gradient(color-mix(in srgb, var(--color-primary) 8%, transparent) 1px, transparent 1px);
   background-size: 40px 40px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
 }
@@ -193,6 +193,6 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   height: 200px;
-  background: linear-gradient(to bottom, transparent, #0a0a0a);
+  background: linear-gradient(to bottom, transparent, var(--bg-base));
 }
 </style>

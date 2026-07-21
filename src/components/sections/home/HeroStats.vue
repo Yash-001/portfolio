@@ -78,19 +78,19 @@ onUnmounted(() => statObserver?.disconnect())
   position: relative;
   padding: 16px 20px;
   border-radius: 12px;
-  border: 1px solid rgba(99, 102, 241, 0.15);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
+  background: var(--bg-primary);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   text-align: center;
   opacity: 0;
   animation: statReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transition: border-color 0.3s, background 0.3s;
+  transition: border-color 0.3s, background-color 0.3s;
 }
 
 .stat-card:hover {
-  border-color: rgba(99, 102, 241, 0.4);
-  background: rgba(99, 102, 241, 0.06);
+  border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 6%, transparent);
 }
 
 @keyframes statReveal {
@@ -110,7 +110,7 @@ onUnmounted(() => statObserver?.disconnect())
 .stat-number {
   font-size: 28px;
   font-weight: 700;
-  color: #f5f5f5;
+  color: var(--text-primary);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
@@ -118,7 +118,7 @@ onUnmounted(() => statObserver?.disconnect())
 .stat-suffix {
   font-size: 20px;
   font-weight: 700;
-  color: #6366f1;
+  color: var(--color-primary);
 }
 
 .stat-card__label {
@@ -126,6 +126,6 @@ onUnmounted(() => statObserver?.disconnect())
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #737373;
+  color: var(--text-tertiary);
 }
 </style>
