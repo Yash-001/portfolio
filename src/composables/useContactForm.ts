@@ -1,16 +1,3 @@
-/**
- * useContactForm
- *
- * Composable that owns the entire contact form lifecycle:
- *  - Reactive form state
- *  - Field-level and full-form validation
- *  - Submission with loading / success / error states
- *  - Duplicate-submit guard (in-flight lock)
- *  - Toast notifications via PrimeVue ToastService
- *  - Focus management on error
- *  - Form reset on success, value preservation on failure
- */
-
 import { reactive, ref, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
@@ -23,45 +10,43 @@ import type {
   ContactStatus,
   ValidationResult,
 } from '@/types/contact.types'
+import {
+  ATTACHMENT_MAX_SIZE,
+  ATTACHMENT_MAX_SIZE_MB,
+} from '@/types/contact.types'
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const EMAIL_RE        = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const REQUIRED_FIELDS: ContactFormField[] = ['name', 'email', 'projectType', 'message']
-
-// ── Composable ─────────────────────────────────────────────────────────────
 
 export function useContactForm() {
   const toast = useToast()
   const { t } = useI18n()
   const { trackContactStart, trackContactSubmit } = useAnalytics()
 
-  // ── Validation helpers (use t() for messages) ────────────────────────────
+  // ── Validators ────────────────────────────────────────────────────────────
 
-  function validateName(value: string): string | undefined {
-    const v = value.trim()
-    if (!v)             return t('contact.form.errors.nameRequired')
-    if (v.length < 2)   return t('contact.form.errors.nameMin')
-    if (v.length > 100) return t('contact.form.errors.nameMax')
-    return undefined
+  function validateName(v: string): string | undefined {
+    const s = v.trim()
+    if (!s)           return t('contact.form.errors.nameRequired')
+    if (s.length < 2) return t('contact.form.errors.nameMin')
+    if (s.length > 100) return t('contact.form.errors.nameMax')
   }
 
-  function validateEmail(value: string): string | undefined {
-    const v = value.trim()
-    if (!v)                return t('contact.form.errors.emailRequired')
-    if (!EMAIL_RE.test(v)) return t('contact.form.errors.emailInvalid')
-    return undefined
+  function validateEmail(v: string): string | undefined {
+    const s = v.trim()
+    if (!s)                return t('contact.form.errors.emailRequired')
+    if (!EMAIL_RE.test(s)) return t('contact.form.errors.emailInvalid')
   }
 
-  function validateProjectType(value: string): string | undefined {
-    if (!value) return t('contact.form.errors.typeRequired')
-    return undefined
+  function validateProjectType(v: string): string | undefined {
+    if (!v) return t('contact.form.errors.typeRequired')
   }
 
-  function validateMessage(value: string): string | undefined {
-    const v = value.trim()
-    if (!v)              return t('contact.form.errors.messageRequired')
-    if (v.length < 20)   return t('contact.form.errors.messageMin')
-    if (v.length > 1000) return t('contact.form.errors.messageMax')
-    return undefined
+  function validateMessage(v: string): string | undefined {
+    const s = v.trim()
+    if (!s)              return t('contact.form.errors.messageRequired')
+    if (s.length < 20)   return t('contact.form.errors.messageMin')
+    if (s.length > 1000) return t('contact.form.errors.messageMax')
   }
 
   const VALIDATORS: Record<ContactFormField, (v: string) => string | undefined> = {
@@ -71,7 +56,7 @@ export function useContactForm() {
     message:     validateMessage,
   }
 
-  // ── State ────────────────────────────────────────────────────────────────
+  // ── State ─────────────────────────────────────────────────────────────────
 
   const form = reactive<ContactFormPayload>({
     name:        '',
@@ -80,17 +65,23 @@ export function useContactForm() {
     budget:      '',
     message:     '',
     honeypot:    '',
+    attachment:  undefined,
   })
 
-  const errors   = reactive<ContactFormErrors>({})
-  const touched  = reactive<Partial<Record<ContactFormField, boolean>>>({})
-  const status   = ref<ContactStatus>('idle')
+  const errors      = reactive<ContactFormErrors>({})
+  const touched     = reactive<Partial<Record<ContactFormField, boolean>>>({})
+  const status      = ref<ContactStatus>('idle')
   const showSuccess = ref(false)
-
-  /** Prevents double-submit while a request is in-flight */
   const isSubmitting = ref(false)
 
-  // ── Derived ──────────────────────────────────────────────────────────────
+  // Attachment state
+  const attachmentError   = ref<string | null>(null)
+  const attachmentLoading = ref(false)
+
+  // Retry feedback
+  const retryAttempt = ref(0)
+
+  // ── Derived ───────────────────────────────────────────────────────────────
 
   const isLoading  = computed(() => status.value === 'loading')
   const hasError   = computed(() => status.value === 'error')
@@ -98,18 +89,13 @@ export function useContactForm() {
   const charWarn   = computed(() => charCount.value > 900)
   const isDisabled = computed(() => isSubmitting.value)
 
-  // ── Validation ───────────────────────────────────────────────────────────
+  // ── Field validation ──────────────────────────────────────────────────────
 
   function validateField(field: ContactFormField): void {
-    const value = field === 'projectType'
-      ? form.projectType
-      : (form as unknown as Record<string, string>)[field]
+    const value = (form as unknown as Record<string, string>)[field] ?? ''
     const result = VALIDATORS[field](value)
-    if (result) {
-      errors[field] = result
-    } else {
-      delete errors[field]
-    }
+    if (result) errors[field] = result
+    else        delete errors[field]
   }
 
   function onBlur(field: ContactFormField): void {
@@ -118,65 +104,91 @@ export function useContactForm() {
   }
 
   function validateAll(): ValidationResult {
-    REQUIRED_FIELDS.forEach((f) => {
-      touched[f] = true
-      validateField(f)
-    })
-    const valid = REQUIRED_FIELDS.every((f) => !errors[f])
-    return { valid, errors: { ...errors } }
+    REQUIRED_FIELDS.forEach((f) => { touched[f] = true; validateField(f) })
+    return { valid: REQUIRED_FIELDS.every((f) => !errors[f]), errors: { ...errors } }
   }
 
-  // ── Focus management ─────────────────────────────────────────────────────
+  // ── Attachment handling ───────────────────────────────────────────────────
 
-  async function focusFirstError(): Promise<void> {
-    await nextTick()
-    const fieldOrder: ContactFormField[] = ['name', 'email', 'projectType', 'message']
-    for (const field of fieldOrder) {
-      if (errors[field]) {
-        const idMap: Record<ContactFormField, string> = {
-          name:        'cs-name',
-          email:       'cs-email',
-          projectType: 'cs-type',
-          message:     'cs-message',
-        }
-        const el = document.getElementById(idMap[field])
-        el?.focus()
-        break
+  function readFileAsDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload  = () => resolve(reader.result as string)
+      reader.onerror = () => reject(new Error('Failed to read file'))
+      reader.readAsDataURL(file)
+    })
+  }
+
+  async function setAttachment(file: File | null): Promise<void> {
+    attachmentError.value = null
+    form.attachment       = undefined
+
+    if (!file) return
+
+    if (file.size > ATTACHMENT_MAX_SIZE) {
+      attachmentError.value = t('contact.form.errors.attachmentTooLarge', { mb: ATTACHMENT_MAX_SIZE_MB })
+      return
+    }
+
+    attachmentLoading.value = true
+    try {
+      const dataUrl: string = await readFileAsDataUrl(file)
+      form.attachment = {
+        name:    file.name,
+        size:    file.size,
+        type:    file.type,
+        dataUrl,
       }
+    } catch {
+      attachmentError.value = t('contact.form.errors.attachmentReadFailed')
+    } finally {
+      attachmentLoading.value = false
     }
   }
 
-  /** Fires once when the user first interacts with the form */
-  let _contactStarted = false
+  function removeAttachment(): void {
+    form.attachment       = undefined
+    attachmentError.value = null
+  }
+
+  // ── Focus management ──────────────────────────────────────────────────────
+
+  async function focusFirstError(): Promise<void> {
+    await nextTick()
+    const idMap: Record<ContactFormField, string> = {
+      name: 'cs-name', email: 'cs-email', projectType: 'cs-type', message: 'cs-message',
+    }
+    for (const field of REQUIRED_FIELDS) {
+      if (errors[field]) { document.getElementById(idMap[field])?.focus(); break }
+    }
+  }
+
+  // ── Contact start tracking ────────────────────────────────────────────────
+
+  let _started = false
   function onContactStart(): void {
-    if (_contactStarted) return
-    _contactStarted = true
+    if (_started) return
+    _started = true
     trackContactStart()
   }
 
-  // ── Reset ────────────────────────────────────────────────────────────────
+  // ── Reset ─────────────────────────────────────────────────────────────────
 
   function resetForm(): void {
-    form.name        = ''
-    form.email       = ''
-    form.projectType = ''
-    form.budget      = ''
-    form.message     = ''
-    form.honeypot    = ''
-    REQUIRED_FIELDS.forEach((f) => {
-      delete errors[f]
-      delete touched[f]
-    })
+    form.name = ''; form.email = ''; form.projectType = ''
+    form.budget = ''; form.message = ''; form.honeypot = ''
+    form.attachment = undefined
+    attachmentError.value = null
+    retryAttempt.value    = 0
+    REQUIRED_FIELDS.forEach((f) => { delete errors[f]; delete touched[f] })
     status.value = 'idle'
   }
 
-  // ── Submit ───────────────────────────────────────────────────────────────
+  // ── Submit ────────────────────────────────────────────────────────────────
 
   async function handleSubmit(): Promise<void> {
-    // Guard: prevent double-submit
     if (isSubmitting.value) return
 
-    // Validate all fields
     const { valid } = validateAll()
     if (!valid) {
       await focusFirstError()
@@ -191,6 +203,7 @@ export function useContactForm() {
 
     isSubmitting.value = true
     status.value       = 'loading'
+    retryAttempt.value = 0
 
     const result = await submitContactForm({ ...form })
 
@@ -199,21 +212,24 @@ export function useContactForm() {
       status.value      = 'success'
       showSuccess.value = true
       resetForm()
-      // status reset happens after dialog closes — keep 'success' for aria-live
     } else {
       trackContactSubmit(false)
-      status.value = 'error'
+      status.value       = 'error'
       isSubmitting.value = false
 
-      // Distinguish rate-limit / dedup from generic errors
-      const isRateLimit = result.message.includes('Too many') || result.message.includes('already sent')
+      const isRateLimit = result.cause === 'RATE_LIMITED'
+      const isDuplicate = result.cause === 'DUPLICATE'
       const isConfig    = result.cause === 'EMAILJS_NOT_CONFIGURED'
 
       toast.add({
         severity: 'error',
-        summary:  isRateLimit ? t('contact.form.toast.slowDown') : isConfig ? t('contact.form.toast.notConfig') : t('contact.form.toast.sendFailed'),
-        detail:   result.message,
-        life:     isRateLimit ? 8000 : 6000,
+        summary:  isRateLimit || isDuplicate
+          ? t('contact.form.toast.slowDown')
+          : isConfig
+            ? t('contact.form.toast.notConfig')
+            : t('contact.form.toast.sendFailed'),
+        detail: result.message,
+        life:   isRateLimit || isDuplicate ? 8000 : 6000,
       })
     }
   }
@@ -225,24 +241,26 @@ export function useContactForm() {
   }
 
   return {
-    // State
     form,
     errors,
     touched,
     status,
     showSuccess,
-    // Derived
     isLoading,
     hasError,
     isDisabled,
     charCount,
     charWarn,
-    // Methods
+    attachmentError,
+    attachmentLoading,
+    retryAttempt,
     onBlur,
     validateField,
     handleSubmit,
     onDialogClose,
     resetForm,
     onContactStart,
+    setAttachment,
+    removeAttachment,
   }
 }

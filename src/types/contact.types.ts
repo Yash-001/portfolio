@@ -16,6 +16,29 @@ export type BudgetRange =
 
 export type ContactStatus = 'idle' | 'loading' | 'success' | 'error'
 
+// ── Attachment ─────────────────────────────────────────────────────────────
+
+export interface AttachmentMeta {
+  name:     string
+  size:     number   // bytes
+  type:     string   // MIME
+  dataUrl:  string   // base64 data URL for EmailJS
+}
+
+export const ATTACHMENT_MAX_SIZE_MB = 5
+export const ATTACHMENT_MAX_SIZE    = ATTACHMENT_MAX_SIZE_MB * 1024 * 1024
+export const ATTACHMENT_ACCEPT      = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'text/plain',
+].join(',')
+
+export const ATTACHMENT_ACCEPT_LABELS = 'PDF, DOC, DOCX, PNG, JPG, TXT'
+
 // ── Form payload ───────────────────────────────────────────────────────────
 
 export interface ContactFormPayload {
@@ -26,6 +49,8 @@ export interface ContactFormPayload {
   message:     string
   /** Honeypot — must be empty on real submissions */
   honeypot:    string
+  /** Optional file attachment (base64 encoded) */
+  attachment?: AttachmentMeta
 }
 
 // ── Validation ─────────────────────────────────────────────────────────────
@@ -41,29 +66,48 @@ export interface ValidationResult {
 
 // ── Service layer ──────────────────────────────────────────────────────────
 
+export type ContactFailureCause =
+  | 'EMAILJS_NOT_CONFIGURED'
+  | 'RATE_LIMITED'
+  | 'DUPLICATE'
+  | 'HONEYPOT'
+  | 'NETWORK_ERROR'
+  | 'ATTACHMENT_TOO_LARGE'
+  | 'UNKNOWN'
+
 export interface ContactServiceResult {
-  ok:      boolean
-  /** Human-readable message for the UI */
-  message: string
-  /** Underlying error, if any */
-  cause?:  unknown
+  ok:       boolean
+  message:  string
+  /** Stable cause code for programmatic handling */
+  cause?:   ContactFailureCause | unknown
+  /** EmailJS response ID on success */
+  emailId?: string
+  /** Which attempt succeeded (1 = first try) */
+  attempt?: number
 }
 
 export interface ContactServiceConfig {
-  serviceId:  string
-  templateId: string
-  publicKey:  string
+  serviceId:         string
+  /** Admin notification template */
+  adminTemplateId:   string
+  /** Auto-reply template sent to the visitor */
+  replyTemplateId:   string | null
+  publicKey:         string
 }
 
 // ── Rate-limit state (persisted to sessionStorage) ─────────────────────────
 
 export interface RateLimitState {
-  /** ISO timestamp of last successful send */
   lastSentAt:  string
-  /** Number of sends in the current window */
   sendCount:   number
-  /** ISO timestamp when the current window started */
   windowStart: string
+}
+
+// ── Spam scoring ───────────────────────────────────────────────────────────
+
+export interface SpamScore {
+  score:   number   // 0–100
+  reasons: string[]
 }
 
 // ── Select options (co-located for type safety) ────────────────────────────
@@ -82,9 +126,9 @@ export const PROJECT_TYPE_OPTIONS: SelectOption<ProjectType>[] = [
 ]
 
 export const BUDGET_OPTIONS: SelectOption<BudgetRange>[] = [
-  { value: 'under-5k',  label: 'Under $5k'     },
-  { value: '5k-15k',    label: '$5k – $15k'    },
-  { value: '15k-30k',   label: '$15k – $30k'   },
-  { value: '30k-plus',  label: '$30k+'          },
-  { value: 'discuss',   label: "Let's discuss"  },
+  { value: 'under-5k',  label: 'Under $5k'    },
+  { value: '5k-15k',    label: '$5k – $15k'   },
+  { value: '15k-30k',   label: '$15k – $30k'  },
+  { value: '30k-plus',  label: '$30k+'         },
+  { value: 'discuss',   label: "Let's discuss" },
 ]

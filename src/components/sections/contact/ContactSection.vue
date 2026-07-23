@@ -303,6 +303,80 @@
               </span>
             </div>
 
+            <!-- Attachment -->
+            <div class="cs-field">
+              <label class="cs-field__label">{{ t('contact.form.attachment') }}</label>
+
+              <!-- Drop zone (hidden when file already chosen) -->
+              <div
+                v-if="!form.attachment"
+                class="cs-dropzone"
+                :class="{ 'cs-dropzone--active': isDragging, 'cs-dropzone--loading': attachmentLoading }"
+                role="button"
+                tabindex="0"
+                :aria-label="t('contact.form.attachmentLabel')"
+                @click="fileInputEl?.click()"
+                @keydown.enter.space.prevent="fileInputEl?.click()"
+                @dragover.prevent="isDragging = true"
+                @dragleave.prevent="isDragging = false"
+                @drop.prevent="onDrop"
+              >
+                <span
+                  v-if="attachmentLoading"
+                  class="cs-dropzone__spinner"
+                  aria-hidden="true"
+                />
+                <i
+                  v-else
+                  class="pi pi-paperclip cs-dropzone__icon"
+                  aria-hidden="true"
+                />
+                <span class="cs-dropzone__text">
+                  {{ isDragging ? t('contact.form.dropHere') : t('contact.form.attachmentHint') }}
+                </span>
+                <span class="cs-dropzone__meta">{{ ATTACHMENT_ACCEPT_LABELS }} · max {{ ATTACHMENT_MAX_SIZE_MB }}MB</span>
+              </div>
+
+              <!-- Attachment chip -->
+              <div
+                v-else
+                class="cs-attachment-chip"
+              >
+                <i
+                  class="pi pi-file cs-attachment-chip__icon"
+                  aria-hidden="true"
+                />
+                <span class="cs-attachment-chip__name">{{ form.attachment.name }}</span>
+                <span class="cs-attachment-chip__size">{{ formatBytes(form.attachment.size) }}</span>
+                <button
+                  type="button"
+                  class="cs-attachment-chip__remove"
+                  :aria-label="t('contact.form.removeAttachment')"
+                  :disabled="isDisabled"
+                  @click="removeAttachment"
+                >
+                  <i class="pi pi-times" />
+                </button>
+              </div>
+
+              <!-- Hidden file input -->
+              <input
+                ref="fileInputEl"
+                type="file"
+                :accept="ATTACHMENT_ACCEPT"
+                class="cs-file-input"
+                tabindex="-1"
+                aria-hidden="true"
+                @change="onFileChange"
+              />
+
+              <span
+                v-if="attachmentError"
+                class="cs-field__error"
+                role="alert"
+              >{{ attachmentError }}</span>
+            </div>
+
             <!-- Submit -->
             <button
               type="submit"
@@ -372,7 +446,7 @@ import {
   APP_EMAIL, APP_LOCATION, APP_AVAILABILITY_TEXT, APP_RESPONSE_TIME,
   SOCIAL_LINKS,
 } from '@/constants/app.constants'
-import { PROJECT_TYPE_OPTIONS, BUDGET_OPTIONS } from '@/types/contact.types'
+import { PROJECT_TYPE_OPTIONS, BUDGET_OPTIONS, ATTACHMENT_ACCEPT, ATTACHMENT_ACCEPT_LABELS, ATTACHMENT_MAX_SIZE_MB } from '@/types/contact.types'
 import { useContactForm } from '@/composables/useContactForm'
 import ContactSuccessDialog from './ContactSuccessDialog.vue'
 import CalendlyPopup from '@/components/ui/overlay/CalendlyPopup.vue'
@@ -387,8 +461,32 @@ const {
   form, errors, touched, status,
   showSuccess, isLoading, hasError, isDisabled,
   charCount, charWarn,
+  attachmentError, attachmentLoading,
   onBlur, handleSubmit, onDialogClose, onContactStart,
+  setAttachment, removeAttachment,
 } = useContactForm()
+
+// ── File upload ────────────────────────────────────────────────
+const fileInputEl = ref<HTMLInputElement | null>(null)
+const isDragging  = ref(false)
+
+function onFileChange(e: Event): void {
+  const file = (e.target as HTMLInputElement).files?.[0] ?? null
+  setAttachment(file)
+  if (fileInputEl.value) fileInputEl.value.value = ''
+}
+
+function onDrop(e: DragEvent): void {
+  isDragging.value = false
+  const file = e.dataTransfer?.files?.[0] ?? null
+  if (file) setAttachment(file)
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024)        return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
 
 // ── GSAP entrance ──────────────────────────────────────────────
 const sectionEl  = ref<HTMLElement | null>(null)
@@ -685,6 +783,61 @@ a.cs-detail__value:hover { color: #a5b4fc; }
 
 /* ── Honeypot ───────────────────────────────────────────────────── */
 .cs-honeypot {
+  position: absolute; left: -9999px; opacity: 0;
+  width: 1px; height: 1px; pointer-events: none;
+}
+
+/* ── Attachment drop zone ───────────────────────────────────────── */
+.cs-dropzone {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 20px 16px; border-radius: 10px; cursor: pointer;
+  border: 1.5px dashed rgba(255,255,255,0.1); background: rgba(255,255,255,0.02);
+  transition: border-color 0.2s, background 0.2s;
+  text-align: center;
+}
+.cs-dropzone:hover,
+.cs-dropzone:focus-visible {
+  border-color: rgba(99,102,241,0.4); background: rgba(99,102,241,0.05);
+  outline: none;
+}
+.cs-dropzone--active {
+  border-color: #6366f1 !important; background: rgba(99,102,241,0.08) !important;
+}
+.cs-dropzone__icon { font-size: 20px; color: #555; }
+.cs-dropzone__text { font-size: 13px; color: #737373; }
+.cs-dropzone__meta { font-size: 11px; color: #444; font-family: 'Geist Mono', monospace; }
+
+.cs-dropzone__spinner {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid rgba(99,102,241,0.3); border-top-color: #6366f1;
+  animation: spin 0.7s linear infinite; display: inline-block;
+}
+
+/* ── Attachment chip ────────────────────────────────────────────── */
+.cs-attachment-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px; border-radius: 10px;
+  border: 1px solid rgba(99,102,241,0.25); background: rgba(99,102,241,0.06);
+}
+.cs-attachment-chip__icon { color: #6366f1; font-size: 14px; flex-shrink: 0; }
+.cs-attachment-chip__name {
+  font-size: 13px; color: #d4d4d4; flex: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cs-attachment-chip__size {
+  font-size: 11px; color: #555; font-family: 'Geist Mono', monospace; flex-shrink: 0;
+}
+.cs-attachment-chip__remove {
+  width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.08); background: transparent;
+  color: #555; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; transition: all 0.2s;
+}
+.cs-attachment-chip__remove:hover { border-color: rgba(239,68,68,0.4); color: #f87171; }
+.cs-attachment-chip__remove:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Hidden file input ──────────────────────────────────────────── */
+.cs-file-input {
   position: absolute; left: -9999px; opacity: 0;
   width: 1px; height: 1px; pointer-events: none;
 }
