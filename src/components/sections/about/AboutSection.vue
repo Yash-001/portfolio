@@ -199,57 +199,63 @@ onMounted(() => {
   gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
-    gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
-      opacity: 0, x: -24, duration: 0.6, ease,
-    })
+    gsap.fromTo(labelEl.value,
+      { opacity: 0, x: -24 },
+      { scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
+        opacity: 1, x: 0, duration: 0.6, ease, clearProps: 'all' },
+    )
 
-    gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
-      opacity: 0, y: 40, duration: 0.8, ease,
-    })
+    gsap.fromTo(headingEl.value,
+      { opacity: 0, y: 40 },
+      { scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
+        opacity: 1, y: 0, duration: 0.8, ease, clearProps: 'all' },
+    )
 
-    gsap.from(storyEl.value!.querySelectorAll('p'), {
-      scrollTrigger: { trigger: storyEl.value, start: 'top 82%', once: true },
-      opacity: 0, y: 28, duration: 0.7, ease, stagger: 0.14,
-    })
+    gsap.fromTo(storyEl.value!.querySelectorAll('p'),
+      { opacity: 0, y: 28 },
+      { scrollTrigger: { trigger: storyEl.value, start: 'top 82%', once: true },
+        opacity: 1, y: 0, duration: 0.7, ease, stagger: 0.14, clearProps: 'all' },
+    )
 
-    gsap.from(signatureEl.value, {
-      scrollTrigger: { trigger: signatureEl.value, start: 'top 90%', once: true },
-      opacity: 0, x: -20, duration: 0.6, ease, delay: 0.2,
-    })
+    gsap.fromTo(signatureEl.value,
+      { opacity: 0, x: -20 },
+      { scrollTrigger: { trigger: signatureEl.value, start: 'top 90%', once: true },
+        opacity: 1, x: 0, duration: 0.6, ease, delay: 0.2, clearProps: 'all' },
+    )
 
-    gsap.from(cardsEl.value!.querySelectorAll('.philosophy-card'), {
-      scrollTrigger: { trigger: cardsEl.value, start: 'top 82%', once: true },
-      opacity: 0, y: 32, scale: 0.97, duration: 0.65, ease, stagger: 0.1,
-    })
+    gsap.fromTo(cardsEl.value!.querySelectorAll('.philosophy-card'),
+      { opacity: 0, y: 32, scale: 0.97 },
+      { scrollTrigger: { trigger: cardsEl.value, start: 'top 82%', once: true },
+        opacity: 1, y: 0, scale: 1, duration: 0.65, ease, stagger: 0.1, clearProps: 'all' },
+    )
 
-    gsap.from(stackEl.value!.querySelectorAll('.stack-pill'), {
-      scrollTrigger: { trigger: stackEl.value, start: 'top 88%', once: true },
-      opacity: 0, scale: 0.85, duration: 0.4, ease: 'back.out(1.4)', stagger: 0.05,
-    })
+    gsap.fromTo(stackEl.value!.querySelectorAll('.stack-pill'),
+      { opacity: 0, scale: 0.85 },
+      { scrollTrigger: { trigger: stackEl.value, start: 'top 88%', once: true },
+        opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.4)', stagger: 0.05, clearProps: 'all' },
+    )
 
-    gsap.from(metaEl.value, {
-      scrollTrigger: { trigger: metaEl.value, start: 'top 90%', once: true },
-      opacity: 0, y: 16, duration: 0.5, ease,
-    })
+    gsap.fromTo(metaEl.value,
+      { opacity: 0, y: 16 },
+      { scrollTrigger: { trigger: metaEl.value, start: 'top 90%', once: true },
+        opacity: 1, y: 0, duration: 0.5, ease, clearProps: 'all' },
+    )
 
-    gsap.from(timelineEl.value!.querySelectorAll('.timeline-item'), {
-      scrollTrigger: { trigger: timelineEl.value, start: 'top 80%', once: true },
-      opacity: 0, y: 40, duration: 0.7, ease, stagger: 0.15,
-    })
+    gsap.fromTo(timelineEl.value!.querySelectorAll('.timeline-item'),
+      { opacity: 0, y: 40 },
+      { scrollTrigger: { trigger: timelineEl.value, start: 'top 80%', once: true },
+        opacity: 1, y: 0, duration: 0.7, ease, stagger: 0.15, clearProps: 'all' },
+    )
 
-    gsap.from('.timeline-spine', {
-      scrollTrigger: {
-        trigger: timelineEl.value,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        scrub: 1,
+    gsap.fromTo('.timeline-spine',
+      { scaleY: 0 },
+      {
+        scaleY: 1,
+        transformOrigin: 'top center',
+        ease: 'none',
+        scrollTrigger: { trigger: timelineEl.value, start: 'top 80%', end: 'bottom 20%', scrub: 1 },
       },
-      scaleY: 0,
-      transformOrigin: 'top center',
-      ease: 'none',
-    })
+    )
 
   }, sectionEl.value!)
 })

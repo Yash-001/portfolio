@@ -15,6 +15,7 @@ import { reactive, ref, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
 import { submitContactForm } from '@/services/contact.service'
+import { useAnalytics } from '@/composables/useAnalytics'
 import type {
   ContactFormPayload,
   ContactFormErrors,
@@ -31,6 +32,7 @@ const REQUIRED_FIELDS: ContactFormField[] = ['name', 'email', 'projectType', 'me
 export function useContactForm() {
   const toast = useToast()
   const { t } = useI18n()
+  const { trackContactStart, trackContactSubmit } = useAnalytics()
 
   // ── Validation helpers (use t() for messages) ────────────────────────────
 
@@ -144,6 +146,14 @@ export function useContactForm() {
     }
   }
 
+  /** Fires once when the user first interacts with the form */
+  let _contactStarted = false
+  function onContactStart(): void {
+    if (_contactStarted) return
+    _contactStarted = true
+    trackContactStart()
+  }
+
   // ── Reset ────────────────────────────────────────────────────────────────
 
   function resetForm(): void {
@@ -185,11 +195,13 @@ export function useContactForm() {
     const result = await submitContactForm({ ...form })
 
     if (result.ok) {
+      trackContactSubmit(true)
       status.value      = 'success'
       showSuccess.value = true
       resetForm()
       // status reset happens after dialog closes — keep 'success' for aria-live
     } else {
+      trackContactSubmit(false)
       status.value = 'error'
       isSubmitting.value = false
 
@@ -231,5 +243,6 @@ export function useContactForm() {
     handleSubmit,
     onDialogClose,
     resetForm,
+    onContactStart,
   }
 }

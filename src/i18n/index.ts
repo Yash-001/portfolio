@@ -17,7 +17,7 @@ const loaded = new Set<LocaleCode>(['en'])
 
 export async function loadLocale(locale: LocaleCode): Promise<void> {
   if (loaded.has(locale)) return
-  const messages = await import(`./locales/${locale}/index`)
+  const messages = await import(/* @vite-ignore */ `./locales/${locale}/index.ts`)
   ;(i18n.global as any).setLocaleMessage(locale, messages.default)
   loaded.add(locale)
 }

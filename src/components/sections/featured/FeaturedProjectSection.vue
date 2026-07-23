@@ -188,10 +188,11 @@ let gsapCtx: ReturnType<typeof gsap.context> | null = null
 
 onMounted(() => {
   gsapCtx = gsap.context(() => {
-    gsap.from('.fp-section__tabs-wrap', {
-      scrollTrigger: { trigger: '.fp-section__tabs-wrap', start: 'top 90%', once: true },
-      opacity: 0, y: 20, duration: 0.6, ease: 'power3.out',
-    })
+    gsap.fromTo('.fp-section__tabs-wrap',
+      { opacity: 0, y: 20 },
+      { scrollTrigger: { trigger: '.fp-section__tabs-wrap', start: 'top 90%', once: true },
+        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', clearProps: 'all' },
+    )
   }, sectionEl.value!)
 })
 

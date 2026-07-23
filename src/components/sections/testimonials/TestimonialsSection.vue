@@ -179,30 +179,36 @@ onMounted(() => {
   gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
-    gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
-      opacity: 0, x: -24, duration: 0.6, ease,
-    })
-    gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
-      opacity: 0, y: 32, duration: 0.8, ease,
-    })
-    gsap.from(subEl.value, {
-      scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
-      opacity: 0, y: 20, duration: 0.6, ease, delay: 0.1,
-    })
-    gsap.from(statsEl.value!.querySelectorAll('.tms-stat'), {
-      scrollTrigger: { trigger: statsEl.value, start: 'top 88%', once: true },
-      opacity: 0, y: 20, stagger: 0.08, duration: 0.5, ease,
-    })
-    gsap.from(carouselEl.value, {
-      scrollTrigger: { trigger: carouselEl.value, start: 'top 90%', once: true },
-      opacity: 0, y: 32, duration: 0.7, ease,
-    })
-    gsap.from(ctaEl.value, {
-      scrollTrigger: { trigger: ctaEl.value, start: 'top 90%', once: true },
-      opacity: 0, y: 24, duration: 0.6, ease,
-    })
+    gsap.fromTo(labelEl.value,
+      { opacity: 0, x: -24 },
+      { scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
+        opacity: 1, x: 0, duration: 0.6, ease, clearProps: 'all' },
+    )
+    gsap.fromTo(headingEl.value,
+      { opacity: 0, y: 32 },
+      { scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
+        opacity: 1, y: 0, duration: 0.8, ease, clearProps: 'all' },
+    )
+    gsap.fromTo(subEl.value,
+      { opacity: 0, y: 20 },
+      { scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
+        opacity: 1, y: 0, duration: 0.6, ease, delay: 0.1, clearProps: 'all' },
+    )
+    gsap.fromTo(statsEl.value!.querySelectorAll('.tms-stat'),
+      { opacity: 0, y: 20 },
+      { scrollTrigger: { trigger: statsEl.value, start: 'top 88%', once: true },
+        opacity: 1, y: 0, stagger: 0.08, duration: 0.5, ease, clearProps: 'all' },
+    )
+    gsap.fromTo(carouselEl.value,
+      { opacity: 0, y: 32 },
+      { scrollTrigger: { trigger: carouselEl.value, start: 'top 90%', once: true },
+        opacity: 1, y: 0, duration: 0.7, ease, clearProps: 'all' },
+    )
+    gsap.fromTo(ctaEl.value,
+      { opacity: 0, y: 24 },
+      { scrollTrigger: { trigger: ctaEl.value, start: 'top 90%', once: true },
+        opacity: 1, y: 0, duration: 0.6, ease, clearProps: 'all' },
+    )
   }, sectionEl.value!)
 })
 

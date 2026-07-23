@@ -152,6 +152,7 @@
               rel="noopener noreferrer"
               class="proj-link"
               :class="`proj-link--${link.type}`"
+              @click="onLinkClick(link.url, link.type)"
             >
               <i :class="link.type === 'github' ? 'pi pi-github' : 'pi pi-external-link'" />
               {{ link.label }}
@@ -278,14 +279,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import type { Project } from '@/types'
 import { PROJECT_CATEGORY_CONFIG, PROJECT_GRADIENT } from '@/constants'
+import { useAnalytics } from '@/composables/useAnalytics'
 
 const props = defineProps<{ project: Project }>()
 
 const gradient  = computed(() => PROJECT_GRADIENT[props.project.category])
 const catConfig = computed(() => PROJECT_CATEGORY_CONFIG[props.project.category])
+
+const { trackProjectView, trackProjectLinkClick, trackOutboundClick } = useAnalytics()
+
+onMounted(() => trackProjectView(props.project.slug, props.project.title))
+
+function onLinkClick(url: string, type: string) {
+  trackProjectLinkClick(props.project.slug, type)
+  trackOutboundClick(url, `${props.project.title} — ${type}`)
+}
 
 // ── Expand ────────────────────────────────────────────────────────
 const isExpanded = ref(false)

@@ -174,36 +174,42 @@ onMounted(() => {
   gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
-    gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
-      opacity: 0, x: -24, duration: 0.6, ease,
-    })
+    gsap.fromTo(labelEl.value,
+      { opacity: 0, x: -24 },
+      { scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
+        opacity: 1, x: 0, duration: 0.6, ease, clearProps: 'all' },
+    )
 
-    gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
-      opacity: 0, y: 32, duration: 0.8, ease,
-    })
+    gsap.fromTo(headingEl.value,
+      { opacity: 0, y: 32 },
+      { scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
+        opacity: 1, y: 0, duration: 0.8, ease, clearProps: 'all' },
+    )
 
-    gsap.from(subEl.value, {
-      scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
-      opacity: 0, y: 20, duration: 0.6, ease, delay: 0.1,
-    })
+    gsap.fromTo(subEl.value,
+      { opacity: 0, y: 20 },
+      { scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
+        opacity: 1, y: 0, duration: 0.6, ease, delay: 0.1, clearProps: 'all' },
+    )
 
-    gsap.from(filterEl.value, {
-      scrollTrigger: { trigger: filterEl.value, start: 'top 90%', once: true },
-      opacity: 0, y: 16, duration: 0.5, ease, delay: 0.15,
-    })
+    gsap.fromTo(filterEl.value,
+      { opacity: 0, y: 16 },
+      { scrollTrigger: { trigger: filterEl.value, start: 'top 90%', once: true },
+        opacity: 1, y: 0, duration: 0.5, ease, delay: 0.15, clearProps: 'all' },
+    )
 
-    gsap.from('.proj-grid-item', {
-      scrollTrigger: { trigger: '.projects-section__grid', start: 'top 82%', once: true },
-      opacity: 0, y: 48, scale: 0.96,
-      duration: 0.7, ease, stagger: 0.1,
-    })
+    gsap.fromTo('.proj-grid-item',
+      { opacity: 0, y: 48, scale: 0.96 },
+      { scrollTrigger: { trigger: sectionEl.value!.querySelector('.projects-section__grid'), start: 'top 82%', once: true },
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.7, ease, stagger: 0.1, clearProps: 'all' },
+    )
 
-    gsap.from(ctaEl.value, {
-      scrollTrigger: { trigger: ctaEl.value, start: 'top 88%', once: true },
-      opacity: 0, y: 24, duration: 0.6, ease,
-    })
+    gsap.fromTo(ctaEl.value,
+      { opacity: 0, y: 24 },
+      { scrollTrigger: { trigger: ctaEl.value, start: 'top 88%', once: true },
+        opacity: 1, y: 0, duration: 0.6, ease, clearProps: 'all' },
+    )
 
   }, sectionEl.value!)
 })

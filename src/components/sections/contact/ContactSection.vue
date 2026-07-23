@@ -173,6 +173,7 @@
                 :aria-invalid="!!(errors.name && touched.name)"
                 :aria-describedby="errors.name && touched.name ? 'cs-name-err' : undefined"
                 :disabled="isDisabled"
+                @focus="onContactStart"
                 @blur="onBlur('name')"
               />
               <span
@@ -363,7 +364,7 @@ const {
   form, errors, touched, status,
   showSuccess, isLoading, hasError, isDisabled,
   charCount, charWarn,
-  onBlur, handleSubmit, onDialogClose,
+  onBlur, handleSubmit, onDialogClose, onContactStart,
 } = useContactForm()
 
 // ── GSAP entrance ──────────────────────────────────────────────
@@ -376,14 +377,16 @@ let gsapCtx: ReturnType<typeof gsap.context> | null = null
 onMounted(() => {
   gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
-    gsap.from(infoEl.value, {
-      scrollTrigger: { trigger: infoEl.value, start: 'top 85%', once: true },
-      opacity: 0, x: -40, duration: 0.9, ease,
-    })
-    gsap.from(formWrapEl.value, {
-      scrollTrigger: { trigger: formWrapEl.value, start: 'top 85%', once: true },
-      opacity: 0, x: 40, duration: 0.9, ease, delay: 0.1,
-    })
+    gsap.fromTo(infoEl.value,
+      { opacity: 0, x: -40 },
+      { scrollTrigger: { trigger: infoEl.value, start: 'top 85%', once: true },
+        opacity: 1, x: 0, duration: 0.9, ease, clearProps: 'all' },
+    )
+    gsap.fromTo(formWrapEl.value,
+      { opacity: 0, x: 40 },
+      { scrollTrigger: { trigger: formWrapEl.value, start: 'top 85%', once: true },
+        opacity: 1, x: 0, duration: 0.9, ease, delay: 0.1, clearProps: 'all' },
+    )
   }, sectionEl.value!)
 })
 

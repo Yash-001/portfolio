@@ -215,26 +215,28 @@ onMounted(() => {
     const ease = 'power3.out'
     const tl = gsap.timeline({ defaults: { ease, duration: 0.7 } })
 
-    tl.from(badgeEl.value,   { opacity: 0, y: 16, duration: 0.5 })
-      .from(titleEl.value,   { opacity: 0, y: 40, duration: 0.9 }, '-=0.3')
-      .from(taglineEl.value, { opacity: 0, y: 24 }, '-=0.5')
-      .from(descEl.value,    { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
-      .from(metaEl.value,    { opacity: 0, y: 16, duration: 0.5 }, '-=0.4')
-      .from(techEl.value!.querySelectorAll('.fp-hero__tech-pill'), {
-        opacity: 0, y: 12, scale: 0.9, stagger: 0.05, duration: 0.4,
-      }, '-=0.3')
-      .from(diagramEl.value, { opacity: 0, x: 60, duration: 1, ease: 'power2.out' }, '-=0.8')
-      .from(metricsEl.value!.querySelectorAll('.fp-hero__metric'), {
-        opacity: 0, y: 24, stagger: 0.07, duration: 0.5,
-      }, '-=0.4')
+    tl.fromTo(badgeEl.value,   { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, clearProps: 'all' })
+      .fromTo(titleEl.value,   { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, clearProps: 'all' }, '-=0.3')
+      .fromTo(taglineEl.value, { opacity: 0, y: 24 }, { opacity: 1, y: 0, clearProps: 'all' }, '-=0.5')
+      .fromTo(descEl.value,    { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, clearProps: 'all' }, '-=0.4')
+      .fromTo(metaEl.value,    { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, clearProps: 'all' }, '-=0.4')
+      .fromTo(techEl.value!.querySelectorAll('.fp-hero__tech-pill'),
+        { opacity: 0, y: 12, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, stagger: 0.05, duration: 0.4, clearProps: 'all' }, '-=0.3')
+      .fromTo(diagramEl.value, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 1, ease: 'power2.out', clearProps: 'all' }, '-=0.8')
+      .fromTo(metricsEl.value!.querySelectorAll('.fp-hero__metric'),
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, stagger: 0.07, duration: 0.5, clearProps: 'all' }, '-=0.4')
 
-    gsap.from('.fp-diagram__layer', {
-      opacity: 0, y: 20, stagger: 0.15, duration: 0.6, ease, delay: 0.8,
-    })
-    gsap.from('.fp-diagram__arrow', {
-      opacity: 0, scaleY: 0, stagger: 0.15, duration: 0.4, ease,
-      delay: 1.1, transformOrigin: 'top center',
-    })
+    gsap.fromTo('.fp-diagram__layer',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, stagger: 0.15, duration: 0.6, ease, delay: 0.8, clearProps: 'all' },
+    )
+    gsap.fromTo('.fp-diagram__arrow',
+      { opacity: 0, scaleY: 0 },
+      { opacity: 1, scaleY: 1, stagger: 0.15, duration: 0.4, ease,
+        delay: 1.1, transformOrigin: 'top center', clearProps: 'all' },
+    )
   }, heroEl.value!)
 })
 

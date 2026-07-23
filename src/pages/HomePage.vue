@@ -154,7 +154,6 @@ const { activeSection, scrollTo } = useScrollSpy({
 // Pre-seed hero as visible; observe the rest
 const { isVisible } = useSectionObserver(
   LAZY_SECTIONS.map((s) => s.id),
-  '0px 0px -5% 0px',
 )
 
 // ── Mount ──────────────────────────────────────────────────────
@@ -280,10 +279,7 @@ export const SectionSkeleton = defineComponent({
 /* ── Page shell ────────────────────────────────────────────────── */
 .hp {
   background: var(--bg-base);
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
-.hp--ready { opacity: 1; }
 
 /* ── ScrollSpy dot nav ─────────────────────────────────────────── */
 .hp-spy-nav {
@@ -329,15 +325,15 @@ export const SectionSkeleton = defineComponent({
 }
 
 /* ── Section shell ─────────────────────────────────────────────── */
+/* No opacity/transform here — GSAP handles per-element entrance animations.
+   The shell is always visible; individual elements animate via ScrollTrigger. */
 :deep(.hp-section) {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: none;
 }
 :deep(.hp-section--visible) {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* ── Skeleton shimmer ──────────────────────────────────────────── */
@@ -358,11 +354,7 @@ export const SectionSkeleton = defineComponent({
 
 /* Respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-  :deep(.hp-section) {
-    transition: none;
-    opacity: 1;
-    transform: none;
-  }
+  :deep(.hp-section) { opacity: 1; transform: none; }
   :deep(.hp-skeleton) { animation: none; }
   .hp-scroll-progress { display: none; }
 }

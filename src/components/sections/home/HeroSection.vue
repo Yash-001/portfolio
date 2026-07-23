@@ -1,6 +1,7 @@
 <template>
   <section
     id="hero"
+    ref="sectionEl"
     class="hero"
     :aria-label="t('common.aria.introduction')"
   >
@@ -80,6 +81,7 @@
             rel="noopener noreferrer"
             class="hero__btn-outline"
             :aria-label="t('common.aria.downloadCv')"
+            @click="onResumeClick"
           >
             <i class="pi pi-download" aria-hidden="true" />
             <span>{{ t('common.cta.resume') }}</span>
@@ -112,7 +114,7 @@
         class="hero__right"
       >
         <!-- Profile card -->
-        <div class="profile-card reveal-item">
+        <div class="profile-card">
           <!-- Glow ring -->
           <div
             class="profile-card__glow"
@@ -205,6 +207,7 @@ import HeroBackground from './HeroBackground.vue'
 import HeroStats from './HeroStats.vue'
 import { useTypewriter } from '@/composables/useTypewriter'
 import { useLocale } from '@/composables/useLocale'
+import { useAnalytics } from '@/composables/useAnalytics'
 import {
   APP_NAME, APP_TITLE, APP_LOCATION, APP_RESPONSE_TIME, APP_RESUME_URL,
 } from '@/constants'
@@ -212,6 +215,7 @@ import { SOCIAL_LINKS_NAV } from '@/constants'
 import { PROFILE_IMAGE } from '@/config/portfolio.config'
 
 const { t, tm } = useLocale()
+const { trackResumeDownload, trackOutboundClick } = useAnalytics()
 
 const TECH_STACK = ['Java', 'Spring Boot', 'Vue 3', 'AWS', 'PostgreSQL', 'Docker', 'Kubernetes', 'Redis']
 
@@ -220,6 +224,7 @@ const ROLES = computed(() => tm('hero.roles') as string[])
 const leftCol      = ref<HTMLElement | null>(null)
 const rightCol     = ref<HTMLElement | null>(null)
 const typewriterEl = ref<HTMLElement | null>(null)
+const sectionEl    = ref<HTMLElement | null>(null)
 const currentTime  = ref('')
 
 useTypewriter(typewriterEl, ROLES.value, { typingSpeed: 0.055, deletingSpeed: 0.028, pauseMs: 2400 })
@@ -235,6 +240,11 @@ function updateClock() {
   })
 }
 
+function onResumeClick() {
+  trackResumeDownload()
+  trackOutboundClick(APP_RESUME_URL, 'Resume Download')
+}
+
 onMounted(() => {
   updateClock()
   clockInterval = setInterval(updateClock, 1000)
@@ -242,7 +252,7 @@ onMounted(() => {
   const items = leftCol.value?.querySelectorAll('.reveal-item') ?? []
   gsapCtx = gsap.context(() => {
     gsap.fromTo(
-      items,
+      Array.from(items),
       { opacity: 0, y: 28 },
       {
         opacity: 1, y: 0,
@@ -250,16 +260,16 @@ onMounted(() => {
         ease: 'power3.out',
         stagger: 0.1,
         delay: 0.15,
-        clearProps: 'transform',
+        clearProps: 'all',
       },
     )
 
     gsap.fromTo(
       rightCol.value,
       { opacity: 0, x: 48 },
-      { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out', delay: 0.4, clearProps: 'transform' },
+      { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out', delay: 0.4, clearProps: 'all' },
     )
-  }, leftCol.value!)
+  }, sectionEl.value!)
 })
 
 onUnmounted(() => {
@@ -642,12 +652,8 @@ onUnmounted(() => {
   100% { transform: translateY(200%); }
 }
 
-/* ── REVEAL ITEMS (initial state, GSAP takes over) ── */
-.reveal-item { opacity: 0; }
-
-/* Reduced-motion: skip animation, show immediately */
+/* Reduced-motion overrides */
 @media (prefers-reduced-motion: reduce) {
-  .reveal-item { opacity: 1 !important; transform: none !important; }
   .hero__cursor { animation: none; opacity: 1; }
   .badge-dot { animation: none; }
   .open-dot { animation: none; }

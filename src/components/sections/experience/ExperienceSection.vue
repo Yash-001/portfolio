@@ -144,20 +144,23 @@ onMounted(() => {
   gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
-    gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
-      opacity: 0, x: -24, duration: 0.6, ease,
-    })
+    gsap.fromTo(labelEl.value,
+      { opacity: 0, x: -24 },
+      { scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
+        opacity: 1, x: 0, duration: 0.6, ease, clearProps: 'all' },
+    )
 
-    gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
-      opacity: 0, y: 32, duration: 0.8, ease,
-    })
+    gsap.fromTo(headingEl.value,
+      { opacity: 0, y: 32 },
+      { scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
+        opacity: 1, y: 0, duration: 0.8, ease, clearProps: 'all' },
+    )
 
-    gsap.from(subEl.value, {
-      scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
-      opacity: 0, y: 20, duration: 0.6, ease, delay: 0.1,
-    })
+    gsap.fromTo(subEl.value,
+      { opacity: 0, y: 20 },
+      { scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
+        opacity: 1, y: 0, duration: 0.6, ease, delay: 0.1, clearProps: 'all' },
+    )
 
     gsap.fromTo(
       spineEl.value,
@@ -176,21 +179,21 @@ onMounted(() => {
 
     itemEls.value.forEach((el, i) => {
       const isRight = i % 2 !== 0
-      gsap.from(el, {
-        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        opacity: 0,
-        x: isRight ? 48 : -48,
-        y: 24,
-        duration: 0.75,
-        ease,
-        delay: 0.05,
-      })
+      gsap.fromTo(el,
+        { opacity: 0, x: isRight ? 48 : -48, y: 24 },
+        {
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          opacity: 1, x: 0, y: 0,
+          duration: 0.75, ease, delay: 0.05, clearProps: 'all',
+        },
+      )
     })
 
-    gsap.from(summaryEl.value!.querySelectorAll('.exp-summary__item'), {
-      scrollTrigger: { trigger: summaryEl.value, start: 'top 88%', once: true },
-      opacity: 0, y: 20, duration: 0.5, ease, stagger: 0.08,
-    })
+    gsap.fromTo(summaryEl.value!.querySelectorAll('.exp-summary__item'),
+      { opacity: 0, y: 20 },
+      { scrollTrigger: { trigger: summaryEl.value, start: 'top 88%', once: true },
+        opacity: 1, y: 0, duration: 0.5, ease, stagger: 0.08, clearProps: 'all' },
+    )
 
   }, sectionEl.value!)
 })

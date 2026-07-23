@@ -361,20 +361,20 @@ onMounted(() => {
     const ease = 'power3.out'
     const cols = [brandEl.value, navEl.value, servicesEl.value, resourcesEl.value]
 
-    gsap.fromTo(cols,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1, y: 0, duration: 0.8, ease, stagger: 0.1,
-        scrollTrigger: { trigger: footerEl.value, start: 'top 90%', once: true },
-      }
-    )
-    gsap.fromTo(bottomEl.value,
-      { opacity: 0, y: 16 },
-      {
-        opacity: 1, y: 0, duration: 0.5, ease,
-        scrollTrigger: { trigger: footerEl.value, start: 'top 95%', once: true },
-      }
-    )
+    const io = new IntersectionObserver((entries) => {
+      if (!entries[0].isIntersecting) return
+      io.disconnect()
+      gsap.fromTo(cols,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8, ease, stagger: 0.1, clearProps: 'all' },
+      )
+      gsap.fromTo(bottomEl.value,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.5, ease, delay: 0.3, clearProps: 'all' },
+      )
+    }, { threshold: 0.05 })
+
+    if (footerEl.value) io.observe(footerEl.value)
   }, footerEl.value!)
 })
 

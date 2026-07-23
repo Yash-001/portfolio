@@ -4,7 +4,6 @@
       v-for="(stat, i) in STATS"
       :key="stat.label"
       class="stat-card"
-      :style="{ animationDelay: `${1200 + i * 120}ms` }"
     >
       <div class="stat-card__value">
         <span
@@ -64,38 +63,28 @@ onUnmounted(() => statObserver?.disconnect())
 </script>
 
 <style scoped>
+/* Always 2-col — profile card is 380px max, 4-col makes cards too narrow */
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-@media (min-width: 480px) {
-  .hero-stats { grid-template-columns: repeat(4, 1fr); }
+  gap: 10px;
 }
 
 .stat-card {
   position: relative;
-  padding: 16px 20px;
+  padding: 14px 12px;
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
   background: var(--bg-primary);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   text-align: center;
-  opacity: 0;
-  animation: statReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transition: border-color 0.3s, background-color 0.3s;
 }
 
 .stat-card:hover {
   border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
   background: color-mix(in srgb, var(--color-primary) 6%, transparent);
-}
-
-@keyframes statReveal {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 
 .stat-card__value {
@@ -108,7 +97,7 @@ onUnmounted(() => statObserver?.disconnect())
 }
 
 .stat-number {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
@@ -116,16 +105,17 @@ onUnmounted(() => statObserver?.disconnect())
 }
 
 .stat-suffix {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--color-primary);
 }
 
 .stat-card__label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-tertiary);
+  line-height: 1.3;
 }
 </style>

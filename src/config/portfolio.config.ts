@@ -36,9 +36,10 @@ export const LINKEDIN_URL          = 'https://www.linkedin.com/in/yash-ranjan-a0
 export const EMAIL_MAILTO          = `mailto:${OWNER_EMAIL}`
 
 // ── Profile image ─────────────────────────────────────────────────────────────
-// Set to a path like '/images/profile.jpg' or an absolute URL.
-// When undefined the hero card renders the icon placeholder.
-export const PROFILE_IMAGE: string | undefined = undefined
+// Replace this URL with your own photo path e.g. '/images/profile.jpg'
+// or any absolute URL. Set to undefined to show the icon placeholder.
+export const PROFILE_IMAGE: string | undefined =
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'
 
 // ── SEO ──────────────────────────────────────────────────────────────────────
 export const SEO_TITLE_DEFAULT     = `${OWNER_NAME} | ${OWNER_TITLE}`
@@ -48,8 +49,8 @@ export const SEO_OG_IMAGE          = '/og-image.jpg'
 
 // ── Stats (hero card counters) ────────────────────────────────────────────────
 export const HERO_STATS = [
-  { value: 7,  suffix: '+', label: 'Years Exp.'     },
-  { value: 10, suffix: '+', label: 'Projects Built' },
-  { value: 5,  suffix: '',  label: 'Enterprise Apps' },
-  { value: 3,  suffix: '',  label: 'Cloud Deploys'  },
+  { value: 7,  suffix: '+', label: 'Years Exp.'  },
+  { value: 10, suffix: '+', label: 'Projects'    },
+  { value: 5,  suffix: '',  label: 'Enterprise'  },
+  { value: 3,  suffix: '',  label: 'Cloud Apps'  },
 ] as const

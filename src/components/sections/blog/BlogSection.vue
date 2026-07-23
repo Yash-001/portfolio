@@ -299,35 +299,41 @@ onMounted(() => {
   gsapCtx = gsap.context(() => {
     const ease = 'power3.out'
 
-    gsap.from(labelEl.value, {
-      scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
-      opacity: 0, x: -24, duration: 0.6, ease,
-    })
-    gsap.from(headingEl.value, {
-      scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
-      opacity: 0, y: 32, duration: 0.8, ease,
-    })
-    gsap.from(subEl.value, {
-      scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
-      opacity: 0, y: 20, duration: 0.6, ease, delay: 0.1,
-    })
-    gsap.from(featuredEl.value, {
-      scrollTrigger: { trigger: featuredEl.value, start: 'top 85%', once: true },
-      opacity: 0, y: 40, duration: 0.8, ease,
-    })
-    gsap.from(filterEl.value, {
-      scrollTrigger: { trigger: filterEl.value, start: 'top 88%', once: true },
-      opacity: 0, y: 20, duration: 0.5, ease,
-    })
-    gsap.from('.blog-grid-card', {
-      scrollTrigger: { trigger: gridEl.value, start: 'top 82%', once: true },
-      opacity: 0, y: 40, scale: 0.97,
-      duration: 0.65, ease, stagger: 0.08,
-    })
-    gsap.from(ctaEl.value, {
-      scrollTrigger: { trigger: ctaEl.value, start: 'top 90%', once: true },
-      opacity: 0, y: 24, duration: 0.6, ease,
-    })
+    gsap.fromTo(labelEl.value,
+      { opacity: 0, x: -24 },
+      { scrollTrigger: { trigger: labelEl.value, start: 'top 88%', once: true },
+        opacity: 1, x: 0, duration: 0.6, ease, clearProps: 'all' },
+    )
+    gsap.fromTo(headingEl.value,
+      { opacity: 0, y: 32 },
+      { scrollTrigger: { trigger: headingEl.value, start: 'top 85%', once: true },
+        opacity: 1, y: 0, duration: 0.8, ease, clearProps: 'all' },
+    )
+    gsap.fromTo(subEl.value,
+      { opacity: 0, y: 20 },
+      { scrollTrigger: { trigger: subEl.value, start: 'top 88%', once: true },
+        opacity: 1, y: 0, duration: 0.6, ease, delay: 0.1, clearProps: 'all' },
+    )
+    gsap.fromTo(featuredEl.value,
+      { opacity: 0, y: 40 },
+      { scrollTrigger: { trigger: featuredEl.value, start: 'top 85%', once: true },
+        opacity: 1, y: 0, duration: 0.8, ease, clearProps: 'all' },
+    )
+    gsap.fromTo(filterEl.value,
+      { opacity: 0, y: 20 },
+      { scrollTrigger: { trigger: filterEl.value, start: 'top 88%', once: true },
+        opacity: 1, y: 0, duration: 0.5, ease, clearProps: 'all' },
+    )
+    gsap.fromTo('.blog-grid-card',
+      { opacity: 0, y: 40, scale: 0.97 },
+      { scrollTrigger: { trigger: gridEl.value, start: 'top 82%', once: true },
+        opacity: 1, y: 0, scale: 1, duration: 0.65, ease, stagger: 0.08, clearProps: 'all' },
+    )
+    gsap.fromTo(ctaEl.value,
+      { opacity: 0, y: 24 },
+      { scrollTrigger: { trigger: ctaEl.value, start: 'top 90%', once: true },
+        opacity: 1, y: 0, duration: 0.6, ease, clearProps: 'all' },
+    )
   }, sectionEl.value!)
 })
 
