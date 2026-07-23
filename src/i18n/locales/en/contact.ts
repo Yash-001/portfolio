@@ -48,4 +48,7 @@ export default {
     connectBtn:  'Connect on LinkedIn',
     doneBtn:     'Done',
   },
+  calendly: {
+    viewSchedule: 'View my schedule',
+  },
 } as const

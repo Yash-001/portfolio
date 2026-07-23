@@ -86,6 +86,13 @@
             <i class="pi pi-download" aria-hidden="true" />
             <span>{{ t('common.cta.resume') }}</span>
           </a>
+
+          <CalendlyPopup
+            :label="t('common.cta.bookCall')"
+            variant="outline"
+            size="md"
+            :show-availability="true"
+          />
         </div>
 
         <!-- Social links -->
@@ -205,6 +212,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { gsap } from '@/plugins/gsap'
 import HeroBackground from './HeroBackground.vue'
 import HeroStats from './HeroStats.vue'
+import CalendlyPopup from '@/components/ui/overlay/CalendlyPopup.vue'
 import { useTypewriter } from '@/composables/useTypewriter'
 import { useLocale } from '@/composables/useLocale'
 import { useAnalytics } from '@/composables/useAnalytics'

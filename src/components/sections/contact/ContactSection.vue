@@ -108,16 +108,24 @@
         </div>
 
         <!-- Calendly CTA -->
-        <a
-          :href="APP_CALENDLY_URL"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="cs-calendly"
-        >
-          <i class="pi pi-calendar" />
-          <span>{{ t('common.cta.bookCall') }}</span>
-          <i class="pi pi-arrow-up-right cs-calendly__ext" />
-        </a>
+        <div class="cs-calendly-row">
+          <CalendlyPopup
+            :label="t('common.cta.bookCall')"
+            variant="ghost"
+            size="md"
+            :show-availability="true"
+          />
+          <button
+            type="button"
+            class="cs-inline-toggle"
+            :aria-expanded="showInline"
+            aria-controls="cs-inline-embed"
+            @click="showInline = !showInline"
+          >
+            <i :class="showInline ? 'pi pi-chevron-up' : 'pi pi-calendar-plus'" />
+            <span>{{ showInline ? t('common.misc.hide') : t('contact.calendly.viewSchedule') }}</span>
+          </button>
+        </div>
       </div>
 
       <!-- ── Right: Form ──────────────────────────────────────── -->
@@ -338,6 +346,17 @@
       </div>
     </div>
 
+    <!-- ── Inline Calendly embed ── full width, below both columns ── -->
+    <Transition name="cs-inline-slide">
+      <div
+        v-if="showInline"
+        id="cs-inline-embed"
+        class="cs-inline-wrap"
+      >
+        <CalendlyInline min-height="700px" />
+      </div>
+    </Transition>
+
     <!-- Success dialog -->
     <ContactSuccessDialog
       :model-value="showSuccess"
@@ -351,14 +370,18 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from '@/plugins/gsap'
 import {
   APP_EMAIL, APP_LOCATION, APP_AVAILABILITY_TEXT, APP_RESPONSE_TIME,
-  SOCIAL_LINKS, APP_CALENDLY_URL,
+  SOCIAL_LINKS,
 } from '@/constants/app.constants'
 import { PROJECT_TYPE_OPTIONS, BUDGET_OPTIONS } from '@/types/contact.types'
 import { useContactForm } from '@/composables/useContactForm'
 import ContactSuccessDialog from './ContactSuccessDialog.vue'
+import CalendlyPopup from '@/components/ui/overlay/CalendlyPopup.vue'
+import CalendlyInline from '@/components/ui/overlay/CalendlyInline.vue'
 import { useLocale } from '@/composables/useLocale'
 
 const { t } = useLocale()
+
+const showInline = ref(false)
 
 const {
   form, errors, touched, status,
@@ -522,19 +545,37 @@ a.cs-detail__value:hover { color: #a5b4fc; }
   outline-offset: 2px;
 }
 
-/* Calendly */
-.cs-calendly {
-  display: inline-flex; align-items: center; gap: 9px;
-  padding: 11px 20px; border-radius: 12px; width: fit-content;
-  border: 1px solid rgba(99,102,241,0.25); background: rgba(99,102,241,0.07);
-  color: #a5b4fc; font-size: 14px; font-weight: 600; text-decoration: none;
-  transition: all 0.25s;
+/* Calendly row */
+.cs-calendly-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
 }
-.cs-calendly:hover {
-  border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.14);
-  transform: translateY(-2px);
+
+.cs-inline-toggle {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 16px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03);
+  color: #737373; font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 0.22s;
 }
-.cs-calendly__ext { font-size: 11px; opacity: 0.6; }
+.cs-inline-toggle:hover {
+  border-color: rgba(99,102,241,0.3); color: #a5b4fc;
+  background: rgba(99,102,241,0.06);
+}
+.cs-inline-toggle:focus-visible {
+  outline: 2px solid #6366f1; outline-offset: 2px;
+}
+
+/* Inline embed slide transition */
+.cs-inline-slide-enter-active { transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+.cs-inline-slide-leave-active { transition: opacity 0.2s ease, transform 0.2s ease; }
+.cs-inline-slide-enter-from  { opacity: 0; transform: translateY(-12px); }
+.cs-inline-slide-leave-to    { opacity: 0; transform: translateY(-8px); }
+
+/* Full-width inline embed container */
+.cs-inline-wrap {
+  max-width: 1280px; margin: 0 auto; padding: 0 24px;
+  margin-top: 48px;
+}
 
 /* ── Form card ─────────────────────────────────────────────────── */
 .cs-form-wrap { position: relative; }

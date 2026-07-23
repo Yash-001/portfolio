@@ -19,6 +19,13 @@ export const EVENTS = {
 
   // Outbound
   OUTBOUND_CLICK:      'outbound_click',
+
+  // Calendly
+  CALENDLY_POPUP_OPENED:  'calendly_popup_opened',
+  CALENDLY_INLINE_VIEWED: 'calendly_inline_viewed',
+  CALENDLY_VIEWED:        'calendly_event_type_viewed',
+  CALENDLY_DATE_SELECTED: 'calendly_date_selected',
+  CALENDLY_BOOKED:        'calendly_booked',
 } as const
 
 export type EventName = typeof EVENTS[keyof typeof EVENTS]
@@ -59,4 +66,10 @@ export interface OutboundClickProps extends EventProps {
 
 export interface ContactSubmitProps extends EventProps {
   success: boolean
+}
+
+export interface CalendlyBookedProps extends EventProps {
+  url:     string
+  invitee: string
+  event:   string
 }

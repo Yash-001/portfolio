@@ -103,6 +103,7 @@ export default {
   },
   misc: {
     scroll:               'Scroll',
+    hide:                 'Hide',
     currentlyWorkingWith: 'Currently working with',
     respondsIn:           'Typically responds within 24 hours',
     remoteWorldwide:      'Remote worldwide',

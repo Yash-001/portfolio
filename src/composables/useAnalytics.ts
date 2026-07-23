@@ -34,6 +34,15 @@ export function useAnalytics() {
       tracker.track(EVENTS.OUTBOUND_CLICK, { url, label })
     },
 
+    // ── Calendly ──────────────────────────────────────────────────────────
+    trackCalendlyPopupOpened(url: string): void {
+      tracker.track(EVENTS.CALENDLY_POPUP_OPENED, { url })
+    },
+
+    trackCalendlyBooked(url: string, invitee: string, event: string): void {
+      tracker.track(EVENTS.CALENDLY_BOOKED, { url, invitee, event })
+    },
+
     // ── Engagement ────────────────────────────────────────────────────────
     trackScrollDepth(depth: 25 | 50 | 75 | 90 | 100): void {
       tracker.track(EVENTS.SCROLL_DEPTH, { depth })
