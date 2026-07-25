@@ -75,10 +75,7 @@ import {
 import { usePageMeta } from '@/composables/usePageMeta'
 import { useScrollSpy } from '@/composables/useScrollSpy'
 import { useSectionObserver } from '@/composables/useSectionObserver'
-import { PAGE_META, DEFAULT_META } from '@/constants'
-import {
-  OWNER_NAME, OWNER_TITLE, SITE_URL, GITHUB_URL, LINKEDIN_URL,
-} from '@/config/portfolio.config'
+import { PAGE_META } from '@/constants'
 
 // ── Eager (above-the-fold) ─────────────────────────────────────
 import HeroSection from '@/components/sections/home/HeroSection.vue'
@@ -164,35 +161,7 @@ onMounted(() => {
 onUnmounted(() => {})
 
 // ── SEO / <head> ───────────────────────────────────────────────
-const meta = PAGE_META['home']
-usePageMeta({
-  title: meta.title,
-  canonical: 'https://yashranjan.dev/',
-  meta: [
-    { name: 'description',         content: meta.description ?? '' },
-    { name: 'keywords',            content: DEFAULT_META.keywords ?? '' },
-    { name: 'robots',              content: 'index, follow' },
-    { property: 'og:type',         content: 'website' },
-    { property: 'og:title',        content: meta.title ?? '' },
-    { property: 'og:description',  content: meta.description ?? '' },
-    { property: 'og:image',        content: DEFAULT_META.ogImage ?? '' },
-    { name: 'twitter:card',        content: 'summary_large_image' },
-    { name: 'twitter:title',       content: meta.title ?? '' },
-    { name: 'twitter:description', content: meta.description ?? '' },
-  ],
-  jsonLd: {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: OWNER_NAME,
-    jobTitle: OWNER_TITLE,
-    url: SITE_URL,
-    sameAs: [
-      GITHUB_URL,
-      LINKEDIN_URL,
-    ],
-    knowsAbout: ['Java', 'Spring Boot', 'Vue.js', 'AWS', 'PostgreSQL'],
-  },
-})
+usePageMeta(PAGE_META['home'])
 </script>
 
 <script lang="ts">

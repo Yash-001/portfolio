@@ -52,16 +52,11 @@
 <script setup lang="ts">
 import { usePageMeta } from '@/composables/usePageMeta'
 import { useLocale } from '@/composables/useLocale'
+import { PAGE_META } from '@/constants'
 
 const { t } = useLocale()
 
-usePageMeta({
-  title: '404 — Page Not Found | Yash Ranjan',
-  meta: [
-    { name: 'description', content: 'The page you are looking for does not exist.' },
-    { name: 'robots', content: 'noindex, nofollow' },
-  ],
-})
+usePageMeta(PAGE_META['not-found'])
 </script>
 
 <style scoped>

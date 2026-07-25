@@ -5,4 +5,6 @@ export {
   SEO_OG_IMAGE,
   DEFAULT_META,
   PAGE_META,
+  blogPostMeta,
+  projectDetailMeta,
 } from '@/content/seo'

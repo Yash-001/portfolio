@@ -113,6 +113,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { BLOG_POSTS, BLOG_CATEGORY_CONFIG } from '@/constants/blog.constants'
 import { usePageMeta } from '@/composables/usePageMeta'
+import { blogPostMeta } from '@/content/seo'
 
 const route = useRoute()
 const slug  = computed(() => route.params.slug as string)
@@ -136,15 +137,7 @@ const categoryStyle = computed(() => {
   return { color: c.color, background: c.bg, borderColor: `${c.color}33` }
 })
 
-usePageMeta({
-  title: post.value ? `${post.value.title} | Yash Ranjan` : 'Article Not Found | Yash Ranjan',
-  meta: [
-    { name: 'description', content: post.value?.excerpt ?? 'Blog post not found.' },
-    { name: 'robots', content: post.value ? 'index, follow' : 'noindex, nofollow' },
-    { property: 'og:title', content: post.value?.title ?? 'Article Not Found' },
-    { property: 'og:description', content: post.value?.excerpt ?? '' },
-  ],
-})
+usePageMeta(blogPostMeta(post.value))
 </script>
 
 <style scoped>

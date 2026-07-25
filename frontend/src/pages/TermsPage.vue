@@ -44,14 +44,9 @@
 <script setup lang="ts">
 import { APP_EMAIL } from '@/constants'
 import { usePageMeta } from '@/composables/usePageMeta'
+import { PAGE_META } from '@/constants'
 
-usePageMeta({
-  title: 'Terms of Use | Yash Ranjan',
-  meta: [
-    { name: 'description', content: 'Terms of use for yashranjan.dev.' },
-    { name: 'robots', content: 'noindex, nofollow' },
-  ],
-})
+usePageMeta(PAGE_META['terms'])
 </script>
 
 <style scoped>

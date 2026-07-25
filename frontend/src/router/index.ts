@@ -20,10 +20,12 @@ export const isNavigating = ref(false)
 function meta(key: keyof typeof PAGE_META, overrides: Partial<RouteMeta> = {}): RouteMeta {
   const m = PAGE_META[key]
   return {
-    title:       m.title,
-    description: m.description,
-    ogImage:     m.ogImage     ?? DEFAULT_META.ogImage,
-    transition:  'page',
+    title:        m.title,
+    description:  m.description,
+    ogImage:      m.ogImage      ?? DEFAULT_META.ogImage,
+    canonical:    m.canonical,
+    noIndex:      m.noIndex,
+    transition:   'page',
     ...overrides,
   }
 }
@@ -40,8 +42,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'services',    name: 'services',      component: () => import('@/pages/ServicesPage.vue'),                meta: meta('services') },
       { path: 'testimonials',name: 'testimonials',  component: () => import('@/pages/TestimonialsPage.vue'),            meta: meta('testimonials') },
       { path: 'contact',     name: 'contact',       component: () => import('@/pages/ContactPage.vue'),                 meta: meta('contact') },
-      { path: 'privacy',     name: 'privacy',       component: () => import('@/pages/PrivacyPage.vue'),                 meta: { title: 'Privacy Policy | Yash Ranjan', description: 'Privacy policy.', noIndex: true, transition: 'page' } },
-      { path: 'terms',       name: 'terms',         component: () => import('@/pages/TermsPage.vue'),                   meta: { title: 'Terms of Use | Yash Ranjan',   description: 'Terms of use.',   noIndex: true, transition: 'page' } },
+      { path: 'privacy',     name: 'privacy',       component: () => import('@/pages/PrivacyPage.vue'),                 meta: meta('privacy') },
+      { path: 'terms',       name: 'terms',         component: () => import('@/pages/TermsPage.vue'),                   meta: meta('terms') },
       {
         path: 'projects',
         name: 'projects',
@@ -52,7 +54,7 @@ const routes: RouteRecordRaw[] = [
             path: ':slug',
             name: 'project-detail',
             component: () => import('@/pages/projects/ProjectDetailPage.vue'),
-            meta: { title: 'Project | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' },
+            meta: { title: 'Project | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' }, // overridden dynamically in ProjectDetailPage
           },
         ],
       },
@@ -66,7 +68,7 @@ const routes: RouteRecordRaw[] = [
             path: ':slug',
             name: 'blog-post',
             component: () => import('@/pages/BlogPostPage.vue'),
-            meta: { title: 'Blog | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' },
+            meta: { title: 'Blog | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' }, // overridden dynamically in BlogPostPage
           },
         ],
       },
@@ -76,7 +78,7 @@ const routes: RouteRecordRaw[] = [
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/pages/NotFoundPage.vue'),
-    meta: { title: '404 | Yash Ranjan', description: 'Page not found.', noIndex: true, transition: 'page' },
+    meta: meta('not-found'),
   },
 ]
 

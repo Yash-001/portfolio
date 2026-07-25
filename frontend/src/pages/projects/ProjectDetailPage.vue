@@ -232,6 +232,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { PROJECTS, PROJECT_CATEGORY_CONFIG, PROJECT_GRADIENT } from '@/constants'
 import { usePageMeta } from '@/composables/usePageMeta'
+import { projectDetailMeta } from '@/content/seo'
 
 const route   = useRoute()
 const slug    = computed(() => route.params.slug as string)
@@ -246,15 +247,7 @@ const categoryStyle = computed(() => ({
   borderColor: `${catConfig.value.color}44`,
 }))
 
-usePageMeta({
-  title: project.value ? `${project.value.title} | Yash Ranjan` : 'Project Not Found | Yash Ranjan',
-  meta: [
-    { name: 'description', content: project.value?.description ?? 'Project not found.' },
-    { name: 'robots', content: project.value ? 'index, follow' : 'noindex, nofollow' },
-    { property: 'og:title', content: project.value?.title ?? 'Project Not Found' },
-    { property: 'og:description', content: project.value?.description ?? '' },
-  ],
-})
+usePageMeta(projectDetailMeta(project.value))
 </script>
 
 <style scoped>
