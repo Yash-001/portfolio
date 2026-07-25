@@ -145,7 +145,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { Experience } from '@/types'
-import { EXPERIENCE_TYPE_CONFIG } from '@/constants'
 
 const props = defineProps<{ experience: Experience }>()
 
@@ -180,7 +179,7 @@ const tenure = computed(() => {
   return `${years}yr ${rem}mo`
 })
 
-const typeConfig = computed(() => EXPERIENCE_TYPE_CONFIG[props.experience.type])
+const typeConfig = computed(() => props.experience.typeConfig)
 
 // ── 3D tilt + glow ────────────────────────────────────────────────
 const cardEl   = ref<HTMLElement | null>(null)

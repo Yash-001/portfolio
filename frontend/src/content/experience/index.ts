@@ -1,6 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // src/content/experience/index.ts
-// Work history and employment type config.
+// Single source of truth for all work experience.
+// Each Experience is self-contained — typeConfig lives on the entry.
+// EXPERIENCE_TYPE_CONFIG is derived — never edited manually.
+// To add a role: add one object to EXPERIENCES. Nothing else.
 // ─────────────────────────────────────────────────────────────────────────────
 import type { Experience } from '@/types'
 
@@ -12,6 +15,7 @@ export const EXPERIENCES: Experience[] = [
     companyUrl: '',
     location: 'Remote — India',
     type: 'freelance',
+    typeConfig: { label: 'Freelance', color: '#10b981', bg: 'rgba(16,185,129,0.1)' },
     startDate: '2023-01',
     endDate: 'present',
     current: true,
@@ -38,6 +42,7 @@ export const EXPERIENCES: Experience[] = [
     companyUrl: '',
     location: 'Pune, India',
     type: 'full-time',
+    typeConfig: { label: 'Full-time', color: '#6366f1', bg: 'rgba(99,102,241,0.1)' },
     startDate: '2021-03',
     endDate: '2022-12',
     current: false,
@@ -64,6 +69,7 @@ export const EXPERIENCES: Experience[] = [
     companyUrl: '',
     location: 'Mumbai, India',
     type: 'full-time',
+    typeConfig: { label: 'Full-time', color: '#6366f1', bg: 'rgba(99,102,241,0.1)' },
     startDate: '2019-06',
     endDate: '2021-02',
     current: false,
@@ -90,6 +96,7 @@ export const EXPERIENCES: Experience[] = [
     companyUrl: '',
     location: 'Bangalore, India',
     type: 'full-time',
+    typeConfig: { label: 'Full-time', color: '#6366f1', bg: 'rgba(99,102,241,0.1)' },
     startDate: '2017-07',
     endDate: '2019-05',
     current: false,
@@ -110,9 +117,7 @@ export const EXPERIENCES: Experience[] = [
   },
 ]
 
-export const EXPERIENCE_TYPE_CONFIG = {
-  'full-time':  { label: 'Full-time',  color: '#6366f1', bg: 'rgba(99,102,241,0.1)'  },
-  'contract':   { label: 'Contract',   color: '#f59e0b', bg: 'rgba(245,158,11,0.1)'  },
-  'freelance':  { label: 'Freelance',  color: '#10b981', bg: 'rgba(16,185,129,0.1)'  },
-  'part-time':  { label: 'Part-time',  color: '#22d3ee', bg: 'rgba(34,211,238,0.1)'  },
-} as const
+// ── Derived map — never edit manually ────────────────────────────────────────
+export const EXPERIENCE_TYPE_CONFIG = Object.fromEntries(
+  EXPERIENCES.map(e => [e.type, e.typeConfig])
+) as Record<string, Experience['typeConfig']>

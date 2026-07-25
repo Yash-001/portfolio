@@ -7,6 +7,12 @@ export interface ExperienceHighlight {
   text: string
 }
 
+export interface ExperienceTypeConfig {
+  label: string
+  color: string
+  bg: string
+}
+
 export interface Experience {
   id: string
   role: string
@@ -14,6 +20,7 @@ export interface Experience {
   companyUrl?: string
   location: string
   type: 'full-time' | 'contract' | 'freelance' | 'part-time'
+  typeConfig: ExperienceTypeConfig
   startDate: string
   endDate: string | 'present'
   current: boolean
