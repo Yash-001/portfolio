@@ -1,12 +1,15 @@
 export type SkillLevel = 'expert' | 'advanced' | 'intermediate' | 'learning'
+
 export type SkillCategory =
-  | 'backend'
-  | 'database'
-  | 'cloud'
   | 'frontend'
-  | 'devops'
-  | 'tools'
+  | 'backend'
+  | 'cloud'
   | 'ai'
+  | 'database'
+  | 'devops'
+  | 'testing'
+  | 'architecture'
+  | 'soft-skills'
 
 export interface Skill {
   id: string
@@ -19,10 +22,17 @@ export interface Skill {
   featured: boolean
 }
 
+export interface SkillGradient {
+  from: string
+  to: string
+  glow: string
+}
+
 export interface SkillGroup {
   category: SkillCategory
   label: string
   description: string
   icon: string
+  gradient: SkillGradient
   skills: Skill[]
 }

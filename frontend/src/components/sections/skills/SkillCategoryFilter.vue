@@ -26,7 +26,7 @@
       :aria-selected="modelValue === group.category"
       class="filter-pill"
       :class="{ 'filter-pill--active': modelValue === group.category }"
-      :style="modelValue === group.category ? activePillStyle(group.category) : {}"
+      :style="modelValue === group.category ? activePillStyle(group) : {}"
       @click="emit('update:modelValue', group.category)"
     >
       <i :class="group.icon" />
@@ -37,7 +37,6 @@
 
 <script setup lang="ts">
 import type { SkillGroup, SkillCategory } from '@/types'
-import { CATEGORY_COLORS } from '@/constants'
 
 defineProps<{
   groups: SkillGroup[]
@@ -48,8 +47,8 @@ const emit = defineEmits<{
   'update:modelValue': [value: SkillCategory | 'all']
 }>()
 
-function activePillStyle(category: string) {
-  const c = CATEGORY_COLORS[category]
+function activePillStyle(group: SkillGroup) {
+  const c = group.gradient
   return {
     background:  `linear-gradient(135deg, ${c.from}22, ${c.to}11)`,
     borderColor: `${c.from}55`,

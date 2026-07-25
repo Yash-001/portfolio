@@ -130,7 +130,7 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
 import type { SkillGroup } from '@/types'
-import { SKILL_LEVEL_CONFIG, CATEGORY_COLORS } from '@/constants'
+import { SKILL_LEVEL_CONFIG } from '@/constants'
 
 const props = defineProps<{ group: SkillGroup }>()
 
@@ -141,7 +141,7 @@ const LEVEL_WIDTH: Record<string, string> = {
   learning:     '35%',
 }
 
-const colors  = computed(() => CATEGORY_COLORS[props.group.category])
+const colors   = computed(() => props.group.gradient)
 const maxYears = computed(() => Math.max(...props.group.skills.map((s) => s.yearsOfExperience)))
 
 // ── 3D tilt ──────────────────────────────────────────────────────

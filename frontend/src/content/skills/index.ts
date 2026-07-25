@@ -1,59 +1,21 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // src/content/skills/index.ts
-// All skill groups, level config, and category colour tokens.
+// Single source of truth for all skills.
+// Each SkillGroup is self-contained — gradient lives on the group.
+// CATEGORY_COLORS and SKILL_LEVEL_CONFIG are derived — never edited manually.
+// To add a skill: add one object to the relevant group's skills array.
+// To add a category: add one SkillGroup object. Nothing else.
 // ─────────────────────────────────────────────────────────────────────────────
 import type { SkillGroup } from '@/types'
 
 export const SKILL_GROUPS: SkillGroup[] = [
-  {
-    category: 'backend',
-    label: 'Backend',
-    description: 'The core. Where business logic lives, performance is won or lost, and bad decisions compound for years.',
-    icon: 'pi pi-server',
-    skills: [
-      {
-        id: 'java',
-        name: 'Java 21',
-        category: 'backend',
-        level: 'expert',
-        yearsOfExperience: 7,
-        context: 'Virtual threads, records, sealed classes. Primary language across every enterprise system I\'ve shipped.',
-        featured: true,
-      },
-      {
-        id: 'spring-boot',
-        name: 'Spring Boot',
-        category: 'backend',
-        level: 'expert',
-        yearsOfExperience: 6,
-        context: 'Spring Security, Data JPA, WebFlux, Batch. Built multi-tenant platforms and high-throughput APIs.',
-        featured: true,
-      },
-      {
-        id: 'rest-apis',
-        name: 'REST APIs',
-        category: 'backend',
-        level: 'expert',
-        yearsOfExperience: 7,
-        context: 'Versioning, pagination, error contracts, OpenAPI docs. Designed APIs consumed by 6+ enterprise clients.',
-        featured: false,
-      },
-      {
-        id: 'microservices',
-        name: 'Microservices',
-        category: 'backend',
-        level: 'advanced',
-        yearsOfExperience: 4,
-        context: 'Service decomposition, inter-service communication, distributed tracing, saga patterns.',
-        featured: false,
-      },
-    ],
-  },
+  // ── Frontend ───────────────────────────────────────────────────────────────
   {
     category: 'frontend',
     label: 'Frontend',
     description: 'I build the UI that clients actually use — fast, accessible, and precise enough that nobody notices the engineering.',
     icon: 'pi pi-desktop',
+    gradient: { from: '#06b6d4', to: '#6366f1', glow: 'rgba(6,182,212,0.2)' },
     skills: [
       {
         id: 'vue',
@@ -100,30 +62,210 @@ export const SKILL_GROUPS: SkillGroup[] = [
         context: 'Custom themes, PassThrough API, enterprise component systems.',
         featured: false,
       },
+      {
+        id: 'tailwind',
+        name: 'Tailwind CSS',
+        category: 'frontend',
+        level: 'advanced',
+        yearsOfExperience: 3,
+        context: 'Utility-first styling, custom design systems, responsive layouts.',
+        featured: false,
+      },
+      {
+        id: 'gsap',
+        name: 'GSAP',
+        category: 'frontend',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'ScrollTrigger, timelines, entrance animations, performance-safe motion.',
+        featured: false,
+      },
     ],
   },
+
+  // ── Backend ────────────────────────────────────────────────────────────────
   {
-    category: 'database',
-    label: 'Database',
-    description: 'Data modelling is where most systems quietly fail. I treat schema design as a first-class engineering decision.',
-    icon: 'pi pi-database',
+    category: 'backend',
+    label: 'Backend',
+    description: 'The core. Where business logic lives, performance is won or lost, and bad decisions compound for years.',
+    icon: 'pi pi-server',
+    gradient: { from: '#6366f1', to: '#8b5cf6', glow: 'rgba(99,102,241,0.2)' },
     skills: [
       {
-        id: 'bigquery',
-        name: 'BigQuery',
-        category: 'database',
+        id: 'java',
+        name: 'Java 21',
+        category: 'backend',
         level: 'expert',
-        yearsOfExperience: 4,
-        context: 'Large-scale analytics, SQL optimisation, partitioning, ETL, dashboards.',
+        yearsOfExperience: 7,
+        context: 'Virtual threads, records, sealed classes. Primary language across every enterprise system I\'ve shipped.',
         featured: true,
       },
+      {
+        id: 'spring-boot',
+        name: 'Spring Boot',
+        category: 'backend',
+        level: 'expert',
+        yearsOfExperience: 6,
+        context: 'Spring Security, Data JPA, WebFlux, Batch. Built multi-tenant platforms and high-throughput APIs.',
+        featured: true,
+      },
+      {
+        id: 'spring-batch',
+        name: 'Spring Batch',
+        category: 'backend',
+        level: 'advanced',
+        yearsOfExperience: 4,
+        context: 'Parallel chunk processing, job restartability, large-scale ETL pipelines.',
+        featured: false,
+      },
+      {
+        id: 'rest-apis',
+        name: 'REST APIs',
+        category: 'backend',
+        level: 'expert',
+        yearsOfExperience: 7,
+        context: 'Versioning, pagination, error contracts (RFC 7807), OpenAPI docs. Designed APIs consumed by 6+ enterprise clients.',
+        featured: false,
+      },
+      {
+        id: 'kafka',
+        name: 'Apache Kafka',
+        category: 'backend',
+        level: 'advanced',
+        yearsOfExperience: 3,
+        context: 'Event streaming, partitioning strategies, consumer groups, exactly-once semantics.',
+        featured: true,
+      },
+      {
+        id: 'redis',
+        name: 'Redis',
+        category: 'backend',
+        level: 'advanced',
+        yearsOfExperience: 4,
+        context: 'Caching, distributed locking, pub/sub, rate limiting, session storage.',
+        featured: false,
+      },
+      {
+        id: 'microservices',
+        name: 'Microservices',
+        category: 'backend',
+        level: 'advanced',
+        yearsOfExperience: 4,
+        context: 'Service decomposition, inter-service communication, distributed tracing, saga patterns.',
+        featured: false,
+      },
+    ],
+  },
+
+  // ── Cloud ──────────────────────────────────────────────────────────────────
+  {
+    category: 'cloud',
+    label: 'Cloud',
+    description: 'Infrastructure is code. I design for resilience, cost efficiency, and the ability to scale without a rewrite.',
+    icon: 'pi pi-cloud',
+    gradient: { from: '#f59e0b', to: '#ef4444', glow: 'rgba(245,158,11,0.2)' },
+    skills: [
+      {
+        id: 'aws',
+        name: 'AWS',
+        category: 'cloud',
+        level: 'intermediate',
+        yearsOfExperience: 3,
+        context: 'EC2, ECS Fargate, EKS, Lambda, RDS, S3, CloudFront, SQS, SNS, IAM, VPC. 3 production deployments.',
+        featured: true,
+      },
+      {
+        id: 'gcp',
+        name: 'Google Cloud',
+        category: 'cloud',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'Cloud Run, Compute Engine, Cloud Storage, BigQuery, IAM, Cloud Functions.',
+        featured: true,
+      },
+      {
+        id: 'terraform',
+        name: 'Terraform',
+        category: 'cloud',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'IaC for AWS resources — ECS, RDS, ElastiCache, CloudFront, Route 53.',
+        featured: false,
+      },
+      {
+        id: 'nginx',
+        name: 'Nginx',
+        category: 'cloud',
+        level: 'advanced',
+        yearsOfExperience: 4,
+        context: 'Reverse proxy, load balancing, SSL termination, rate limiting.',
+        featured: false,
+      },
+    ],
+  },
+
+  // ── AI & LLMs ──────────────────────────────────────────────────────────────
+  {
+    category: 'ai',
+    label: 'AI & LLMs',
+    description: 'Not a buzzword — a genuine force multiplier. I integrate AI where it eliminates toil and keeps judgment human.',
+    icon: 'pi pi-microchip-ai',
+    gradient: { from: '#22d3ee', to: '#10b981', glow: 'rgba(34,211,238,0.2)' },
+    skills: [
+      {
+        id: 'openai',
+        name: 'OpenAI API',
+        category: 'ai',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'GPT-4o, embeddings, function calling, RAG pipelines, token optimisation.',
+        featured: true,
+      },
+      {
+        id: 'langchain',
+        name: 'LangChain',
+        category: 'ai',
+        level: 'learning',
+        yearsOfExperience: 1,
+        context: 'Chains, agents, document loaders, vector store integrations.',
+        featured: false,
+      },
+      {
+        id: 'pgvector',
+        name: 'pgvector',
+        category: 'ai',
+        level: 'intermediate',
+        yearsOfExperience: 1,
+        context: 'Semantic search, embedding storage, similarity queries in PostgreSQL.',
+        featured: false,
+      },
+      {
+        id: 'prompt-engineering',
+        name: 'Prompt Engineering',
+        category: 'ai',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'Structured output, few-shot prompting, chain-of-thought, cost optimisation.',
+        featured: false,
+      },
+    ],
+  },
+
+  // ── Databases ──────────────────────────────────────────────────────────────
+  {
+    category: 'database',
+    label: 'Databases',
+    description: 'Data modelling is where most systems quietly fail. I treat schema design as a first-class engineering decision.',
+    icon: 'pi pi-database',
+    gradient: { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.2)' },
+    skills: [
       {
         id: 'postgresql',
         name: 'PostgreSQL',
         category: 'database',
         level: 'advanced',
         yearsOfExperience: 4,
-        context: 'Query optimisation, indexing strategies, partitioning, JSONB, window functions.',
+        context: 'Query optimisation, indexing strategies, partitioning, JSONB, window functions, RLS.',
         featured: true,
       },
       {
@@ -144,39 +286,34 @@ export const SKILL_GROUPS: SkillGroup[] = [
         context: 'PL/SQL, execution plans, AWR reports, enterprise data warehousing.',
         featured: true,
       },
-    ],
-  },
-  {
-    category: 'cloud',
-    label: 'Google Cloud & AWS',
-    description: 'Infrastructure is code. I design for resilience, cost efficiency, and the ability to scale without a rewrite.',
-    icon: 'pi pi-cloud',
-    skills: [
       {
-        id: 'gcp',
-        name: 'Google Cloud',
-        category: 'cloud',
-        level: 'intermediate',
-        yearsOfExperience: 2,
-        context: 'Cloud Run, Compute Engine, Cloud Storage, IAM, Cloud Functions.',
+        id: 'bigquery',
+        name: 'BigQuery',
+        category: 'database',
+        level: 'expert',
+        yearsOfExperience: 4,
+        context: 'Large-scale analytics, SQL optimisation, partitioning, ETL, dashboards.',
         featured: true,
       },
       {
-        id: 'aws',
-        name: 'AWS',
-        category: 'cloud',
+        id: 'mongodb',
+        name: 'MongoDB',
+        category: 'database',
         level: 'intermediate',
         yearsOfExperience: 2,
-        context: 'EC2, ECS, Lambda, RDS, S3, CloudFront, SQS, SNS, IAM, VPC. 3 production cloud deployments.',
-        featured: true,
+        context: 'Document modelling, aggregation pipelines, indexing, Atlas.',
+        featured: false,
       },
     ],
   },
+
+  // ── DevOps ─────────────────────────────────────────────────────────────────
   {
     category: 'devops',
     label: 'DevOps',
     description: 'Shipping is a feature. I own the pipeline from commit to production — fast, repeatable, and observable.',
     icon: 'pi pi-cog',
+    gradient: { from: '#8b5cf6', to: '#ec4899', glow: 'rgba(139,92,246,0.2)' },
     skills: [
       {
         id: 'docker',
@@ -223,35 +360,10 @@ export const SKILL_GROUPS: SkillGroup[] = [
         context: 'Multi-module projects, custom plugins, release management.',
         featured: false,
       },
-    ],
-  },
-  {
-    category: 'ai',
-    label: 'AI & LLMs',
-    description: 'Not a buzzword — a genuine force multiplier. I integrate AI where it eliminates toil and keeps judgment human.',
-    icon: 'pi pi-microchip-ai',
-    skills: [
-      {
-        id: 'openai',
-        name: 'OpenAI API',
-        category: 'ai',
-        level: 'intermediate',
-        yearsOfExperience: 2,
-        context: 'GPT-4o, embeddings, function calling, RAG pipelines, token optimisation.',
-        featured: true,
-      },
-    ],
-  },
-  {
-    category: 'tools',
-    label: 'Tools',
-    description: 'The craft layer — version control, collaboration, and the habits that keep a codebase healthy over years.',
-    icon: 'pi pi-wrench',
-    skills: [
       {
         id: 'git',
         name: 'Git',
-        category: 'tools',
+        category: 'devops',
         level: 'expert',
         yearsOfExperience: 7,
         context: 'Branching strategies, rebase workflows, bisect, reflog. Git is a thinking tool, not just version control.',
@@ -259,7 +371,172 @@ export const SKILL_GROUPS: SkillGroup[] = [
       },
     ],
   },
+
+  // ── Testing ────────────────────────────────────────────────────────────────
+  {
+    category: 'testing',
+    label: 'Testing',
+    description: 'Tests are the only proof that software does what you think it does. I write them before they\'re asked for.',
+    icon: 'pi pi-check-circle',
+    gradient: { from: '#a78bfa', to: '#6366f1', glow: 'rgba(167,139,250,0.2)' },
+    skills: [
+      {
+        id: 'junit',
+        name: 'JUnit 5',
+        category: 'testing',
+        level: 'expert',
+        yearsOfExperience: 6,
+        context: 'Parameterised tests, extensions, lifecycle hooks, nested test classes.',
+        featured: true,
+      },
+      {
+        id: 'mockito',
+        name: 'Mockito',
+        category: 'testing',
+        level: 'expert',
+        yearsOfExperience: 6,
+        context: 'Mocking, stubbing, argument captors, spy objects, verification.',
+        featured: true,
+      },
+      {
+        id: 'testcontainers',
+        name: 'Testcontainers',
+        category: 'testing',
+        level: 'advanced',
+        yearsOfExperience: 3,
+        context: 'Integration tests against real PostgreSQL, Kafka, Redis instances in CI.',
+        featured: false,
+      },
+      {
+        id: 'pact',
+        name: 'Pact',
+        category: 'testing',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'Consumer-driven contract testing. Caught 3 breaking API changes before production.',
+        featured: false,
+      },
+      {
+        id: 'vitest',
+        name: 'Vitest',
+        category: 'testing',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'Unit and component testing for Vue 3 applications.',
+        featured: false,
+      },
+    ],
+  },
+
+  // ── Architecture ───────────────────────────────────────────────────────────
+  {
+    category: 'architecture',
+    label: 'Architecture',
+    description: 'Good architecture is invisible. Bad architecture is all you talk about. I\'ve learned the difference the hard way.',
+    icon: 'pi pi-sitemap',
+    gradient: { from: '#f97316', to: '#f59e0b', glow: 'rgba(249,115,22,0.2)' },
+    skills: [
+      {
+        id: 'domain-driven-design',
+        name: 'Domain-Driven Design',
+        category: 'architecture',
+        level: 'advanced',
+        yearsOfExperience: 4,
+        context: 'Bounded contexts, aggregates, domain events, ubiquitous language.',
+        featured: true,
+      },
+      {
+        id: 'event-sourcing',
+        name: 'Event Sourcing',
+        category: 'architecture',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'Append-only event logs, projections, replay capability, audit trails.',
+        featured: true,
+      },
+      {
+        id: 'cqrs',
+        name: 'CQRS',
+        category: 'architecture',
+        level: 'intermediate',
+        yearsOfExperience: 2,
+        context: 'Command/query separation, read model optimisation, eventual consistency.',
+        featured: false,
+      },
+      {
+        id: 'multi-tenancy',
+        name: 'Multi-Tenancy',
+        category: 'architecture',
+        level: 'advanced',
+        yearsOfExperience: 3,
+        context: 'Shared-schema with RLS, schema-per-tenant, data isolation patterns.',
+        featured: true,
+      },
+      {
+        id: 'api-design',
+        name: 'API Design',
+        category: 'architecture',
+        level: 'expert',
+        yearsOfExperience: 7,
+        context: 'RESTful conventions, versioning strategies, backward compatibility, OpenAPI.',
+        featured: false,
+      },
+    ],
+  },
+
+  // ── Soft Skills ────────────────────────────────────────────────────────────
+  {
+    category: 'soft-skills',
+    label: 'Soft Skills',
+    description: 'Technical skill gets you hired. Communication, ownership, and judgment are what make you irreplaceable.',
+    icon: 'pi pi-users',
+    gradient: { from: '#ec4899', to: '#8b5cf6', glow: 'rgba(236,72,153,0.2)' },
+    skills: [
+      {
+        id: 'technical-communication',
+        name: 'Technical Communication',
+        category: 'soft-skills',
+        level: 'expert',
+        yearsOfExperience: 7,
+        context: 'Writing ADRs, RFCs, post-mortems, and technical specs that non-engineers can act on.',
+        featured: true,
+      },
+      {
+        id: 'client-management',
+        name: 'Client Management',
+        category: 'soft-skills',
+        level: 'advanced',
+        yearsOfExperience: 4,
+        context: 'Scoping engagements, managing expectations, delivering hard news early.',
+        featured: true,
+      },
+      {
+        id: 'mentoring',
+        name: 'Mentoring',
+        category: 'soft-skills',
+        level: 'advanced',
+        yearsOfExperience: 3,
+        context: 'Code reviews, pair programming, establishing team engineering standards.',
+        featured: false,
+      },
+      {
+        id: 'problem-decomposition',
+        name: 'Problem Decomposition',
+        category: 'soft-skills',
+        level: 'expert',
+        yearsOfExperience: 7,
+        context: 'Breaking ambiguous requirements into shippable increments without losing the big picture.',
+        featured: false,
+      },
+    ],
+  },
 ]
+
+// ── Derived maps — never edit these manually ──────────────────────────────────
+
+export const CATEGORY_COLORS = Object.fromEntries(
+  SKILL_GROUPS.map(g => [g.category, g.gradient])
+) as Record<string, SkillGroup['gradient']>
 
 export const SKILL_LEVEL_CONFIG = {
   expert:       { label: 'Expert',       color: '#6366f1', bg: 'rgba(99,102,241,0.12)'  },
@@ -267,13 +544,3 @@ export const SKILL_LEVEL_CONFIG = {
   intermediate: { label: 'Intermediate', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)'  },
   learning:     { label: 'Learning',     color: '#22d3ee', bg: 'rgba(34,211,238,0.12)'  },
 } as const
-
-export const CATEGORY_COLORS: Record<string, { from: string; to: string; glow: string }> = {
-  backend:  { from: '#6366f1', to: '#8b5cf6', glow: 'rgba(99,102,241,0.2)'  },
-  frontend: { from: '#06b6d4', to: '#6366f1', glow: 'rgba(6,182,212,0.2)'   },
-  database: { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.2)'  },
-  cloud:    { from: '#f59e0b', to: '#ef4444', glow: 'rgba(245,158,11,0.2)'  },
-  devops:   { from: '#8b5cf6', to: '#ec4899', glow: 'rgba(139,92,246,0.2)'  },
-  ai:       { from: '#22d3ee', to: '#10b981', glow: 'rgba(34,211,238,0.2)'  },
-  tools:    { from: '#a78bfa', to: '#6366f1', glow: 'rgba(167,139,250,0.2)' },
-}
