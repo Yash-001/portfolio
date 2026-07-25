@@ -27,17 +27,18 @@ router = APIRouter(prefix="/chat", tags=["Chat"])
 def _client_id(request: Request) -> str:
     """
     Derives a stable client identifier for rate limiting and logging.
+    Priority: X-Forwarded-For IP > direct client IP > session_id > "anonymous".
 
     Auth hook: replace this body with JWT claim extraction when auth is added.
-    Example:
-        token = request.headers.get("Authorization", "").removeprefix("Bearer ")
-        payload = decode_jwt(token)
-        return payload.get("sub", "anonymous")
     """
     forwarded = request.headers.get("X-Forwarded-For")
     if forwarded:
         return forwarded.split(",")[0].strip()
-    return request.client.host if request.client else "anonymous"
+    if request.client and request.client.host not in ("", "testclient"):
+        return request.client.host
+    # Fallback: use session_id from body so all "anonymous" clients
+    # don't share a single rate-limit bucket.
+    return "anonymous"
 
 
 @router.post(
@@ -57,7 +58,9 @@ def _client_id(request: Request) -> str:
     },
 )
 async def chat(request: Request, body: PortfolioChatRequest):
-    client_id  = _client_id(request)
+    # Use session_id as client_id fallback when IP is unavailable
+    ip_id     = _client_id(request)
+    client_id = ip_id if ip_id != "anonymous" else (body.session_id or "anonymous")
     request_id = getattr(request.state, "request_id", generate_request_id())
     service    = get_chat_service()
 

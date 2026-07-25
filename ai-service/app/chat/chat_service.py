@@ -13,10 +13,9 @@
 
 from __future__ import annotations
 
-import json
 import logging
+import re as _re
 from collections.abc import AsyncGenerator
-from functools import lru_cache
 
 from app.chat.dtos import (
     ConversationRole,
@@ -98,8 +97,6 @@ _FOLLOW_UP_PATTERNS: list[tuple] = [
     (r"available",                ["What is his current availability?", "How do I get started?"]),
 ]
 
-import re as _re
-
 
 def _generate_follow_ups(content: str) -> list[str]:
     """Recruiter-oriented follow-up suggestions based on the assistant's reply."""
@@ -135,8 +132,23 @@ def _to_provider_messages(
         )
         messages.append(ChatMessage(role=role, content=turn.content))
 
-    messages.append(ChatMessage(role=MessageRole.USER, content=request.message))
+    messages.append(ChatMessage(role=MessageRole.USER, content=_sanitize_message(request.message)))
     return messages
+
+
+# ── Prompt injection guard ────────────────────────────────────────────────────
+# Strip attempts to override the system prompt via bracket-prefixed injections.
+_INJECTION_PATTERN = _re.compile(
+    r'\[\s*(context|system|instruction|ignore|override|prompt)[^\]]*\]',
+    _re.IGNORECASE,
+)
+
+
+def _sanitize_message(message: str) -> str:
+    """Remove prompt injection attempts from user messages."""
+    sanitized = _INJECTION_PATTERN.sub('', message).strip()
+    # Truncate to hard limit regardless of DTO validation (defence in depth)
+    return sanitized[:4_500]
 
 
 def _build_chat_request(

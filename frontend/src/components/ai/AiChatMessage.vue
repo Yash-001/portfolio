@@ -2,7 +2,7 @@
   <div
     class="ai-msg"
     :class="[`ai-msg--${message.role}`, `ai-msg--${message.status}`]"
-    :aria-label="`${message.role === 'user' ? 'You' : 'Assistant'}: ${message.content}`"
+    :aria-label="message.role === 'user' ? 'Your message' : 'Assistant reply'"
   >
     <!-- Avatar -->
     <div class="ai-msg__avatar" aria-hidden="true">
@@ -17,11 +17,11 @@
     <!-- Bubble -->
     <div class="ai-msg__bubble">
       <!-- Streaming skeleton -->
-      <div v-if="message.status === 'streaming' && !message.content" class="ai-msg__typing">
+      <div v-if="message.status === 'streaming' && !message.content" class="ai-msg__typing" aria-label="Assistant is typing">
         <span /><span /><span />
       </div>
 
-      <!-- Content -->
+      <!-- Content — sanitized before render -->
       <div
         v-else-if="message.content"
         class="ai-msg__content prose"
@@ -29,8 +29,8 @@
       />
 
       <!-- Error state -->
-      <div v-if="message.status === 'error'" class="ai-msg__error">
-        <i class="pi pi-exclamation-triangle" />
+      <div v-if="message.status === 'error'" class="ai-msg__error" role="alert">
+        <i class="pi pi-exclamation-triangle" aria-hidden="true" />
         <span>{{ message.error || 'Something went wrong.' }}</span>
       </div>
 
@@ -49,33 +49,54 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { marked } from 'marked'
+import { marked, Renderer } from 'marked'
+import DOMPurify from 'dompurify'
 import hljs from 'highlight.js'
 import type { ChatMessageItem } from '@/stores/chat.store'
 
 const props = defineProps<{ message: ChatMessageItem }>()
 
-// Configure marked once
-marked.setOptions({
-  breaks: true,
-  gfm: true,
-})
+// ── marked setup (module-level singleton, configured once) ────────────────────
+// marked v5+ deprecates setOptions — use marked.use() instead.
+const _renderer = new Renderer()
 
-// Custom renderer for code blocks with highlight.js
-const renderer = new marked.Renderer()
-renderer.code = ({ text, lang }: { text: string; lang?: string }) => {
+_renderer.code = ({ text, lang }: { text: string; lang?: string }) => {
   const language = lang && hljs.getLanguage(lang) ? lang : 'plaintext'
   const highlighted = hljs.highlight(text, { language }).value
   return `<pre class="ai-code-block"><code class="hljs language-${language}">${highlighted}</code></pre>`
 }
-renderer.codespan = ({ text }: { text: string }) =>
+
+_renderer.codespan = ({ text }: { text: string }) =>
   `<code class="ai-inline-code">${text}</code>`
 
-marked.use({ renderer })
+// Link renderer: force target=_blank + rel=noopener for security
+_renderer.link = ({ href, title, text }: { href: string; title?: string | null; text: string }) => {
+  const safeHref = href?.startsWith('javascript:') ? '#' : (href ?? '#')
+  const titleAttr = title ? ` title="${title}"` : ''
+  return `<a href="${safeHref}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`
+}
+
+marked.use({ renderer: _renderer, breaks: true, gfm: true })
+
+// DOMPurify config: allow safe HTML subset only, block all JS
+const PURIFY_CONFIG = {
+  ALLOWED_TAGS: [
+    'p', 'br', 'strong', 'em', 'b', 'i', 'u', 's',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'ul', 'ol', 'li',
+    'blockquote', 'pre', 'code',
+    'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+    'hr', 'span', 'div',
+  ] as string[],
+  ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'class', 'aria-label'] as string[],
+  ALLOW_DATA_ATTR: false,
+  FORCE_BODY: false,
+}
 
 const rendered = computed(() => {
   if (!props.message.content) return ''
-  return marked.parse(props.message.content) as string
+  const raw = marked.parse(props.message.content) as string
+  return DOMPurify.sanitize(raw, PURIFY_CONFIG)
 })
 
 const timeLabel = computed(() => {
@@ -167,6 +188,22 @@ const timeLabel = computed(() => {
   padding-left: 12px;
   margin: 8px 0;
   color: var(--text-secondary);
+}
+.ai-msg__content :deep(table) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 8px 0;
+}
+.ai-msg__content :deep(th),
+.ai-msg__content :deep(td) {
+  padding: 6px 10px;
+  border: 1px solid var(--border-default);
+  text-align: left;
+}
+.ai-msg__content :deep(th) {
+  background: var(--bg-overlay);
+  font-weight: 600;
 }
 
 /* Code blocks */

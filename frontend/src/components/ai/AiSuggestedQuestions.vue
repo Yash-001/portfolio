@@ -24,7 +24,7 @@ defineEmits<{ select: [q: string] }>()
 </script>
 
 <style scoped>
-.ai-suggestions { padding: 0 16px 4px; }
+.ai-suggestions { padding: 0 16px 4px; overflow: hidden; }
 
 .ai-suggestions__label {
   font-size: 11px;
@@ -38,6 +38,7 @@ defineEmits<{ select: [q: string] }>()
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  overflow-x: hidden;
 }
 
 .ai-suggestions__chip {

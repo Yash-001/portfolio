@@ -6,6 +6,11 @@ const AI_BASE =
   (import.meta.env.VITE_AI_SERVICE_URL as string | undefined) ||
   'http://localhost:8000'
 
+// Warn in production if the AI service URL was not explicitly configured.
+if (import.meta.env.PROD && !import.meta.env.VITE_AI_SERVICE_URL) {
+  console.warn('[AI] VITE_AI_SERVICE_URL is not set. Falling back to localhost:8000 — this will not work in production.')
+}
+
 const CHAT_URL = `${AI_BASE}/api/v1/chat`
 
 export interface ConversationMessage {
@@ -89,36 +94,41 @@ export function streamChat(
       let buffer = ''
       let lastRequestId = ''
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
 
-        buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n')
-        buffer = lines.pop() ?? ''
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n')
+          buffer = lines.pop() ?? ''
 
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue
-          const raw = line.slice(6).trim()
-          if (!raw) continue
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue
+            const raw = line.slice(6).trim()
+            if (!raw) continue
 
-          try {
-            const chunk: StreamChunk = JSON.parse(raw)
-            lastRequestId = chunk.request_id
+            try {
+              const chunk: StreamChunk = JSON.parse(raw)
+              lastRequestId = chunk.request_id
 
-            if (chunk.event === 'delta' && chunk.content) {
-              onDelta(chunk.content)
-            } else if (chunk.event === 'done') {
-              onDone(lastRequestId, chunk.suggested_questions)
-              return
-            } else if (chunk.event === 'error') {
-              onError(chunk.error || 'Stream error')
-              return
+              if (chunk.event === 'delta' && chunk.content) {
+                onDelta(chunk.content)
+              } else if (chunk.event === 'done') {
+                onDone(lastRequestId, chunk.suggested_questions)
+                return
+              } else if (chunk.event === 'error') {
+                onError(chunk.error || 'Stream error')
+                return
+              }
+            } catch {
+              // malformed chunk — skip
             }
-          } catch {
-            // malformed chunk — skip
           }
         }
+      } finally {
+        // Always release the reader lock, even on early return or abort
+        reader.releaseLock()
       }
 
       onDone(lastRequestId, undefined)

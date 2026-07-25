@@ -2,12 +2,15 @@
   <Teleport to="body">
     <Transition name="chat-dialog">
       <div
+        ref="dialogRef"
         v-if="chat.isOpen"
         class="ai-dialog"
         role="dialog"
         aria-modal="true"
         aria-label="Portfolio AI Assistant"
+        tabindex="-1"
         @keydown.esc="chat.close"
+        @keydown="trapFocus"
       >
         <!-- Header -->
         <header class="ai-dialog__header">
@@ -38,7 +41,7 @@
 
             <!-- New conversation -->
             <button
-              v-if="chat.hasMessages"
+              v-if="chat.hasMessages && !confirmingReset"
               class="ai-dialog__icon-btn"
               title="New conversation"
               aria-label="Start new conversation"
@@ -68,6 +71,15 @@
             </button>
           </div>
         </header>
+
+        <!-- Inline reset confirmation (replaces window.confirm) -->
+        <div v-if="confirmingReset" class="ai-dialog__confirm" role="alertdialog" aria-label="Confirm new conversation">
+          <p class="ai-dialog__confirm-text">Start a new conversation? Current one will be saved.</p>
+          <div class="ai-dialog__confirm-actions">
+            <button class="ai-dialog__confirm-btn ai-dialog__confirm-btn--cancel" @click="cancelReset">Cancel</button>
+            <button class="ai-dialog__confirm-btn ai-dialog__confirm-btn--ok" @click="doReset">Start new</button>
+          </div>
+        </div>
 
         <!-- Context warning for long conversations -->
         <div v-if="showContextWarning" class="ai-dialog__context-warn">
@@ -154,6 +166,8 @@ import AiSuggestedQuestions from './AiSuggestedQuestions.vue'
 const chat      = useChatStore()
 const scrollRef = ref<HTMLElement | null>(null)
 const inputRef  = ref<InstanceType<typeof AiChatInput> | null>(null)
+const dialogRef = ref<HTMLElement | null>(null)
+const confirmingReset = ref(false)
 
 const INITIAL_SUGGESTIONS = [
   'Tell me about this candidate',
@@ -180,8 +194,30 @@ function handleSuggestion(q: string) {
 }
 
 function confirmReset() {
-  if (window.confirm('Start a new conversation? The current one will be saved.')) {
-    chat.reset()
+  confirmingReset.value = true
+}
+function doReset() {
+  confirmingReset.value = false
+  chat.reset()
+}
+function cancelReset() {
+  confirmingReset.value = false
+}
+
+// ── Focus trap ────────────────────────────────────────────────────────────────
+const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+
+function trapFocus(e: KeyboardEvent) {
+  if (e.key !== 'Tab' || !dialogRef.value) return
+  const focusable = Array.from(dialogRef.value.querySelectorAll<HTMLElement>(FOCUSABLE))
+    .filter(el => !el.hasAttribute('disabled'))
+  if (!focusable.length) return
+  const first = focusable[0]
+  const last  = focusable[focusable.length - 1]
+  if (e.shiftKey) {
+    if (document.activeElement === first) { e.preventDefault(); last.focus() }
+  } else {
+    if (document.activeElement === last) { e.preventDefault(); first.focus() }
   }
 }
 
@@ -202,6 +238,7 @@ watch(
         chat.restoreSession()
       }
       nextTick(() => {
+        dialogRef.value?.focus()
         inputRef.value?.focus()
         scrollToBottom(false)
       })
@@ -438,4 +475,45 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
     border-radius: 20px 20px 0 0;
   }
 }
+
+/* Inline reset confirmation */
+.ai-dialog__confirm {
+  padding: 10px 16px 12px;
+  background: var(--bg-overlay);
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ai-dialog__confirm-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.ai-dialog__confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.ai-dialog__confirm-btn {
+  font-size: 12.5px;
+  padding: 5px 14px;
+  border-radius: 7px;
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.ai-dialog__confirm-btn--cancel {
+  background: transparent;
+  color: var(--text-secondary);
+}
+.ai-dialog__confirm-btn--cancel:hover { background: var(--bg-elevated); }
+.ai-dialog__confirm-btn--ok {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: transparent;
+}
+.ai-dialog__confirm-btn--ok:hover { opacity: 0.88; }
+.ai-dialog__confirm-btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
 </style>

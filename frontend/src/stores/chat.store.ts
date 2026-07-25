@@ -88,8 +88,12 @@ export const useChatStore = defineStore('chat', () => {
     return true
   }
 
-  // Auto-persist whenever messages change (debounced via watch)
-  watch(messages, _persistSession, { deep: true })
+  // Auto-persist only when a message reaches a terminal state (done/error),
+  // not on every streaming delta — avoids thrashing localStorage.
+  watch(
+    () => messages.value.filter(m => m.status === 'done' || m.status === 'error').length,
+    _persistSession,
+  )
 
   // ── Dialog ────────────────────────────────────────────────────────────────
   function open()   { isOpen.value = true  }
@@ -155,13 +159,19 @@ export const useChatStore = defineStore('chat', () => {
 
   // ── Retry ─────────────────────────────────────────────────────────────────
   async function retry(): Promise<void> {
-    const last = messages.value[messages.value.length - 1]
+    const msgs = messages.value
+    const lastIdx = msgs.length - 1
+    if (lastIdx < 0) return
+    const last = msgs[lastIdx]
     if (!last || last.role !== 'assistant' || last.status !== 'error') return
 
-    const userMsg = [...messages.value].reverse().find(m => m.role === 'user')
+    // Find the user message immediately before this assistant message
+    const userMsg = lastIdx > 0 && msgs[lastIdx - 1].role === 'user'
+      ? msgs[lastIdx - 1]
+      : null
     if (!userMsg) return
 
-    messages.value.pop()
+    messages.value.pop() // remove failed assistant message
     await send(userMsg.content)
   }
 
