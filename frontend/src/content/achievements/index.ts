@@ -11,5 +11,6 @@ export const ACHIEVEMENTS: Achievement[] = [
   //   description: 'Contributed performance fix to Spring Boot accepted in v3.2',
   //   year: 2023,
   //   icon: 'pi pi-github',
+  //   image: '/media/achievements/open-source-contrib.jpg',
   // },
 ]

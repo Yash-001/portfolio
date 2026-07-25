@@ -6,5 +6,6 @@ export interface Achievement {
   description: string
   year: number
   icon?: string
+  image?: string
   url?: string
 }

@@ -45,7 +45,7 @@ export const BLOG_POSTS: BlogPostFull[] = [
     featured:    true,
     readingTime: 12,
     publishedAt: '2024-03-15',
-    coverImage:  undefined,
+    coverImage:  undefined, // /media/blogs/postgresql-rls-multi-tenancy.jpg
   },
   {
     id:          'blog-2',
@@ -59,7 +59,7 @@ export const BLOG_POSTS: BlogPostFull[] = [
     featured:    false,
     readingTime: 8,
     publishedAt: '2024-02-28',
-    coverImage:  undefined,
+    coverImage:  undefined, // /media/blogs/spring-batch-idempotency.jpg
   },
   {
     id:          'blog-3',
@@ -73,7 +73,7 @@ export const BLOG_POSTS: BlogPostFull[] = [
     featured:    false,
     readingTime: 10,
     publishedAt: '2024-02-10',
-    coverImage:  undefined,
+    coverImage:  undefined, // /media/blogs/llm-token-cost-optimisation.jpg
   },
   {
     id:          'blog-4',
@@ -87,7 +87,7 @@ export const BLOG_POSTS: BlogPostFull[] = [
     featured:    false,
     readingTime: 14,
     publishedAt: '2024-01-22',
-    coverImage:  undefined,
+    coverImage:  undefined, // /media/blogs/kafka-event-sourcing-logistics.jpg
   },
   {
     id:          'blog-5',
@@ -101,7 +101,7 @@ export const BLOG_POSTS: BlogPostFull[] = [
     featured:    false,
     readingTime: 11,
     publishedAt: '2024-01-08',
-    coverImage:  undefined,
+    coverImage:  undefined, // /media/blogs/terraform-aws-ecs-zero-downtime.jpg
   },
   {
     id:          'blog-6',
@@ -115,7 +115,7 @@ export const BLOG_POSTS: BlogPostFull[] = [
     featured:    false,
     readingTime: 9,
     publishedAt: '2023-12-18',
-    coverImage:  undefined,
+    coverImage:  undefined, // /media/blogs/vue3-gsap-animation-patterns.jpg
   },
   {
     id:          'blog-7',
@@ -129,7 +129,7 @@ export const BLOG_POSTS: BlogPostFull[] = [
     featured:    false,
     readingTime: 7,
     publishedAt: '2023-11-30',
-    coverImage:  undefined,
+    coverImage:  undefined, // /media/blogs/materialised-views-redis-caching.jpg
   },
   {
     id:          'blog-8',
@@ -143,7 +143,7 @@ export const BLOG_POSTS: BlogPostFull[] = [
     featured:    false,
     readingTime: 6,
     publishedAt: '2023-11-12',
-    coverImage:  undefined,
+    coverImage:  undefined, // /media/blogs/senior-engineer-lessons-7-years.jpg
   },
 ]
 

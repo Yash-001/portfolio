@@ -17,6 +17,7 @@ export const PROJECTS: Project[] = [
     category: 'enterprise',
     categoryConfig: { label: 'Enterprise', color: '#6366f1', bg: 'rgba(99,102,241,0.1)',  icon: 'pi pi-building' },
     gradient:       { from: '#6366f1', to: '#8b5cf6', glow: 'rgba(99,102,241,0.25)' },
+    thumbnail: undefined, // /media/projects/multitenant-saas-platform.jpg
     status: 'completed',
     featured: true,
     year: 2024,
@@ -54,6 +55,7 @@ export const PROJECTS: Project[] = [
     category: 'backend',
     categoryConfig: { label: 'Backend', color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: 'pi pi-server' },
     gradient:       { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.25)' },
+    thumbnail: undefined, // /media/projects/llm-document-pipeline.jpg
     status: 'completed',
     featured: true,
     year: 2024,
@@ -91,6 +93,7 @@ export const PROJECTS: Project[] = [
     category: 'backend',
     categoryConfig: { label: 'Backend', color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: 'pi pi-server' },
     gradient:       { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.25)' },
+    thumbnail: undefined, // /media/projects/realtime-logistics-platform.jpg
     status: 'completed',
     featured: true,
     year: 2022,
@@ -128,6 +131,7 @@ export const PROJECTS: Project[] = [
     category: 'enterprise',
     categoryConfig: { label: 'Enterprise', color: '#6366f1', bg: 'rgba(99,102,241,0.1)',  icon: 'pi pi-building' },
     gradient:       { from: '#6366f1', to: '#8b5cf6', glow: 'rgba(99,102,241,0.25)' },
+    thumbnail: undefined, // /media/projects/payroll-compliance-engine.jpg
     status: 'completed',
     featured: false,
     year: 2020,
@@ -165,6 +169,7 @@ export const PROJECTS: Project[] = [
     category: 'backend',
     categoryConfig: { label: 'Backend', color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: 'pi pi-server' },
     gradient:       { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.25)' },
+    thumbnail: undefined, // /media/projects/payment-reconciliation-engine.jpg
     status: 'completed',
     featured: false,
     year: 2018,

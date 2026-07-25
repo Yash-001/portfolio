@@ -12,5 +12,6 @@ export const CERTIFICATIONS: Certification[] = [
   //   issuedDate: '2023-06',
   //   expiryDate: '2026-06',
   //   credentialUrl: 'https://aws.amazon.com/verification',
+  //   logo: '/media/certifications/aws-saa.png',
   // },
 ]

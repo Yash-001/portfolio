@@ -36,8 +36,11 @@ export const RESUME_URL  = '/resume.pdf'
 export const CALENDLY_URL = (env.VITE_CALENDLY_URL as string) || 'https://calendly.com/placeholder'
 
 // ── Profile image ─────────────────────────────────────────────────────────────
-export const PROFILE_IMAGE: string | undefined =
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'
+// Drop your photo at: public/media/profile/avatar.jpg
+// Falls back to Unsplash placeholder until a local file is present.
+export const PROFILE_IMAGE: string =
+  (env.VITE_PROFILE_IMAGE as string) ||
+  '/media/profile/avatar.jpg'
 
 // ── Default SEO ───────────────────────────────────────────────────────────────
 export const SEO = {
