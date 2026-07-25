@@ -19,6 +19,19 @@ export interface ProjectMetric {
   description?: string
 }
 
+export interface ProjectCategoryConfig {
+  label: string
+  color: string
+  bg: string
+  icon: string
+}
+
+export interface ProjectGradient {
+  from: string
+  to: string
+  glow: string
+}
+
 export interface Project {
   id: string
   slug: string
@@ -27,6 +40,8 @@ export interface Project {
   description: string
   longDescription?: string
   category: ProjectCategory
+  categoryConfig: ProjectCategoryConfig
+  gradient: ProjectGradient
   status: ProjectStatus
   featured: boolean
   year: number

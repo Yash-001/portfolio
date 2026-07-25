@@ -281,13 +281,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import type { Project } from '@/types'
-import { PROJECT_CATEGORY_CONFIG, PROJECT_GRADIENT } from '@/constants'
 import { useAnalytics } from '@/composables/useAnalytics'
 
 const props = defineProps<{ project: Project }>()
 
-const gradient  = computed(() => PROJECT_GRADIENT[props.project.category])
-const catConfig = computed(() => PROJECT_CATEGORY_CONFIG[props.project.category])
+const gradient  = computed(() => props.project.gradient)
+const catConfig = computed(() => props.project.categoryConfig)
 
 const { trackProjectView, trackProjectLinkClick, trackOutboundClick } = useAnalytics()
 

@@ -1,6 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // src/content/projects/index.ts
-// All portfolio projects, category config, and gradient tokens.
+// Each project is a single self-contained object.
+// PROJECT_CATEGORY_CONFIG and PROJECT_GRADIENT are derived — never edited manually.
+// To add a project: add one object to PROJECTS. Nothing else.
 // ─────────────────────────────────────────────────────────────────────────────
 import type { Project } from '@/types'
 import { GITHUB_URL } from '@/content/social'
@@ -13,6 +15,8 @@ export const PROJECTS: Project[] = [
     tagline: 'One deployment. Eight enterprise clients. Zero data leakage.',
     description: 'A Spring Boot 3 backend serving 8 enterprise clients from a single deployment, with per-tenant data isolation enforced at the database layer via PostgreSQL row-level security — not application code.',
     category: 'enterprise',
+    categoryConfig: { label: 'Enterprise', color: '#6366f1', bg: 'rgba(99,102,241,0.1)',  icon: 'pi pi-building' },
+    gradient:       { from: '#6366f1', to: '#8b5cf6', glow: 'rgba(99,102,241,0.25)' },
     status: 'completed',
     featured: true,
     year: 2024,
@@ -32,9 +36,7 @@ export const PROJECTS: Project[] = [
       { name: 'Jenkins',       color: '#d33833' },
       { name: 'Redis',         color: '#dc382d' },
     ],
-    links: [
-      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
-    ],
+    links: [{ label: 'GitHub', url: GITHUB_URL, type: 'github' }],
     metrics: [
       { label: 'Cost reduction',     value: '65%',   description: 'Infrastructure cost vs 8 separate deployments' },
       { label: 'Deploy time',        value: '18min', description: 'Down from 4 hours across 8 environments'       },
@@ -50,6 +52,8 @@ export const PROJECTS: Project[] = [
     tagline: 'GPT-4o + Spring Batch. 70% less manual review.',
     description: 'An AI-assisted pipeline that ingests unstructured legal and financial documents, extracts structured data using OpenAI function calling, validates against business rules, and routes exceptions to human reviewers — all orchestrated by Spring Batch.',
     category: 'backend',
+    categoryConfig: { label: 'Backend', color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: 'pi pi-server' },
+    gradient:       { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.25)' },
     status: 'completed',
     featured: true,
     year: 2024,
@@ -69,14 +73,12 @@ export const PROJECTS: Project[] = [
       { name: 'Docker',        color: '#2496ed' },
       { name: 'AWS Lambda',    color: '#ff9900' },
     ],
-    links: [
-      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
-    ],
+    links: [{ label: 'GitHub', url: GITHUB_URL, type: 'github' }],
     metrics: [
-      { label: 'Manual review reduction', value: '70%',  description: 'Hours saved per week'                   },
-      { label: 'Daily throughput',        value: '500+', description: 'Documents processed per day'            },
-      { label: 'Straight-through rate',   value: '94%',  description: 'Documents requiring no human review'   },
-      { label: 'Token cost reduction',    value: '60%',  description: 'Via chunking and prompt optimisation'  },
+      { label: 'Manual review reduction', value: '70%',  description: 'Hours saved per week'                  },
+      { label: 'Daily throughput',        value: '500+', description: 'Documents processed per day'           },
+      { label: 'Straight-through rate',   value: '94%',  description: 'Documents requiring no human review'  },
+      { label: 'Token cost reduction',    value: '60%',  description: 'Via chunking and prompt optimisation' },
     ],
     order: 2,
   },
@@ -87,6 +89,8 @@ export const PROJECTS: Project[] = [
     tagline: '50,000 shipment events per day. Sub-200ms p99.',
     description: 'A Kafka-backed event streaming platform for real-time shipment tracking across a logistics network of 200+ vehicles. Event sourcing for the order lifecycle enables full audit trails and replay capability.',
     category: 'backend',
+    categoryConfig: { label: 'Backend', color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: 'pi pi-server' },
+    gradient:       { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.25)' },
     status: 'completed',
     featured: true,
     year: 2022,
@@ -106,9 +110,7 @@ export const PROJECTS: Project[] = [
       { name: 'AWS EKS',       color: '#ff9900' },
       { name: 'Gradle',        color: '#02303a' },
     ],
-    links: [
-      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
-    ],
+    links: [{ label: 'GitHub', url: GITHUB_URL, type: 'github' }],
     metrics: [
       { label: 'Location staleness', value: '<3s',   description: 'Down from 30–90 seconds'              },
       { label: 'DB load reduction',  value: '85%',   description: 'Queries eliminated by event streaming' },
@@ -124,6 +126,8 @@ export const PROJECTS: Project[] = [
     tagline: '₹40 Cr/month. 40+ statutory rules. Zero miscalculations.',
     description: 'A configurable payroll calculation engine handling Indian statutory compliance across 6 states — EPFO, ESIC, TDS, PT — for 12 enterprise clients. Replaced a brittle Excel-based process that had caused two payroll errors in the previous year.',
     category: 'enterprise',
+    categoryConfig: { label: 'Enterprise', color: '#6366f1', bg: 'rgba(99,102,241,0.1)',  icon: 'pi pi-building' },
+    gradient:       { from: '#6366f1', to: '#8b5cf6', glow: 'rgba(99,102,241,0.25)' },
     status: 'completed',
     featured: false,
     year: 2020,
@@ -143,14 +147,12 @@ export const PROJECTS: Project[] = [
       { name: 'Jenkins',       color: '#d33833' },
       { name: 'REST APIs',     color: '#6366f1' },
     ],
-    links: [
-      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
-    ],
+    links: [{ label: 'GitHub', url: GITHUB_URL, type: 'github' }],
     metrics: [
-      { label: 'Monthly transactions', value: '₹40Cr',  description: 'Processed without errors'     },
-      { label: 'Batch processing',     value: '45min',  description: 'Down from 6 hours manual'      },
-      { label: 'Compliance rules',     value: '40+',    description: 'Across 6 Indian states'        },
-      { label: 'Onboarding time',      value: '4 days', description: 'New enterprise client setup'   },
+      { label: 'Monthly transactions', value: '₹40Cr',  description: 'Processed without errors'   },
+      { label: 'Batch processing',     value: '45min',  description: 'Down from 6 hours manual'    },
+      { label: 'Compliance rules',     value: '40+',    description: 'Across 6 Indian states'      },
+      { label: 'Onboarding time',      value: '4 days', description: 'New enterprise client setup' },
     ],
     order: 4,
   },
@@ -161,6 +163,8 @@ export const PROJECTS: Project[] = [
     tagline: '100K records/day. 99.97% accuracy. Built from scratch.',
     description: 'A transaction reconciliation system matching 100,000+ daily payment records across 3 payment gateways. Idempotency keys and distributed locking eliminated duplicate charge incidents. Built as the sole backend engineer on a 12-person fintech startup.',
     category: 'backend',
+    categoryConfig: { label: 'Backend', color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: 'pi pi-server' },
+    gradient:       { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.25)' },
     status: 'completed',
     featured: false,
     year: 2018,
@@ -180,31 +184,25 @@ export const PROJECTS: Project[] = [
       { name: 'JUnit',       color: '#25a162' },
       { name: 'Git',         color: '#f05032' },
     ],
-    links: [
-      { label: 'GitHub', url: GITHUB_URL, type: 'github' },
-    ],
+    links: [{ label: 'GitHub', url: GITHUB_URL, type: 'github' }],
     metrics: [
-      { label: 'Daily records',     value: '100K+',   description: 'Payment records reconciled per day'   },
-      { label: 'Accuracy',          value: '99.97%',  description: 'First-pass reconciliation accuracy'   },
-      { label: 'Time saved',        value: '3hrs/day',description: 'Automated vs manual reconciliation'   },
-      { label: 'Duplicate charges', value: '0',       description: 'Since idempotency implementation'     },
+      { label: 'Daily records',     value: '100K+',    description: 'Payment records reconciled per day' },
+      { label: 'Accuracy',          value: '99.97%',   description: 'First-pass reconciliation accuracy' },
+      { label: 'Time saved',        value: '3hrs/day', description: 'Automated vs manual reconciliation' },
+      { label: 'Duplicate charges', value: '0',        description: 'Since idempotency implementation'   },
     ],
     order: 5,
   },
 ]
 
-export const PROJECT_CATEGORY_CONFIG: Record<string, { label: string; color: string; bg: string; icon: string }> = {
-  enterprise: { label: 'Enterprise', color: '#6366f1', bg: 'rgba(99,102,241,0.1)',  icon: 'pi pi-building'    },
-  backend:    { label: 'Backend',    color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: 'pi pi-server'      },
-  cloud:      { label: 'Cloud',      color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',  icon: 'pi pi-cloud'       },
-  fullstack:  { label: 'Full Stack', color: '#06b6d4', bg: 'rgba(6,182,212,0.1)',   icon: 'pi pi-desktop'     },
-  frontend:   { label: 'Frontend',   color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)', icon: 'pi pi-palette'     },
-}
+// ── Derived maps — never edit these manually ──────────────────────────────────
+// Both are built from PROJECTS so adding a new project with a new category
+// automatically registers it in the filter and card rendering.
 
-export const PROJECT_GRADIENT: Record<string, { from: string; to: string; glow: string }> = {
-  enterprise: { from: '#6366f1', to: '#8b5cf6', glow: 'rgba(99,102,241,0.25)'  },
-  backend:    { from: '#10b981', to: '#06b6d4', glow: 'rgba(16,185,129,0.25)'  },
-  cloud:      { from: '#f59e0b', to: '#ef4444', glow: 'rgba(245,158,11,0.25)'  },
-  fullstack:  { from: '#06b6d4', to: '#6366f1', glow: 'rgba(6,182,212,0.25)'   },
-  frontend:   { from: '#8b5cf6', to: '#ec4899', glow: 'rgba(139,92,246,0.25)'  },
-}
+export const PROJECT_CATEGORY_CONFIG = Object.fromEntries(
+  PROJECTS.map(p => [p.category, p.categoryConfig])
+) as Record<string, Project['categoryConfig']>
+
+export const PROJECT_GRADIENT = Object.fromEntries(
+  PROJECTS.map(p => [p.category, p.gradient])
+) as Record<string, Project['gradient']>
