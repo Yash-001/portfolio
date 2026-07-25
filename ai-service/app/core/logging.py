@@ -6,7 +6,7 @@ import logging
 import sys
 import time
 import uuid
-from typing import Any
+from typing import Any, Dict, Optional
 
 from app.core.config import get_settings
 
@@ -55,7 +55,7 @@ def log_ai_request(
     provider: str,
     model: str,
     request_id: str,
-    extra: dict[str, Any] | None = None,
+    extra: Optional[Dict[str, Any]] = None,
 ) -> None:
     if not settings.LOG_AI_REQUESTS:
         return
@@ -76,8 +76,8 @@ def log_ai_response(
     model: str,
     request_id: str,
     duration_ms: int,
-    tokens_used: int | None = None,
-    extra: dict[str, Any] | None = None,
+    tokens_used: Optional[int] = None,
+    extra: Optional[Dict[str, Any]] = None,
 ) -> None:
     logger = get_logger("ai.response")
     logger.info(

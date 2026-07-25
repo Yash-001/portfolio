@@ -9,19 +9,18 @@ from app.providers.openai_provider import OpenAIProvider
 from app.providers.anthropic_provider import AnthropicProvider
 from app.providers.gemini_provider import GeminiProvider
 from app.services.exceptions import AIServiceError
+from typing import Dict, List, Optional, Union
 
 settings = get_settings()
 
-# ── Registry ──────────────────────────────────────────────────────────────────
-# Singletons — one instance per provider for the lifetime of the process.
-_REGISTRY: dict[str, BaseAIProvider] = {
+_REGISTRY: Dict[str, BaseAIProvider] = {
     AIProvider.OPENAI:    OpenAIProvider(),
     AIProvider.ANTHROPIC: AnthropicProvider(),
     AIProvider.GEMINI:    GeminiProvider(),
 }
 
 
-def get_provider(name: str | AIProvider | None = None) -> BaseAIProvider:
+def get_provider(name: Optional[Union[str, AIProvider]] = None) -> BaseAIProvider:
     """
     Return the provider instance for the given name.
     Falls back to DEFAULT_AI_PROVIDER from settings if name is None.
@@ -36,5 +35,5 @@ def get_provider(name: str | AIProvider | None = None) -> BaseAIProvider:
     return provider
 
 
-def get_all_providers() -> list[BaseAIProvider]:
+def get_all_providers() -> List[BaseAIProvider]:
     return list(_REGISTRY.values())

@@ -6,7 +6,8 @@
 import time
 import logging
 from collections import defaultdict, deque
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from typing import Dict, Deque, Optional
 
 from app.core.config import get_settings
 
@@ -36,8 +37,8 @@ class SlidingWindowRateLimiter:
         self._rpm = requests_per_minute
         self._rph = requests_per_hour
         # client_id → deque of timestamps
-        self._minute_windows: dict[str, deque[float]] = defaultdict(deque)
-        self._hour_windows:   dict[str, deque[float]] = defaultdict(deque)
+        self._minute_windows: Dict[str, Deque[float]] = defaultdict(deque)
+        self._hour_windows:   Dict[str, Deque[float]] = defaultdict(deque)
 
     def check(self, client_id: str) -> RateLimitResult:
         if not settings.RATE_LIMIT_ENABLED:
@@ -92,7 +93,7 @@ class SlidingWindowRateLimiter:
 
 
 # ── Singleton ─────────────────────────────────────────────────────────────────
-_limiter: SlidingWindowRateLimiter | None = None
+_limiter: Optional[SlidingWindowRateLimiter] = None
 
 
 def get_rate_limiter() -> SlidingWindowRateLimiter:

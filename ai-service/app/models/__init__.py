@@ -1,4 +1,6 @@
 # ai-service/app/models/__init__.py
+from __future__ import annotations
+
 from app.models.ai_models import (
     AIProvider,
     MessageRole,

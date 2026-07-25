@@ -63,6 +63,18 @@ class Settings(BaseSettings):
     LOG_AI_REQUESTS: bool = True       # log provider calls (no content in prod)
     LOG_AI_RESPONSES: bool = False     # never log response content in prod
 
+    # ── Chat ──────────────────────────────────────────────────────────────
+    CHAT_MAX_HISTORY_TURNS: int = 20
+    CHAT_MAX_MESSAGE_LENGTH: int = 4_000
+
+    # ── Auth (future) ─────────────────────────────────────────────────────
+    # Set AUTH_ENABLED=true and provide JWT_SECRET when auth is added.
+    # The chat router _client_id() will switch from IP to JWT sub claim.
+    AUTH_ENABLED: bool = False
+    JWT_SECRET: str = ""
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = 60
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

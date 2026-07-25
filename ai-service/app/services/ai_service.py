@@ -68,7 +68,7 @@ class AIService:
 
 
 # ── Singleton ─────────────────────────────────────────────────────────────────
-_ai_service: AIService | None = None
+_ai_service: 'AIService | None' = None
 
 
 def get_ai_service() -> AIService:

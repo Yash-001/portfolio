@@ -2,6 +2,8 @@
 # Typed exceptions for the AI service layer.
 # Providers raise these; the router catches them and maps to HTTP responses.
 
+from __future__ import annotations
+
 from app.models.ai_models import AIErrorCode
 
 

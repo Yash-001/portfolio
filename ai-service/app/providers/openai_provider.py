@@ -71,7 +71,7 @@ class OpenAIProvider(BaseAIProvider):
             )
         return self._client
 
-    def _build_messages(self, messages: list[ChatMessage]) -> list[dict[str, str]]:
+    def _build_messages(self, messages: list) -> list:
         return [{"role": m.role.value, "content": m.content} for m in messages]
 
     async def chat(self, request: ChatRequest) -> ChatResponse:

@@ -3,9 +3,12 @@
 # Used by all AI providers — provider-agnostic.
 
 import asyncio
-import functools
 import logging
-from typing import Callable, TypeVar, ParamSpec
+from typing import Callable, TypeVar, Optional
+try:
+    from typing import ParamSpec
+except ImportError:
+    from typing_extensions import ParamSpec
 
 from app.core.config import get_settings
 
@@ -49,7 +52,7 @@ async def with_retry(
     max_delay    = settings.RETRY_MAX_DELAY_SECONDS
     exp_base     = settings.RETRY_EXPONENTIAL_BASE
 
-    last_exc: Exception | None = None
+    last_exc: Optional[Exception] = None
 
     for attempt in range(1, max_attempts + 1):
         try:
