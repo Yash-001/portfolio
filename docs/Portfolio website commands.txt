@@ -1,0 +1,18 @@
+Portfolio website commands::
+
+To create Gemini api key ->https://aistudio.google.com/app/apikey
+To create Open AI api key -> https://platform.openai.com/api-keys
+---------------------------
+
+Start frontend::
+
+	--> cd "c:\Users\YashRanjan\Desktop\Software Consulting\05_Portfolio\portfolio"
+	--> npm run dev
+
+Start AI chat assistant in local :: 
+
+	--> cd "c:\Users\YashRanjan\Desktop\Software Consulting\05_Portfolio\portfolio\ai-service"
+	--> pip install -r requirements.txt
+	--> uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+	

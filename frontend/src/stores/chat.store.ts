@@ -104,7 +104,7 @@ export const useChatStore = defineStore('chat', () => {
   async function send(text: string): Promise<void> {
     if (!canSend.value || !text.trim()) return
 
-    followUps.value = [] // clear follow-ups while responding
+    followUps.value = []
 
     const userMsg: ChatMessageItem = {
       id:        `u_${Date.now()}`,
@@ -124,35 +124,36 @@ export const useChatStore = defineStore('chat', () => {
     }
     messages.value.push(assistantMsg)
 
-    // Build trimmed history (excludes the just-added user msg)
-    const history = trimHistory(messages.value.slice(0, -2))
+    // Always mutate via reactive array index — never via the local reference.
+    // The local reference is a plain object; mutations to it bypass Vue's proxy.
+    const assistantIdx = messages.value.length - 1
 
-    // Inject context dedup hint into the first user message of history if needed
+    const priorMessages = messages.value.slice(0, -2)
+    const history = trimHistory(priorMessages)
     const contextHint = buildContextHint(messages.value)
-    const messageWithHint = contextHint
-      ? `${contextHint}\n\n${text.trim()}`
-      : text.trim()
+    const messageWithHint = contextHint ? `${contextHint}\n\n${text.trim()}` : text.trim()
 
     isStreaming.value = true
 
     _abortController = streamChat(
       { message: messageWithHint, history, stream: true, session_id: sessionId.value },
-      (chunk) => { assistantMsg.content += chunk },
+      (chunk) => {
+        messages.value[assistantIdx].content += chunk
+      },
       (requestId, serverFollowUps) => {
-        assistantMsg.status    = 'done'
-        assistantMsg.requestId = requestId
-        isStreaming.value      = false
-        _abortController       = null
-        // Prefer server-generated follow-ups; fall back to client heuristic
-        followUps.value = (serverFollowUps?.length)
+        messages.value[assistantIdx].status    = 'done'
+        messages.value[assistantIdx].requestId = requestId
+        isStreaming.value  = false
+        _abortController   = null
+        followUps.value = serverFollowUps?.length
           ? serverFollowUps
           : generateFollowUps(messages.value)
       },
       (errMsg) => {
-        assistantMsg.status  = 'error'
-        assistantMsg.error   = errMsg
-        isStreaming.value    = false
-        _abortController     = null
+        messages.value[assistantIdx].status = 'error'
+        messages.value[assistantIdx].error  = errMsg
+        isStreaming.value = false
+        _abortController  = null
       },
     )
   }

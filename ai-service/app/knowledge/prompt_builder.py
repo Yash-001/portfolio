@@ -4,10 +4,13 @@
 # The prompt is the only place portfolio data enters the AI context.
 
 from collections import defaultdict
-from app.knowledge.portfolio import PortfolioKnowledge, PORTFOLIO_KNOWLEDGE
+from typing import Optional
+from app.knowledge.portfolio import PortfolioKnowledge, get_knowledge
 
 
-def build_system_prompt(knowledge: PortfolioKnowledge = PORTFOLIO_KNOWLEDGE) -> str:
+def build_system_prompt(knowledge: Optional[PortfolioKnowledge] = None) -> str:
+    if knowledge is None:
+        knowledge = get_knowledge()
     c = knowledge.contact
     sections: list[str] = []
 

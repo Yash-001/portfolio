@@ -1,0 +1,1323 @@
+{
+  "summary": {
+    "name": "Yash Ranjan",
+    "title": "Enterprise Software & AI Consultant",
+    "tagline": "I build production-ready full-stack applications enhanced with AI.",
+    "bio": "Building production-grade systems for startups and enterprises. Available for remote engagements worldwide.",
+    "yearsOfExperience": 7,
+    "contact": {
+      "email": "yash.ranjan.dev@proton.me",
+      "phone": "+91-7779964211",
+      "location": "India (UTC+5:30)",
+      "timezone": "Asia/Kolkata",
+      "timezoneLabel": "UTC+5:30",
+      "responseTime": "24 hours",
+      "availability": "available",
+      "availabilityText": "Available for new projects",
+      "siteUrl": "https://yourdomain.com",
+      "resumeUrl": "/resume.pdf",
+      "calendlyUrl": "https://calendly.com/yourname/30min",
+      "github": "https://github.com/Yash-001",
+      "linkedin": "https://www.linkedin.com/in/yash-ranjan-a0197b166/"
+    }
+  },
+  "career": [
+    {
+      "id": "lead-consultant",
+      "role": "Lead Engineer & Technical Consultant",
+      "company": "Independent / Freelance",
+      "location": "Remote — India",
+      "type": "Freelance",
+      "startDate": "2023-01",
+      "endDate": "present",
+      "current": true,
+      "description": "Working directly with founders and CTOs to architect and ship full-stack systems. Scope ranges from greenfield product builds to rescuing systems that have outgrown their original design. Every engagement starts with understanding the business before touching the codebase.",
+      "highlights": [
+        "Architected a multi-tenant SaaS backend in Spring Boot 3 serving 8 enterprise clients from a single deployment, with per-tenant data isolation via PostgreSQL row-level security",
+        "Built an LLM-assisted document processing pipeline using OpenAI function calling + Spring Batch, reducing manual review time by 70%",
+        "Migrated a legacy Oracle monolith to a modular Spring Boot + PostgreSQL architecture — zero downtime, phased over 6 months",
+        "Designed and implemented CI/CD pipelines on Jenkins + AWS ECS that cut average deployment time from 4 hours to 18 minutes",
+        "Delivered Vue 3 frontends with PrimeVue for 3 clients, including a real-time operations dashboard handling 500+ concurrent users"
+      ],
+      "technologies": [
+        "Java 21",
+        "Spring Boot 3",
+        "Vue 3",
+        "PostgreSQL",
+        "AWS ECS",
+        "Docker",
+        "Jenkins",
+        "OpenAI API",
+        "TypeScript"
+      ]
+    },
+    {
+      "id": "senior-engineer-logistics",
+      "role": "Enterprise Software & AI Consultant",
+      "company": "Logistics & Supply Chain Platform",
+      "location": "Pune, India",
+      "type": "Full-time",
+      "startDate": "2021-03",
+      "endDate": "2022-12",
+      "current": false,
+      "description": "Joined as the first senior backend hire on a platform processing 50,000+ shipment events per day. Owned architecture decisions end-to-end for the first time — from data model to deployment topology. The system needed to be right because failures meant trucks sitting idle.",
+      "highlights": [
+        "Designed a real-time shipment tracking pipeline on Apache Kafka + Spring Boot, processing 50K+ events/day with sub-200ms p99 latency",
+        "Introduced event sourcing for the order lifecycle, enabling full audit trails and replay capability that unblocked a major enterprise client contract",
+        "Reduced PostgreSQL query times by 65% across the reporting module through execution plan analysis, composite indexing, and materialized views",
+        "Led migration from manual deployments to Kubernetes on AWS EKS — reduced infrastructure cost by 30% through right-sizing and autoscaling",
+        "Mentored 3 junior engineers; established code review standards and ADR (Architecture Decision Record) practice adopted across the team"
+      ],
+      "technologies": [
+        "Java 11",
+        "Spring Boot",
+        "Apache Kafka",
+        "PostgreSQL",
+        "Kubernetes",
+        "AWS EKS",
+        "Docker",
+        "Redis",
+        "Gradle"
+      ]
+    },
+    {
+      "id": "software-engineer-saas",
+      "role": "Software Engineer",
+      "company": "Enterprise SaaS — HR & Payroll",
+      "location": "Mumbai, India",
+      "type": "Full-time",
+      "startDate": "2019-06",
+      "endDate": "2021-02",
+      "current": false,
+      "description": "Worked on a payroll platform processing ₹40 Cr in transactions monthly across 12 enterprise clients. The domain was unforgiving — a wrong calculation meant someone got paid incorrectly. Learned to treat correctness as a non-negotiable constraint, not a nice-to-have.",
+      "highlights": [
+        "Built a configurable payroll calculation engine in Java that handled 40+ statutory compliance rules across 6 Indian states, replacing a brittle Excel-based process",
+        "Designed the multi-tenant data architecture supporting 12 enterprise clients with strict data isolation, reducing onboarding time from 3 weeks to 4 days",
+        "Optimised a critical month-end batch job from 6 hours to 45 minutes using Spring Batch parallel processing and Oracle query tuning",
+        "Integrated with 4 third-party payroll APIs (EPFO, ESIC, TDS) — built a resilient adapter layer with retry, circuit breaker, and reconciliation",
+        "Introduced contract testing with Pact, catching 3 breaking API changes before they reached production"
+      ],
+      "technologies": [
+        "Java 8",
+        "Spring Boot",
+        "Oracle DB",
+        "Spring Batch",
+        "Maven",
+        "Jenkins",
+        "REST APIs",
+        "Redis",
+        "Angular"
+      ]
+    },
+    {
+      "id": "junior-engineer-fintech",
+      "role": "Junior Backend Engineer",
+      "company": "Fintech Startup — Payments",
+      "location": "Bangalore, India",
+      "type": "Full-time",
+      "startDate": "2017-07",
+      "endDate": "2019-05",
+      "current": false,
+      "description": "First job. Joined a 12-person payments startup as the only backend engineer on the reconciliation team. No playbook, no senior to ask — just a production system handling real money and a mandate to keep it running. The pressure was the education.",
+      "highlights": [
+        "Built the transaction reconciliation engine from scratch — matching 100K+ daily payment records across 3 payment gateways with 99.97% accuracy",
+        "Implemented idempotency keys and distributed locking for payment processing, eliminating duplicate charge incidents that had cost the company ₹2L in refunds",
+        "Wrote the first automated test suite for the payments module — 340 unit and integration tests, catching a critical rounding bug before a major client launch",
+        "Reduced API response time from 1.2s to 180ms average by profiling, fixing N+1 queries, and introducing a Redis caching layer"
+      ],
+      "technologies": [
+        "Java 8",
+        "Spring MVC",
+        "PostgreSQL",
+        "Redis",
+        "Maven",
+        "REST APIs",
+        "JUnit",
+        "Git"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "multitenant-saas-platform",
+      "slug": "multitenant-saas-platform",
+      "title": "Multi-Tenant SaaS Platform",
+      "tagline": "One deployment. Eight enterprise clients. Zero data leakage.",
+      "description": "A Spring Boot 3 backend serving 8 enterprise clients from a single deployment, with per-tenant data isolation enforced at the database layer via PostgreSQL row-level security — not application code.",
+      "category": "Enterprise",
+      "status": "completed",
+      "featured": true,
+      "year": 2024,
+      "duration": "6 months",
+      "role": "Lead Architect & Engineer",
+      "problem": "The client was running 8 separate deployments of the same application — one per enterprise customer. Every bug fix required 8 deployments. Every schema migration ran 8 times. Infrastructure costs were scaling linearly with clients instead of logarithmically.",
+      "approach": "Designed a shared-schema multi-tenancy model using PostgreSQL row-level security policies. Each API request sets a session-level tenant context variable; RLS policies filter all queries automatically. Spring Boot's filter chain injects the tenant ID from the JWT before any repository call. Zero application-layer tenant checks needed.",
+      "outcome": "Reduced infrastructure cost by 65%. Deployment time dropped from 4 hours (8 sequential deploys) to 18 minutes (1 deploy). Onboarding a new enterprise client went from 3 weeks of DevOps work to a 4-minute database operation.",
+      "technologies": [
+        "Java 21",
+        "Spring Boot 3",
+        "PostgreSQL",
+        "Vue 3",
+        "AWS ECS",
+        "Docker",
+        "Jenkins",
+        "Redis"
+      ],
+      "metrics": [
+        {
+          "label": "Cost reduction",
+          "value": "65%",
+          "description": "Infrastructure cost vs 8 separate deployments"
+        },
+        {
+          "label": "Deploy time",
+          "value": "18min",
+          "description": "Down from 4 hours across 8 environments"
+        },
+        {
+          "label": "Enterprise clients",
+          "value": "8",
+          "description": "Served from a single deployment"
+        },
+        {
+          "label": "Onboarding time",
+          "value": "4min",
+          "description": "New client provisioning via DB operation"
+        }
+      ]
+    },
+    {
+      "id": "llm-document-pipeline",
+      "slug": "llm-document-pipeline",
+      "title": "LLM Document Processing Pipeline",
+      "tagline": "GPT-4o + Spring Batch. 70% less manual review.",
+      "description": "An AI-assisted pipeline that ingests unstructured legal and financial documents, extracts structured data using OpenAI function calling, validates against business rules, and routes exceptions to human reviewers — all orchestrated by Spring Batch.",
+      "category": "Backend",
+      "status": "completed",
+      "featured": true,
+      "year": 2024,
+      "duration": "3 months",
+      "role": "Backend Engineer & AI Integration Lead",
+      "problem": "A legal services firm was spending 40 hours/week manually extracting data from contracts and financial statements. The documents were inconsistently formatted, came from 12 different sources, and had to be cross-referenced against a compliance database before any downstream processing.",
+      "approach": "Built a Spring Batch pipeline with three phases: (1) document ingestion and normalisation via Apache Tika, (2) structured extraction using GPT-4o function calling with a strict JSON schema, (3) rule-based validation with confidence scoring. Documents below a confidence threshold are routed to a human review queue. Embeddings stored in pgvector enable semantic deduplication.",
+      "outcome": "Manual review time dropped by 70%. The pipeline processes 500+ documents per day with 94% straight-through rate. The remaining 6% that reach human review are genuinely ambiguous — not false positives from a brittle regex.",
+      "technologies": [
+        "Java 21",
+        "Spring Batch",
+        "OpenAI API",
+        "PostgreSQL",
+        "pgvector",
+        "Apache Tika",
+        "Docker",
+        "AWS Lambda"
+      ],
+      "metrics": [
+        {
+          "label": "Manual review reduction",
+          "value": "70%",
+          "description": "Hours saved per week"
+        },
+        {
+          "label": "Daily throughput",
+          "value": "500+",
+          "description": "Documents processed per day"
+        },
+        {
+          "label": "Straight-through rate",
+          "value": "94%",
+          "description": "Documents requiring no human review"
+        },
+        {
+          "label": "Token cost reduction",
+          "value": "60%",
+          "description": "Via chunking and prompt optimisation"
+        }
+      ]
+    },
+    {
+      "id": "realtime-logistics-platform",
+      "slug": "realtime-logistics-platform",
+      "title": "Real-Time Logistics Tracking",
+      "tagline": "50,000 shipment events per day. Sub-200ms p99.",
+      "description": "A Kafka-backed event streaming platform for real-time shipment tracking across a logistics network of 200+ vehicles. Event sourcing for the order lifecycle enables full audit trails and replay capability.",
+      "category": "Backend",
+      "status": "completed",
+      "featured": true,
+      "year": 2022,
+      "duration": "8 months",
+      "role": "Senior Backend Engineer — Architecture Owner",
+      "problem": "The existing system polled a GPS database every 30 seconds per vehicle. With 200+ vehicles, that was 400+ queries per minute on a single PostgreSQL instance that was already struggling. Location updates were 30–90 seconds stale. A major enterprise client was threatening to leave over SLA violations.",
+      "approach": "Replaced polling with a Kafka event stream. GPS devices publish location events to a partitioned topic (partitioned by vehicle ID for ordering guarantees). Spring Boot consumers maintain materialised state in Redis for sub-millisecond reads. PostgreSQL receives only persisted state changes, not every event. Event sourcing on the order aggregate enables full replay for debugging and compliance.",
+      "outcome": "Location staleness dropped from 30–90s to under 3s. Database load reduced by 85%. The enterprise client renewed their contract. p99 API latency for location queries: 180ms.",
+      "technologies": [
+        "Java 11",
+        "Apache Kafka",
+        "Spring Boot",
+        "PostgreSQL",
+        "Redis",
+        "Kubernetes",
+        "AWS EKS",
+        "Gradle"
+      ],
+      "metrics": [
+        {
+          "label": "Location staleness",
+          "value": "<3s",
+          "description": "Down from 30–90 seconds"
+        },
+        {
+          "label": "DB load reduction",
+          "value": "85%",
+          "description": "Queries eliminated by event streaming"
+        },
+        {
+          "label": "Daily events",
+          "value": "50K+",
+          "description": "Shipment events processed per day"
+        },
+        {
+          "label": "p99 latency",
+          "value": "180ms",
+          "description": "Location query API response time"
+        }
+      ]
+    },
+    {
+      "id": "payroll-compliance-engine",
+      "slug": "payroll-compliance-engine",
+      "title": "Payroll Compliance Engine",
+      "tagline": "₹40 Cr/month. 40+ statutory rules. Zero miscalculations.",
+      "description": "A configurable payroll calculation engine handling Indian statutory compliance across 6 states — EPFO, ESIC, TDS, PT — for 12 enterprise clients. Replaced a brittle Excel-based process that had caused two payroll errors in the previous year.",
+      "category": "Enterprise",
+      "status": "completed",
+      "featured": false,
+      "year": 2020,
+      "duration": "5 months",
+      "role": "Software Engineer — Backend Lead",
+      "problem": "Payroll was calculated in Excel by a team of 4 accountants. The spreadsheets had grown to 15,000 rows with circular references and undocumented macros. Two calculation errors in 12 months had resulted in incorrect salaries for 340 employees and significant reputational damage with enterprise clients.",
+      "approach": "Modelled each statutory rule as a composable, testable Java function. A rule engine evaluates applicable rules per employee based on state, salary band, and employment type. Spring Batch processes the full payroll run in parallel chunks. Each calculation step is logged with inputs and outputs for full auditability. Integration with EPFO/ESIC/TDS APIs via a resilient adapter with retry and circuit breaker.",
+      "outcome": "Zero payroll errors since deployment. Month-end batch processing time: 45 minutes (down from 6 hours manual). New client onboarding: 4 days (down from 3 weeks). The system has processed ₹40 Cr+ monthly without a single statutory compliance failure.",
+      "technologies": [
+        "Java 8",
+        "Spring Boot",
+        "Spring Batch",
+        "Oracle DB",
+        "Redis",
+        "Maven",
+        "Jenkins",
+        "REST APIs"
+      ],
+      "metrics": [
+        {
+          "label": "Monthly transactions",
+          "value": "₹40Cr",
+          "description": "Processed without errors"
+        },
+        {
+          "label": "Batch processing",
+          "value": "45min",
+          "description": "Down from 6 hours manual"
+        },
+        {
+          "label": "Compliance rules",
+          "value": "40+",
+          "description": "Across 6 Indian states"
+        },
+        {
+          "label": "Onboarding time",
+          "value": "4 days",
+          "description": "New enterprise client setup"
+        }
+      ]
+    },
+    {
+      "id": "payment-reconciliation-engine",
+      "slug": "payment-reconciliation-engine",
+      "title": "Payment Reconciliation Engine",
+      "tagline": "100K records/day. 99.97% accuracy. Built from scratch.",
+      "description": "A transaction reconciliation system matching 100,000+ daily payment records across 3 payment gateways. Idempotency keys and distributed locking eliminated duplicate charge incidents. Built as the sole backend engineer on a 12-person fintech startup.",
+      "category": "Backend",
+      "status": "completed",
+      "featured": false,
+      "year": 2018,
+      "duration": "4 months",
+      "role": "Junior Backend Engineer — Sole Owner",
+      "problem": "The startup was manually reconciling payment records in spreadsheets every morning. Duplicate charges had occurred twice, costing ₹2L in refunds and damaging trust with early enterprise clients. The manual process took 3 hours daily and was error-prone under time pressure.",
+      "approach": "Built a reconciliation engine that fetches settlement reports from 3 gateway APIs, normalises them to a canonical format, and matches against internal transaction records using a multi-pass algorithm (exact match → fuzzy match → exception queue). Idempotency keys on all payment operations prevent duplicate processing. Redis distributed locks prevent race conditions during concurrent reconciliation runs.",
+      "outcome": "99.97% reconciliation accuracy on first pass. Zero duplicate charge incidents since deployment. Daily reconciliation time: 8 minutes automated vs 3 hours manual. The system caught a gateway-side duplicate charge bug that would have cost ₹4L before it was noticed.",
+      "technologies": [
+        "Java 8",
+        "Spring MVC",
+        "PostgreSQL",
+        "Redis",
+        "Maven",
+        "REST APIs",
+        "JUnit",
+        "Git"
+      ],
+      "metrics": [
+        {
+          "label": "Daily records",
+          "value": "100K+",
+          "description": "Payment records reconciled per day"
+        },
+        {
+          "label": "Accuracy",
+          "value": "99.97%",
+          "description": "First-pass reconciliation accuracy"
+        },
+        {
+          "label": "Time saved",
+          "value": "3hrs/day",
+          "description": "Automated vs manual reconciliation"
+        },
+        {
+          "label": "Duplicate charges",
+          "value": "0",
+          "description": "Since idempotency implementation"
+        }
+      ]
+    }
+  ],
+  "skillCategories": [
+    {
+      "category": "frontend",
+      "label": "Frontend",
+      "description": "I build the UI that clients actually use — fast, accessible, and precise enough that nobody notices the engineering.",
+      "skills": [
+        {
+          "id": "vue",
+          "name": "Vue 3",
+          "category": "frontend",
+          "level": "expert",
+          "yearsOfExperience": 3,
+          "context": "Composition API, Pinia, Vue Router, SSR. This portfolio is built on it."
+        },
+        {
+          "id": "angular",
+          "name": "Angular",
+          "category": "frontend",
+          "level": "advanced",
+          "yearsOfExperience": 3,
+          "context": "Components, RxJS, Angular Material, Reactive Forms, routing."
+        },
+        {
+          "id": "typescript",
+          "name": "TypeScript",
+          "category": "frontend",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Strict mode, generics, utility types, discriminated unions. No any in production."
+        },
+        {
+          "id": "javascript",
+          "name": "JavaScript",
+          "category": "frontend",
+          "level": "expert",
+          "yearsOfExperience": 6,
+          "context": "ES2024, async patterns, performance profiling, Web APIs."
+        },
+        {
+          "id": "primevue",
+          "name": "PrimeVue",
+          "category": "frontend",
+          "level": "advanced",
+          "yearsOfExperience": 2,
+          "context": "Custom themes, PassThrough API, enterprise component systems."
+        },
+        {
+          "id": "tailwind",
+          "name": "Tailwind CSS",
+          "category": "frontend",
+          "level": "advanced",
+          "yearsOfExperience": 3,
+          "context": "Utility-first styling, custom design systems, responsive layouts."
+        },
+        {
+          "id": "gsap",
+          "name": "GSAP",
+          "category": "frontend",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "ScrollTrigger, timelines, entrance animations, performance-safe motion."
+        }
+      ]
+    },
+    {
+      "category": "backend",
+      "label": "Backend",
+      "description": "The core. Where business logic lives, performance is won or lost, and bad decisions compound for years.",
+      "skills": [
+        {
+          "id": "java",
+          "name": "Java 21",
+          "category": "backend",
+          "level": "expert",
+          "yearsOfExperience": 7,
+          "context": "Virtual threads, records, sealed classes. Primary language across every enterprise system I've shipped."
+        },
+        {
+          "id": "spring-boot",
+          "name": "Spring Boot",
+          "category": "backend",
+          "level": "expert",
+          "yearsOfExperience": 6,
+          "context": "Spring Security, Data JPA, WebFlux, Batch. Built multi-tenant platforms and high-throughput APIs."
+        },
+        {
+          "id": "spring-batch",
+          "name": "Spring Batch",
+          "category": "backend",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Parallel chunk processing, job restartability, large-scale ETL pipelines."
+        },
+        {
+          "id": "rest-apis",
+          "name": "REST APIs",
+          "category": "backend",
+          "level": "expert",
+          "yearsOfExperience": 7,
+          "context": "Versioning, pagination, error contracts (RFC 7807), OpenAPI docs. Designed APIs consumed by 6+ enterprise clients."
+        },
+        {
+          "id": "kafka",
+          "name": "Apache Kafka",
+          "category": "backend",
+          "level": "advanced",
+          "yearsOfExperience": 3,
+          "context": "Event streaming, partitioning strategies, consumer groups, exactly-once semantics."
+        },
+        {
+          "id": "redis",
+          "name": "Redis",
+          "category": "backend",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Caching, distributed locking, pub/sub, rate limiting, session storage."
+        },
+        {
+          "id": "microservices",
+          "name": "Microservices",
+          "category": "backend",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Service decomposition, inter-service communication, distributed tracing, saga patterns."
+        }
+      ]
+    },
+    {
+      "category": "cloud",
+      "label": "Cloud",
+      "description": "Infrastructure is code. I design for resilience, cost efficiency, and the ability to scale without a rewrite.",
+      "skills": [
+        {
+          "id": "aws",
+          "name": "AWS",
+          "category": "cloud",
+          "level": "intermediate",
+          "yearsOfExperience": 3,
+          "context": "EC2, ECS Fargate, EKS, Lambda, RDS, S3, CloudFront, SQS, SNS, IAM, VPC. 3 production deployments."
+        },
+        {
+          "id": "gcp",
+          "name": "Google Cloud",
+          "category": "cloud",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "Cloud Run, Compute Engine, Cloud Storage, BigQuery, IAM, Cloud Functions."
+        },
+        {
+          "id": "terraform",
+          "name": "Terraform",
+          "category": "cloud",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "IaC for AWS resources — ECS, RDS, ElastiCache, CloudFront, Route 53."
+        },
+        {
+          "id": "nginx",
+          "name": "Nginx",
+          "category": "cloud",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Reverse proxy, load balancing, SSL termination, rate limiting."
+        }
+      ]
+    },
+    {
+      "category": "ai",
+      "label": "AI & LLMs",
+      "description": "Not a buzzword — a genuine force multiplier. I integrate AI where it eliminates toil and keeps judgment human.",
+      "skills": [
+        {
+          "id": "openai",
+          "name": "OpenAI API",
+          "category": "ai",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "GPT-4o, embeddings, function calling, RAG pipelines, token optimisation."
+        },
+        {
+          "id": "langchain",
+          "name": "LangChain",
+          "category": "ai",
+          "level": "learning",
+          "yearsOfExperience": 1,
+          "context": "Chains, agents, document loaders, vector store integrations."
+        },
+        {
+          "id": "pgvector",
+          "name": "pgvector",
+          "category": "ai",
+          "level": "intermediate",
+          "yearsOfExperience": 1,
+          "context": "Semantic search, embedding storage, similarity queries in PostgreSQL."
+        },
+        {
+          "id": "prompt-engineering",
+          "name": "Prompt Engineering",
+          "category": "ai",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "Structured output, few-shot prompting, chain-of-thought, cost optimisation."
+        }
+      ]
+    },
+    {
+      "category": "database",
+      "label": "Databases",
+      "description": "Data modelling is where most systems quietly fail. I treat schema design as a first-class engineering decision.",
+      "skills": [
+        {
+          "id": "postgresql",
+          "name": "PostgreSQL",
+          "category": "database",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Query optimisation, indexing strategies, partitioning, JSONB, window functions, RLS."
+        },
+        {
+          "id": "mysql",
+          "name": "MySQL",
+          "category": "database",
+          "level": "expert",
+          "yearsOfExperience": 6,
+          "context": "Query optimisation, indexing, joins, stored procedures, transactions."
+        },
+        {
+          "id": "oracle",
+          "name": "Oracle DB",
+          "category": "database",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "PL/SQL, execution plans, AWR reports, enterprise data warehousing."
+        },
+        {
+          "id": "bigquery",
+          "name": "BigQuery",
+          "category": "database",
+          "level": "expert",
+          "yearsOfExperience": 4,
+          "context": "Large-scale analytics, SQL optimisation, partitioning, ETL, dashboards."
+        },
+        {
+          "id": "mongodb",
+          "name": "MongoDB",
+          "category": "database",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "Document modelling, aggregation pipelines, indexing, Atlas."
+        }
+      ]
+    },
+    {
+      "category": "devops",
+      "label": "DevOps",
+      "description": "Shipping is a feature. I own the pipeline from commit to production — fast, repeatable, and observable.",
+      "skills": [
+        {
+          "id": "docker",
+          "name": "Docker",
+          "category": "devops",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Multi-stage builds, compose, image optimisation, security scanning."
+        },
+        {
+          "id": "kubernetes",
+          "name": "Kubernetes",
+          "category": "devops",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "Deployments, services, ingress, HPA, config maps, EKS on AWS."
+        },
+        {
+          "id": "jenkins",
+          "name": "Jenkins",
+          "category": "devops",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Declarative pipelines, shared libraries, parallel stages. Cut deploy time from 4h to 18min."
+        },
+        {
+          "id": "gradle",
+          "name": "Gradle",
+          "category": "devops",
+          "level": "advanced",
+          "yearsOfExperience": 5,
+          "context": "Multi-project builds, custom tasks, dependency management, build caching."
+        },
+        {
+          "id": "maven",
+          "name": "Maven",
+          "category": "devops",
+          "level": "advanced",
+          "yearsOfExperience": 6,
+          "context": "Multi-module projects, custom plugins, release management."
+        },
+        {
+          "id": "git",
+          "name": "Git",
+          "category": "devops",
+          "level": "expert",
+          "yearsOfExperience": 7,
+          "context": "Branching strategies, rebase workflows, bisect, reflog. Git is a thinking tool, not just version control."
+        }
+      ]
+    },
+    {
+      "category": "testing",
+      "label": "Testing",
+      "description": "Tests are the only proof that software does what you think it does. I write them before they're asked for.",
+      "skills": [
+        {
+          "id": "junit",
+          "name": "JUnit 5",
+          "category": "testing",
+          "level": "expert",
+          "yearsOfExperience": 6,
+          "context": "Parameterised tests, extensions, lifecycle hooks, nested test classes."
+        },
+        {
+          "id": "mockito",
+          "name": "Mockito",
+          "category": "testing",
+          "level": "expert",
+          "yearsOfExperience": 6,
+          "context": "Mocking, stubbing, argument captors, spy objects, verification."
+        },
+        {
+          "id": "testcontainers",
+          "name": "Testcontainers",
+          "category": "testing",
+          "level": "advanced",
+          "yearsOfExperience": 3,
+          "context": "Integration tests against real PostgreSQL, Kafka, Redis instances in CI."
+        },
+        {
+          "id": "pact",
+          "name": "Pact",
+          "category": "testing",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "Consumer-driven contract testing. Caught 3 breaking API changes before production."
+        },
+        {
+          "id": "vitest",
+          "name": "Vitest",
+          "category": "testing",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "Unit and component testing for Vue 3 applications."
+        }
+      ]
+    },
+    {
+      "category": "architecture",
+      "label": "Architecture",
+      "description": "Good architecture is invisible. Bad architecture is all you talk about. I've learned the difference the hard way.",
+      "skills": [
+        {
+          "id": "domain-driven-design",
+          "name": "Domain-Driven Design",
+          "category": "architecture",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Bounded contexts, aggregates, domain events, ubiquitous language."
+        },
+        {
+          "id": "event-sourcing",
+          "name": "Event Sourcing",
+          "category": "architecture",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "Append-only event logs, projections, replay capability, audit trails."
+        },
+        {
+          "id": "cqrs",
+          "name": "CQRS",
+          "category": "architecture",
+          "level": "intermediate",
+          "yearsOfExperience": 2,
+          "context": "Command/query separation, read model optimisation, eventual consistency."
+        },
+        {
+          "id": "multi-tenancy",
+          "name": "Multi-Tenancy",
+          "category": "architecture",
+          "level": "advanced",
+          "yearsOfExperience": 3,
+          "context": "Shared-schema with RLS, schema-per-tenant, data isolation patterns."
+        },
+        {
+          "id": "api-design",
+          "name": "API Design",
+          "category": "architecture",
+          "level": "expert",
+          "yearsOfExperience": 7,
+          "context": "RESTful conventions, versioning strategies, backward compatibility, OpenAPI."
+        }
+      ]
+    },
+    {
+      "category": "soft-skills",
+      "label": "Soft Skills",
+      "description": "Technical skill gets you hired. Communication, ownership, and judgment are what make you irreplaceable.",
+      "skills": [
+        {
+          "id": "technical-communication",
+          "name": "Technical Communication",
+          "category": "soft-skills",
+          "level": "expert",
+          "yearsOfExperience": 7,
+          "context": "Writing ADRs, RFCs, post-mortems, and technical specs that non-engineers can act on."
+        },
+        {
+          "id": "client-management",
+          "name": "Client Management",
+          "category": "soft-skills",
+          "level": "advanced",
+          "yearsOfExperience": 4,
+          "context": "Scoping engagements, managing expectations, delivering hard news early."
+        },
+        {
+          "id": "mentoring",
+          "name": "Mentoring",
+          "category": "soft-skills",
+          "level": "advanced",
+          "yearsOfExperience": 3,
+          "context": "Code reviews, pair programming, establishing team engineering standards."
+        },
+        {
+          "id": "problem-decomposition",
+          "name": "Problem Decomposition",
+          "category": "soft-skills",
+          "level": "expert",
+          "yearsOfExperience": 7,
+          "context": "Breaking ambiguous requirements into shippable increments without losing the big picture."
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "id": "fullstack-development",
+      "title": "Full Stack Development",
+      "tagline": "End-to-end product delivery — from DB schema to deployed UI.",
+      "description": "I own the full vertical: Spring Boot APIs, Vue 3 frontend, PostgreSQL schema, AWS infrastructure, and CI/CD pipeline. You get one engineer who can make decisions across the entire stack without handoff delays.",
+      "deliverables": [
+        "Spring Boot 3 + Vue 3 application",
+        "PostgreSQL schema with migrations",
+        "AWS ECS/Fargate deployment",
+        "Jenkins CI/CD pipeline",
+        "Technical documentation"
+      ],
+      "engagement": "project",
+      "duration": "4–16 weeks",
+      "featured": true
+    },
+    {
+      "id": "backend-apis",
+      "title": "Backend API Development",
+      "tagline": "Production-grade REST APIs built for scale and correctness.",
+      "description": "Spring Boot 3 APIs with proper error handling (RFC 7807), JWT auth, rate limiting, pagination, and OpenAPI docs. Built to handle real load — not just happy-path demos.",
+      "deliverables": [
+        "RESTful API with OpenAPI 3 spec",
+        "JWT authentication & authorisation",
+        "Redis caching & rate limiting",
+        "Integration test suite (>80% coverage)",
+        "Postman collection for all endpoints"
+      ],
+      "engagement": "project",
+      "duration": "2–8 weeks",
+      "featured": true
+    },
+    {
+      "id": "frontend-development",
+      "title": "Frontend Development",
+      "tagline": "Vue 3 interfaces that are fast, accessible, and maintainable.",
+      "description": "Component-driven Vue 3 frontends with TypeScript, Pinia state management, and GSAP animations. Performance-first: lazy loading, code splitting, and Core Web Vitals optimisation built in from day one.",
+      "deliverables": [
+        "Vue 3 + TypeScript SPA",
+        "Pinia state management",
+        "Responsive design (mobile-first)",
+        "WCAG 2.1 AA accessibility",
+        "Core Web Vitals optimisation"
+      ],
+      "engagement": "project",
+      "duration": "2–6 weeks",
+      "featured": false
+    },
+    {
+      "id": "enterprise-software",
+      "title": "Enterprise Software",
+      "tagline": "Multi-tenant SaaS and internal tools for enterprise clients.",
+      "description": "I have built multi-tenant platforms serving 14 enterprise clients from a single deployment. PostgreSQL RLS for data isolation, Spring Batch for bulk processing, and blue/green deployments for zero-downtime releases.",
+      "deliverables": [
+        "Multi-tenant architecture with RLS",
+        "Role-based access control (RBAC)",
+        "Audit logging & compliance reports",
+        "Spring Batch bulk processing",
+        "Zero-downtime deployment strategy"
+      ],
+      "engagement": "project",
+      "duration": "8–24 weeks",
+      "featured": true
+    },
+    {
+      "id": "ai-integrations",
+      "title": "AI Integrations",
+      "tagline": "LLM pipelines that solve real business problems, not demos.",
+      "description": "OpenAI function calling, Spring Batch document pipelines, pgvector semantic search, and confidence-scored human review queues. I have reduced manual review time by 70% in production with these patterns.",
+      "deliverables": [
+        "OpenAI / Anthropic API integration",
+        "Document processing pipeline",
+        "pgvector semantic search",
+        "Human-in-the-loop review queue",
+        "Token cost optimisation"
+      ],
+      "engagement": "project",
+      "duration": "3–10 weeks",
+      "featured": false
+    },
+    {
+      "id": "cloud-deployment",
+      "title": "Cloud Deployment",
+      "tagline": "AWS infrastructure that scales without surprises on the bill.",
+      "description": "Terraform-managed AWS infrastructure: ECS Fargate, RDS Multi-AZ, ElastiCache, CloudFront, and Route 53. Blue/green deployments, auto-scaling policies, and CloudWatch alarms configured from the start.",
+      "deliverables": [
+        "Terraform IaC for all resources",
+        "ECS Fargate + RDS + ElastiCache",
+        "Blue/green deployment pipeline",
+        "Auto-scaling & CloudWatch alarms",
+        "Cost optimisation review"
+      ],
+      "engagement": "project",
+      "duration": "1–3 weeks",
+      "featured": false
+    },
+    {
+      "id": "performance-optimization",
+      "title": "Performance Optimisation",
+      "tagline": "Find and fix the bottlenecks before your users do.",
+      "description": "I profile, diagnose, and fix slow APIs and databases. Composite indexes, materialised views, N+1 query elimination, connection pool tuning, and Redis caching. I have taken endpoints from 2.8s to 8ms in production.",
+      "deliverables": [
+        "APM profiling & bottleneck report",
+        "Database query optimisation",
+        "Caching strategy implementation",
+        "Before/after benchmark report",
+        "Monitoring dashboard setup"
+      ],
+      "engagement": "hourly",
+      "duration": "1–2 weeks",
+      "featured": false
+    },
+    {
+      "id": "code-review",
+      "title": "Code Review",
+      "tagline": "A senior engineer's eye on your codebase before it ships.",
+      "description": "Structured review covering security vulnerabilities, performance anti-patterns, test coverage gaps, and architectural concerns. Written report with prioritised findings and specific remediation steps — not vague suggestions.",
+      "deliverables": [
+        "Security vulnerability scan",
+        "Performance anti-pattern audit",
+        "Architecture review report",
+        "Prioritised findings document",
+        "Remediation recommendations"
+      ],
+      "engagement": "hourly",
+      "duration": "2–5 days",
+      "featured": false
+    },
+    {
+      "id": "technical-consulting",
+      "title": "Technical Consulting",
+      "tagline": "Architecture decisions made with someone who has shipped them.",
+      "description": "Technology selection, system design reviews, team mentoring, and pre-launch technical audits. I give direct opinions based on 7+ years of production experience — not hedged recommendations designed to avoid accountability.",
+      "deliverables": [
+        "Architecture design session",
+        "Technology selection guidance",
+        "System design document review",
+        "Team technical mentoring",
+        "Pre-launch audit & sign-off"
+      ],
+      "engagement": "consulting",
+      "duration": "Ongoing",
+      "featured": false
+    }
+  ],
+  "faq": [
+    {
+      "id": "availability",
+      "question": "Are you currently available for new projects?",
+      "answer": "Yes — I am currently available for new engagements. I typically take on 1–2 projects at a time to ensure full focus. If your timeline is flexible, reach out early to reserve a slot.",
+      "category": "availability"
+    },
+    {
+      "id": "remote-work",
+      "question": "Do you work remotely?",
+      "answer": "Yes, fully remote. I am based in India (UTC+5:30) and have worked with clients across Europe, the US, and Southeast Asia. I schedule overlap hours to match your team's working day.",
+      "category": "availability"
+    },
+    {
+      "id": "engagement-types",
+      "question": "What engagement models do you offer?",
+      "answer": "Fixed-price projects for well-scoped work, hourly for audits and reviews, retainer for ongoing support, and consulting for architecture and advisory. Most greenfield builds are fixed-price after a scoping call.",
+      "category": "pricing"
+    },
+    {
+      "id": "project-duration",
+      "question": "How long does a typical project take?",
+      "answer": "A backend API takes 2–8 weeks. A full-stack product build is 4–16 weeks. Enterprise multi-tenant platforms run 8–24 weeks. Duration depends on scope, not padding — I scope honestly before committing.",
+      "category": "process"
+    },
+    {
+      "id": "tech-stack",
+      "question": "What is your primary tech stack?",
+      "answer": "Backend: Java 21 + Spring Boot 3. Frontend: Vue 3 + TypeScript. Database: PostgreSQL. Cloud: AWS (ECS, RDS, Lambda). CI/CD: Jenkins + Docker. I also work with Kafka, Redis, and OpenAI API for AI-assisted systems.",
+      "category": "technical"
+    },
+    {
+      "id": "existing-codebase",
+      "question": "Can you work on an existing codebase?",
+      "answer": "Yes. I regularly join projects mid-flight — rescuing systems that have outgrown their original design, adding features to legacy codebases, or improving performance. I always start with a codebase audit before touching anything.",
+      "category": "process"
+    },
+    {
+      "id": "nda-ip",
+      "question": "Do you sign NDAs and assign IP?",
+      "answer": "Yes to both. All client work is covered by a mutual NDA and full IP assignment. You own everything built during the engagement. I retain no rights to your code, data, or business logic.",
+      "category": "process"
+    },
+    {
+      "id": "communication",
+      "question": "How do you communicate during a project?",
+      "answer": "Async-first via Slack or email for daily updates. Weekly video calls for progress reviews. I write clear status updates so you always know where things stand — no chasing required.",
+      "category": "process"
+    },
+    {
+      "id": "ai-experience",
+      "question": "What AI/LLM experience do you have?",
+      "answer": "I have built production LLM pipelines using OpenAI function calling + Spring Batch, reducing manual document review by 70%. I work with GPT-4o, embeddings, pgvector semantic search, and confidence-scored human review queues.",
+      "category": "technical"
+    },
+    {
+      "id": "start-project",
+      "question": "How do I start a project with you?",
+      "answer": "Send an email or book a 30-minute call via Calendly. We discuss your requirements, I ask clarifying questions, and within 48 hours I send a written scope, timeline, and fixed price. No obligation until you sign.",
+      "category": "general"
+    }
+  ],
+  "recentPosts": [
+    {
+      "id": "blog-1",
+      "slug": "postgresql-rls-multi-tenancy",
+      "title": "PostgreSQL Row-Level Security: The Right Way to Build Multi-Tenant SaaS",
+      "excerpt": "Most multi-tenant architectures use application-level tenant filtering. That's a bug waiting to happen. Here's how to push isolation down to the database layer with PostgreSQL RLS — and why it's safer, simpler, and faster.",
+      "category": "Architecture",
+      "tags": [
+        "PostgreSQL",
+        "Multi-Tenancy",
+        "SaaS"
+      ],
+      "readingTime": 12,
+      "publishedAt": "2024-03-15"
+    },
+    {
+      "id": "blog-2",
+      "slug": "spring-batch-idempotency",
+      "title": "Making Spring Batch Jobs Idempotent: Lessons from a Production Incident",
+      "excerpt": "Our depreciation batch created duplicate journal entries when it retried after a transient DB failure. Here's the exact pattern we used to make it idempotent — and why batch_run_id is the key.",
+      "category": "Backend",
+      "tags": [
+        "Spring Batch",
+        "Java",
+        "Idempotency"
+      ],
+      "readingTime": 8,
+      "publishedAt": "2024-02-28"
+    },
+    {
+      "id": "blog-3",
+      "slug": "llm-token-cost-optimisation",
+      "title": "Cutting GPT-4o Token Costs by 60% Without Losing Accuracy",
+      "excerpt": "Token cost is the main engineering constraint in LLM integrations. Here's the chunking strategy, prompt compression techniques, and confidence scoring approach that reduced our per-document cost by 60% in production.",
+      "category": "AI & ML",
+      "tags": [
+        "OpenAI",
+        "LLM",
+        "Cost Optimisation"
+      ],
+      "readingTime": 10,
+      "publishedAt": "2024-02-10"
+    },
+    {
+      "id": "blog-4",
+      "slug": "kafka-event-sourcing-logistics",
+      "title": "From 90-Second Staleness to 3 Seconds: Kafka Event Streaming in Practice",
+      "excerpt": "We replaced a polling-based GPS tracking system with Kafka event streaming. Location staleness dropped from 90 seconds to under 3 seconds. Here's the architecture, the tradeoffs, and what we got wrong the first time.",
+      "category": "Backend",
+      "tags": [
+        "Kafka",
+        "Event Sourcing",
+        "Spring Boot"
+      ],
+      "readingTime": 14,
+      "publishedAt": "2024-01-22"
+    },
+    {
+      "id": "blog-5",
+      "slug": "terraform-aws-ecs-zero-downtime",
+      "title": "Zero-Downtime AWS ECS Deployments with Terraform and Blue/Green",
+      "excerpt": "A step-by-step guide to blue/green deployments on AWS ECS using Terraform. Covers ALB listener rules, task definition versioning, health check configuration, and automated rollback on smoke test failure.",
+      "category": "DevOps",
+      "tags": [
+        "AWS",
+        "Terraform",
+        "ECS"
+      ],
+      "readingTime": 11,
+      "publishedAt": "2024-01-08"
+    }
+  ],
+  "technologies": [
+    {
+      "name": "PostgreSQL",
+      "categories": [
+        "Enterprise",
+        "Backend"
+      ],
+      "projectCount": 4,
+      "yearsOfExperience": 4
+    },
+    {
+      "name": "Redis",
+      "categories": [
+        "Enterprise",
+        "Backend"
+      ],
+      "projectCount": 4,
+      "yearsOfExperience": 4
+    },
+    {
+      "name": "Java 21",
+      "categories": [
+        "Enterprise",
+        "Backend"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 7
+    },
+    {
+      "name": "REST APIs",
+      "categories": [
+        "Enterprise",
+        "Backend"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 7
+    },
+    {
+      "name": "Spring Boot",
+      "categories": [
+        "Backend",
+        "Enterprise"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 6
+    },
+    {
+      "name": "Maven",
+      "categories": [
+        "Enterprise",
+        "Backend"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 6
+    },
+    {
+      "name": "Docker",
+      "categories": [
+        "Enterprise",
+        "Backend"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 4
+    },
+    {
+      "name": "Jenkins",
+      "categories": [
+        "Enterprise"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 4
+    },
+    {
+      "name": "Spring Batch",
+      "categories": [
+        "Backend",
+        "Enterprise"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 4
+    },
+    {
+      "name": "Java 8",
+      "categories": [
+        "Enterprise",
+        "Backend"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "Git",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 7
+    },
+    {
+      "name": "Gradle",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 5
+    },
+    {
+      "name": "Oracle DB",
+      "categories": [
+        "Enterprise"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 4
+    },
+    {
+      "name": "Vue 3",
+      "categories": [
+        "Enterprise"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 3
+    },
+    {
+      "name": "Apache Kafka",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 3
+    },
+    {
+      "name": "OpenAI API",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 2
+    },
+    {
+      "name": "Kubernetes",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 2
+    },
+    {
+      "name": "pgvector",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 1
+    },
+    {
+      "name": "Spring Boot 3",
+      "categories": [
+        "Enterprise"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "AWS ECS",
+      "categories": [
+        "Enterprise"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "Apache Tika",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "AWS Lambda",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "Java 11",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "AWS EKS",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "Spring MVC",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "JUnit",
+      "categories": [
+        "Backend"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
+    }
+  ],
+  "generatedAt": "2026-07-25T12:42:07.009Z"
+}

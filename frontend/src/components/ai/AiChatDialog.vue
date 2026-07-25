@@ -227,16 +227,12 @@ watch(
   () => scrollToBottom(),
 )
 
-// Focus input when dialog opens; restore session on first open
-let _restored = false
+// Start a fresh conversation every time the dialog opens (unless streaming)
 watch(
   () => chat.isOpen,
   (open) => {
     if (open) {
-      if (!_restored) {
-        _restored = true
-        chat.restoreSession()
-      }
+      if (!chat.isStreaming) chat.reset()
       nextTick(() => {
         dialogRef.value?.focus()
         inputRef.value?.focus()

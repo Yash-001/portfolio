@@ -12,7 +12,9 @@ class Settings(BaseSettings):
     APP_NAME: str = "Portfolio AI Service"
     APP_VERSION: str = "1.0.0"
     ENVIRONMENT: Literal["development", "staging", "production"] = "development"
-    DEBUG: bool = False
+    # Renamed from DEBUG to APP_DEBUG to avoid collision with the Windows
+    # system environment variable DEBUG=release set by some IDEs/tools.
+    APP_DEBUG: bool = False
 
     # ── Server ────────────────────────────────────────────────────────────
     HOST: str = "0.0.0.0"
@@ -44,7 +46,7 @@ class Settings(BaseSettings):
 
     # ── Google Gemini (future) ────────────────────────────────────────────
     GEMINI_API_KEY: str = ""
-    GEMINI_DEFAULT_MODEL: str = "gemini-1.5-flash"
+    GEMINI_DEFAULT_MODEL: str = "gemini-flash-latest"
 
     # ── Rate limiting ─────────────────────────────────────────────────────
     RATE_LIMIT_ENABLED: bool = True

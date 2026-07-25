@@ -41,8 +41,8 @@ from app.services.exceptions import AIRateLimitError, AIServiceError
 logger = logging.getLogger("ai.chat")
 settings = get_settings()
 
-# Build the system prompt once at startup — it's pure and static.
-_SYSTEM_PROMPT: str = build_system_prompt()
+# System prompt is rebuilt per-request via get_knowledge() mtime cache.
+# No uvicorn restart needed after editing content — just re-run `npm run dev`.
 
 # Context window budget: reserve ~12k chars for system prompt + response.
 # Remaining ~20k chars (~5k tokens) for history.
@@ -122,7 +122,7 @@ def _to_provider_messages(
       [system] + [trimmed history turns] + [current user message]
     """
     messages: list[ChatMessage] = [
-        ChatMessage(role=MessageRole.SYSTEM, content=_SYSTEM_PROMPT),
+        ChatMessage(role=MessageRole.SYSTEM, content=build_system_prompt()),
     ]
     for turn in _trim_history(request.history):
         role = (
@@ -315,57 +315,65 @@ class ChatService:
         request_id: str,
     ) -> AsyncGenerator[str, None]:
         """
-        Calls the OpenAI streaming API directly.
-        When other providers are implemented, this delegates to provider.stream().
+        Delegates streaming to the active provider.
+        Supports openai and gemini. Add a stream() method to any provider
+        to enable streaming for it — falls back to non-streaming chat() otherwise.
         """
-        from openai import AsyncOpenAI  # type: ignore
+        messages = _to_provider_messages(request)
+        model    = request.model or provider.default_model
 
-        if not settings.OPENAI_API_KEY:
-            from app.services.exceptions import AINotConfiguredError
-            raise AINotConfiguredError(
-                provider="openai",
-                message="OPENAI_API_KEY is not set.",
-            )
-
-        client = AsyncOpenAI(
-            api_key=settings.OPENAI_API_KEY,
-            timeout=settings.OPENAI_TIMEOUT_SECONDS,
-            max_retries=0,
-        )
-
-        messages = [
-            {"role": m.role.value, "content": m.content}
-            for m in _to_provider_messages(request)
-        ]
-
-        stream = await client.chat.completions.create(
-            model=request.model or settings.OPENAI_DEFAULT_MODEL,
+        # Build a ChatRequest for providers that need it
+        from app.models.ai_models import ChatRequest as _ChatRequest
+        chat_req = _ChatRequest(
             messages=messages,
+            model=model,
             max_tokens=settings.OPENAI_MAX_TOKENS,
             temperature=settings.OPENAI_TEMPERATURE,
             stream=True,
+            context_key="portfolio_chat",
         )
 
         full_content = ""
-        async for chunk in stream:
-            delta = chunk.choices[0].delta if chunk.choices else None
-            if delta and delta.content:
-                full_content += delta.content
-                payload = StreamChunkDTO(
-                    event=StreamEventType.DELTA,
-                    request_id=request_id,
-                    content=delta.content,
-                )
-                yield f"data: {payload.model_dump_json()}\n\n"
 
-        done_chunk = StreamChunkDTO(
-            event=StreamEventType.DONE,
-            request_id=request_id,
-            provider=provider.provider_name,
-            model=request.model or settings.OPENAI_DEFAULT_MODEL,
-            suggested_questions=_generate_follow_ups(full_content),
-        )
-        yield f"data: {done_chunk.model_dump_json()}\n\n"
+        if provider.provider_name == "openai":
+            # ── OpenAI streaming ──────────────────────────────────────────────
+            from openai import AsyncOpenAI  # type: ignore
+            if not settings.OPENAI_API_KEY:
+                from app.services.exceptions import AINotConfiguredError
+                raise AINotConfiguredError(provider="openai", message="OPENAI_API_KEY is not set.")
+
+            client = AsyncOpenAI(
+                api_key=settings.OPENAI_API_KEY,
+                timeout=settings.OPENAI_TIMEOUT_SECONDS,
+                max_retries=0,
+            )
+            oai_messages = [{"role": m.role.value, "content": m.content} for m in messages]
+            stream = await client.chat.completions.create(
+                model=model,
+                messages=oai_messages,
+                max_tokens=settings.OPENAI_MAX_TOKENS,
+                temperature=settings.OPENAI_TEMPERATURE,
+                stream=True,
+            )
+            async for chunk in stream:
+                delta = chunk.choices[0].delta if chunk.choices else None
+                if delta and delta.content:
+                    full_content += delta.content
+                    yield f"data: {StreamChunkDTO(event=StreamEventType.DELTA, request_id=request_id, content=delta.content).model_dump_json()}\n\n"
+
+        elif provider.provider_name == "gemini":
+            # ── Gemini streaming ──────────────────────────────────────────────
+            async for text in provider.stream(chat_req, request_id):
+                full_content += text
+                yield f"data: {StreamChunkDTO(event=StreamEventType.DELTA, request_id=request_id, content=text).model_dump_json()}\n\n"
+
+        else:
+            # ── Fallback: non-streaming for other providers ────────────────────
+            response = await provider.chat(chat_req)
+            full_content = response.content
+            yield f"data: {StreamChunkDTO(event=StreamEventType.DELTA, request_id=request_id, content=full_content).model_dump_json()}\n\n"
+
+        yield f"data: {StreamChunkDTO(event=StreamEventType.DONE, request_id=request_id, provider=provider.provider_name, model=model, suggested_questions=_generate_follow_ups(full_content)).model_dump_json()}\n\n"
 
     # ── Helpers ───────────────────────────────────────────────────────────────
 

@@ -49,6 +49,11 @@ export function trimHistory(messages: ChatMessageItem[]): ConversationMessage[] 
     slice = slice.slice(1)
   }
 
+  // Ensure we end on an assistant message (complete pairs only)
+  if (slice.length > 0 && slice[slice.length - 1].role === 'user') {
+    slice = slice.slice(0, -1)
+  }
+
   // Trim by character budget from the front
   let totalChars = slice.reduce((sum, m) => sum + m.content.length, 0)
   while (totalChars > MAX_HISTORY_CHARS && slice.length >= 2) {

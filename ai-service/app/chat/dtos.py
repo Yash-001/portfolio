@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from enum import Enum
 from typing import List, Literal, Optional
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field
 
 
 # ── Conversation history ──────────────────────────────────────────────────────
@@ -41,25 +41,10 @@ class PortfolioChatRequest(BaseModel):
     model:      Optional[str] = Field(default=None, max_length=100)
     session_id: Optional[str] = Field(default=None, max_length=128)
 
-    @field_validator("history")
-    @classmethod
-    def history_must_alternate(cls, v: List[ConversationMessage]) -> List[ConversationMessage]:
-        for i in range(1, len(v)):
-            if v[i].role == v[i - 1].role:
-                raise ValueError(
-                    f"Conversation history must alternate roles. "
-                    f"Found consecutive '{v[i].role}' at positions {i-1} and {i}."
-                )
-        return v
-
-    @model_validator(mode="after")
-    def history_last_must_be_assistant(self) -> PortfolioChatRequest:
-        if self.history and self.history[-1].role != ConversationRole.ASSISTANT:
-            raise ValueError(
-                "Last message in history must be from the assistant. "
-                "The current user message is sent separately in 'message'."
-            )
-        return self
+    # History shape is normalised server-side in _trim_history() before
+    # being sent to the provider. No strict validators here — they caused
+    # 422s when the client sent edge-case history shapes (e.g. single user
+    # message, or history from session restore).
 
 
 # ── Response ──────────────────────────────────────────────────────────────────
