@@ -51,7 +51,7 @@ export default defineConfig({
           'vue-vendor':     ['vue', 'vue-router', 'pinia'],
           'primevue-vendor': ['primevue'],
           'gsap-vendor':    ['gsap'],
-          'utils-vendor':   ['@vueuse/core', 'axios'],
+          'utils-vendor':   ['@vueuse/core'],
           'ai-vendor':      ['marked', 'highlight.js'],
         },
       },

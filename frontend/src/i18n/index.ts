@@ -1,4 +1,4 @@
-import { createI18n } from 'vue-i18n'
+import { createI18n, type LocaleMessages, type VueMessageType } from 'vue-i18n'
 import type { LocaleCode } from '@/types/i18n.types'
 import en from './locales/en/index'
 
@@ -6,7 +6,7 @@ export const i18n = createI18n({
   legacy:         false,
   locale:         'en' as LocaleCode,
   fallbackLocale: 'en',
-  messages:       { en } as Record<string, Record<string, unknown>>,
+  messages:       { en } as unknown as Record<string, LocaleMessages<VueMessageType>>,
   missingWarn:    false,
   fallbackWarn:   false,
 })
@@ -18,6 +18,6 @@ const loaded = new Set<LocaleCode>(['en'])
 export async function loadLocale(locale: LocaleCode): Promise<void> {
   if (loaded.has(locale)) return
   const messages = await import(/* @vite-ignore */ `./locales/${locale}/index.ts`)
-  ;(i18n.global as { setLocaleMessage: (locale: string, messages: Record<string, unknown>) => void }).setLocaleMessage(locale, messages.default as Record<string, unknown>)
+  ;((i18n.global as unknown) as { setLocaleMessage: (locale: string, messages: LocaleMessages<VueMessageType>) => void }).setLocaleMessage(locale, messages.default as LocaleMessages<VueMessageType>)
   loaded.add(locale)
 }

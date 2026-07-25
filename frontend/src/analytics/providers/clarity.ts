@@ -14,7 +14,7 @@ export const clarityProvider = {
     if (!projectId || typeof window === 'undefined' || this._ready) return
 
     // Official Microsoft Clarity snippet
-    type ClarityWindow = Window & { [key: string]: ((...args: unknown[]) => void) & { q?: unknown[][] } }
+    type ClarityWindow = { [key: string]: ((...args: unknown[]) => void) & { q?: unknown[][] } }
     ;(function (c: ClarityWindow, l: Document, a: string, r: string, i: string) {
       c[a] =
         c[a] ||
@@ -27,7 +27,7 @@ export const clarityProvider = {
       t.onerror  = () => console.warn('[Analytics] Clarity script failed to load')
       const y    = l.getElementsByTagName(r)[0]
       y.parentNode?.insertBefore(t, y)
-    })(window, document, 'clarity', 'script', projectId)
+    })(window as unknown as ClarityWindow, document, 'clarity', 'script', projectId)
 
     this._ready = true
   },

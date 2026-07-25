@@ -11,7 +11,7 @@ export function useLocale() {
 
   async function setLocale(code: LocaleCode): Promise<void> {
     await loadLocale(code)
-    const g = i18n.global as { locale: { value: string } }
+    const g = (i18n.global as unknown) as { locale: { value: string } }
     g.locale.value = code
     persistLocale(code)
     applyRtl(code)
