@@ -9,6 +9,7 @@ import { i18nPlugin }      from '@/plugins/i18n'
 import { analyticsPlugin } from '@/plugins/analytics'
 
 import '@/styles/main.css'
+import 'highlight.js/styles/github-dark.css'
 
 const app = createApp(App)
 

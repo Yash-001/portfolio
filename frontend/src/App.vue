@@ -39,6 +39,10 @@
     <RouterView />
 
     <AppToast />
+
+    <!-- AI Assistant -->
+    <AiChatButton />
+    <AiChatDialog />
   </div>
 </template>
 
@@ -51,6 +55,7 @@ import AppToast  from '@/components/layout/AppToast.vue'
 import { isNavigating } from '@/router'
 import { useUiStore } from '@/stores/ui.store'
 import { useLocale } from '@/composables/useLocale'
+import { AiChatButton, AiChatDialog } from '@/components/ai'
 
 const ui = useUiStore()
 const { initLocale } = useLocale()

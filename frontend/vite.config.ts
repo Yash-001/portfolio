@@ -52,6 +52,7 @@ export default defineConfig({
           'primevue-vendor': ['primevue'],
           'gsap-vendor':    ['gsap'],
           'utils-vendor':   ['@vueuse/core', 'axios'],
+          'ai-vendor':      ['marked', 'highlight.js'],
         },
       },
     },
