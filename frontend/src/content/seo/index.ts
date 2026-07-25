@@ -3,12 +3,12 @@
 // Default and per-page SEO metadata.
 // ─────────────────────────────────────────────────────────────────────────────
 import type { PageMeta } from '@/types'
-import { OWNER_NAME, OWNER_TITLE, OWNER_YEARS_EXP } from '@/content/profile'
+import { NAME, TITLE, YEARS_EXP, SEO } from '@/content/settings/portfolio.config'
 
-export const SEO_TITLE_DEFAULT = `${OWNER_NAME} | ${OWNER_TITLE}`
-export const SEO_DESCRIPTION   = `${OWNER_TITLE} with ${OWNER_YEARS_EXP}+ years building enterprise backends, cloud infrastructure, and AI-assisted systems. Java, Spring Boot, Vue.js, Angular, AWS, GCP.`
-export const SEO_KEYWORDS      = 'Senior Java Developer, Spring Boot, Angular, Vue.js, GCP, AWS, Enterprise Software, Freelance Developer, Full Stack Engineer, Python, AI/ML'
-export const SEO_OG_IMAGE      = '/og-image.jpg'
+export const SEO_TITLE_DEFAULT = SEO.title
+export const SEO_DESCRIPTION   = SEO.description
+export const SEO_KEYWORDS      = SEO.keywords
+export const SEO_OG_IMAGE      = SEO.ogImage
 
 export const DEFAULT_META: PageMeta = {
   title:       SEO_TITLE_DEFAULT,
@@ -20,38 +20,38 @@ export const DEFAULT_META: PageMeta = {
 export const PAGE_META: Record<string, PageMeta> = {
   home: {
     title:       SEO_TITLE_DEFAULT,
-    description: `I build the full stack solutions that startups bet their product on. ${OWNER_YEARS_EXP}+ years of enterprise engineering.`,
+    description: `I build the full stack solutions that startups bet their product on. ${YEARS_EXP}+ years of enterprise engineering.`,
   },
   about: {
-    title:       `About | ${OWNER_NAME}`,
-    description: `${OWNER_TITLE} with a philosophy-first approach to building enterprise systems.`,
+    title:       `About | ${NAME}`,
+    description: `${TITLE} with a philosophy-first approach to building enterprise systems.`,
   },
   experience: {
-    title:       `Experience | ${OWNER_NAME}`,
-    description: `${OWNER_YEARS_EXP}+ years of enterprise software engineering across Java, Spring Boot, Angular, Vue.js, AWS, and cloud infrastructure.`,
+    title:       `Experience | ${NAME}`,
+    description: `${YEARS_EXP}+ years of enterprise software engineering across Java, Spring Boot, Angular, Vue.js, AWS, and cloud infrastructure.`,
   },
   projects: {
-    title:       `Projects | ${OWNER_NAME}`,
+    title:       `Projects | ${NAME}`,
     description: 'Selected work — enterprise systems, cloud infrastructure, and AI-assisted development.',
   },
   skills: {
-    title:       `Skills | ${OWNER_NAME}`,
+    title:       `Skills | ${NAME}`,
     description: 'Full technical picture — Java, Spring Boot, Angular, Vue.js, MySQL, PostgreSQL, Oracle, Docker, GCP, AWS, Jenkins.',
   },
   services: {
-    title:       `Services | ${OWNER_NAME}`,
+    title:       `Services | ${NAME}`,
     description: 'Full stack engineering, cloud architecture, AI integration and technical consulting for startups and enterprises.',
   },
   testimonials: {
-    title:       `Testimonials | ${OWNER_NAME}`,
-    description: `What clients and colleagues say about working with ${OWNER_NAME}.`,
+    title:       `Testimonials | ${NAME}`,
+    description: `What clients and colleagues say about working with ${NAME}.`,
   },
   blog: {
-    title:       `Blog | ${OWNER_NAME}`,
+    title:       `Blog | ${NAME}`,
     description: 'Thoughts on enterprise engineering, cloud architecture, and AI-assisted development.',
   },
   contact: {
-    title:       `Contact | ${OWNER_NAME}`,
+    title:       `Contact | ${NAME}`,
     description: `Let's build something serious. Available for new projects.`,
   },
 }

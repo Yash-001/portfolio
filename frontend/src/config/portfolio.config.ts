@@ -1,8 +1,13 @@
 /**
  * portfolio.config.ts — re-exports from src/content layer.
- * All portfolio data now lives in src/content/.
+ * All portfolio data lives in src/content/settings/portfolio.config.ts.
  * This file exists only for backward compatibility with any direct imports.
  */
+
+// New unified config — import directly for new code
+export * from '@/content/settings/portfolio.config'
+
+// Legacy named exports — existing components continue to work unchanged
 export {
   OWNER_NAME,
   OWNER_INITIALS,

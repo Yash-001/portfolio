@@ -2,8 +2,8 @@
 // src/content/social/index.ts
 // All social and external profile URLs.
 // ─────────────────────────────────────────────────────────────────────────────
-import { OWNER_EMAIL } from '@/content/profile'
+import { GITHUB, LINKEDIN, EMAIL } from '@/content/settings/portfolio.config'
 
-export const GITHUB_URL   = 'https://github.com/Yash-001'
-export const LINKEDIN_URL = 'https://www.linkedin.com/in/yash-ranjan-a0197b166/'
-export const EMAIL_MAILTO = `mailto:${OWNER_EMAIL}`
+export const GITHUB_URL   = GITHUB
+export const LINKEDIN_URL = LINKEDIN
+export const EMAIL_MAILTO = `mailto:${EMAIL}`
