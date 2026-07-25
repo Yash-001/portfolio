@@ -156,12 +156,12 @@ const scrollRef = ref<HTMLElement | null>(null)
 const inputRef  = ref<InstanceType<typeof AiChatInput> | null>(null)
 
 const INITIAL_SUGGESTIONS = [
-  'What projects have you built?',
-  'What is your tech stack?',
-  'Are you available for freelance work?',
-  'What services do you offer?',
-  'How do I contact you?',
-  'Tell me about your AI experience',
+  'Tell me about this candidate',
+  'Summarise his experience',
+  'List his backend experience',
+  'List his AI experience',
+  'Show his cloud projects',
+  'Generate interview questions',
 ]
 
 /** Show context warning when conversation is getting long (>16 done messages). */

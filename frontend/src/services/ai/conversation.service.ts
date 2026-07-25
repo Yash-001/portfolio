@@ -88,6 +88,13 @@ function extractTopics(messages: ChatMessageItem[]): string[] {
     [/experience|career|job|role/i, 'experience'],
     [/availab|when|timeline/i, 'availability'],
     [/price|cost|rate|budget/i, 'pricing'],
+    [/interview|question/i, 'interview questions'],
+    [/architect|design|decision/i, 'architecture'],
+    [/backend|api|spring/i, 'backend experience'],
+    [/ai|llm|openai|gpt/i, 'AI experience'],
+    [/cloud|aws|kubernetes/i, 'cloud projects'],
+    [/metric|achiev|result|impact/i, 'achievements'],
+    [/fit|suitable|recommend/i, 'role fit'],
   ]
 
   for (const [pattern, label] of patterns) {
@@ -182,45 +189,52 @@ export function exportConversation(messages: ChatMessageItem[], format: 'txt' | 
 // ── Follow-up questions ───────────────────────────────────────────────────────
 
 /**
- * Generates contextual follow-up suggestions based on the last assistant reply
- * and conversation history. Pure client-side heuristic — no extra API call.
+ * Generates contextual follow-up suggestions based on the last assistant reply.
+ * Recruiter-oriented: covers all documented query intents.
+ * Pure client-side heuristic — no extra API call.
  */
 export function generateFollowUps(messages: ChatMessageItem[]): string[] {
   const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant' && m.status === 'done')
   if (!lastAssistant) return []
 
   const content = lastAssistant.content.toLowerCase()
+  const asked = new Set(messages.filter(m => m.role === 'user').map(m => m.content.toLowerCase()))
+
+  // Ordered: first match wins. Recruiter intents first.
+  const patterns: [RegExp, string[]][] = [
+    [/interview|question to ask/,        ['What system design questions should I ask?', 'What are his strongest technical areas?']],
+    [/architect|design decision/,        ['What were the key technical challenges?', 'Compare all projects in a table']],
+    [/multi.?tenant|saas/,               ['How did he handle tenant data isolation?', 'What cloud infrastructure did he use?']],
+    [/kafka|event.?stream/,              ['What throughput and latency did he achieve?', 'Did he use event sourcing?']],
+    [/llm|openai|gpt|ai pipeline/,       ['What was the straight-through rate?', 'How did he reduce token costs?']],
+    [/cloud|aws|kubernetes|ecs/,         ['What specific AWS services did he use?', 'How did he handle CI/CD?']],
+    [/backend|api|spring boot/,          ['List his backend projects', 'What databases has he worked with?']],
+    [/payroll|compliance/,               ['How many statutory rules did the engine handle?', 'What was the batch processing improvement?']],
+    [/reconcil|fintech|payment/,         ['What accuracy did the reconciliation engine achieve?', 'How did he prevent duplicate charges?']],
+    [/metric|achiev|result|impact/,      ['Summarise all key metrics in a table', 'Which project had the biggest impact?']],
+    [/fit|suitable|recommend.*role/,     ['Generate interview questions for this candidate', 'What roles is he best suited for?']],
+    [/experience|career|year/,           ['What is his current role?', 'List his backend experience']],
+    [/project|built|developed/,          ['Compare all projects in a table', 'What were the technical challenges?']],
+    [/skill|tech|stack/,                 ['List his AI experience', 'Show his cloud projects']],
+    [/freelance|hire|service/,           ['How do I book a discovery call?', 'What is his typical project timeline?']],
+    [/contact|email|reach/,              ['Can I book a call directly?']],
+    [/availab/,                          ['What is his current availability?', 'How do I get started?']],
+  ]
+
+  const seen = new Set<string>()
   const suggestions: string[] = []
 
-  // Topic-based follow-ups
-  if (/project|built|developed|created/.test(content)) {
-    suggestions.push('What was the biggest technical challenge?', 'What tech stack did you use?')
-  }
-  if (/react|vue|angular|next|nuxt/.test(content)) {
-    suggestions.push('Do you have experience with server-side rendering?')
-  }
-  if (/python|fastapi|django|flask/.test(content)) {
-    suggestions.push('Have you built any ML or AI-powered backends?')
-  }
-  if (/aws|cloud|docker|kubernetes/.test(content)) {
-    suggestions.push('How do you handle CI/CD and deployments?')
-  }
-  if (/freelance|available|hire|service/.test(content)) {
-    suggestions.push('How do I book a discovery call?', 'What is your typical project timeline?')
-  }
-  if (/skill|experience|year/.test(content)) {
-    suggestions.push('What are your strongest technical areas?')
-  }
-  if (/contact|email|reach/.test(content)) {
-    suggestions.push('Can I book a call directly?')
+  for (const [pattern, questions] of patterns) {
+    if (pattern.test(content)) {
+      for (const q of questions) {
+        if (!seen.has(q) && !asked.has(q.toLowerCase())) {
+          seen.add(q)
+          suggestions.push(q)
+        }
+      }
+    }
+    if (suggestions.length >= 3) break
   }
 
-  // Deduplicate against already-asked questions
-  const asked = new Set(
-    messages.filter(m => m.role === 'user').map(m => m.content.toLowerCase()),
-  )
-
-  return suggestions
-    .filter(s => !asked.has(s.toLowerCase()))
-    .slice(0, 3)
+  return suggestions.slice(0, 3)
 }

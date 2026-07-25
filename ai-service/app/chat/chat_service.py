@@ -76,23 +76,42 @@ def _trim_history(history: list) -> list:
     return trimmed
 
 
+# Ordered: first match wins per keyword. Recruiter-oriented intents first.
 _FOLLOW_UP_PATTERNS: list[tuple] = [
-    ("project", ["What was the biggest challenge?", "What tech stack did you use?"]),
-    ("skill",   ["What are your strongest technical areas?", "Do you have cloud experience?"]),
-    ("service", ["How do I book a discovery call?", "What is your typical project timeline?"]),
-    ("contact", ["Can I book a call directly?"]),
-    ("experience", ["What industries have you worked in?"]),
-    ("available", ["What is your current availability?", "How do I get started?"]),
+    # Recruiter intents
+    (r"interview",                ["What system design questions should I ask?", "What are his strongest technical areas?"]),
+    (r"architecture|design",      ["What were the key technical challenges?", "How does he approach system design?"]),
+    (r"multi.?tenant|saas",       ["How did he handle tenant data isolation?", "What cloud infrastructure did he use?"]),
+    (r"kafka|event.?stream",      ["What was the throughput and latency achieved?", "Did he use event sourcing?"]),
+    (r"llm|openai|gpt|ai pipeline", ["What was the straight-through rate achieved?", "How did he reduce token costs?"]),
+    (r"cloud|aws|kubernetes|ecs", ["What specific AWS services did he use?", "How did he handle CI/CD?"]),
+    (r"backend|api|spring",       ["List his backend projects", "What databases has he worked with?"]),
+    (r"payroll|compliance",       ["How many statutory rules did the engine handle?", "What was the batch processing improvement?"]),
+    (r"reconcil|fintech|payment", ["What accuracy did the reconciliation engine achieve?", "How did he prevent duplicate charges?"]),
+    (r"metric|achiev|result",     ["Summarise all key metrics in a table", "Which project had the biggest impact?"]),
+    (r"fit|role|hire|position",   ["Generate interview questions for this candidate", "What roles is he best suited for?"]),
+    (r"experience|career|year",   ["What is his current role?", "List his backend experience"]),
+    (r"project|built",            ["Compare all projects in a table", "What were the technical challenges?"]),
+    (r"skill|tech|stack",         ["List his AI experience", "Show his cloud projects"]),
+    (r"service|freelance|hire",   ["How do I book a discovery call?", "What is his typical project timeline?"]),
+    (r"contact|email|reach",      ["Can I book a call directly?"]),
+    (r"available",                ["What is his current availability?", "How do I get started?"]),
 ]
+
+import re as _re
 
 
 def _generate_follow_ups(content: str) -> list[str]:
-    """Heuristic follow-up suggestions based on the assistant's reply."""
+    """Recruiter-oriented follow-up suggestions based on the assistant's reply."""
     content_lower = content.lower()
+    seen: set[str] = set()
     suggestions: list[str] = []
-    for keyword, questions in _FOLLOW_UP_PATTERNS:
-        if keyword in content_lower:
-            suggestions.extend(questions)
+    for pattern, questions in _FOLLOW_UP_PATTERNS:
+        if _re.search(pattern, content_lower):
+            for q in questions:
+                if q not in seen:
+                    seen.add(q)
+                    suggestions.append(q)
         if len(suggestions) >= 3:
             break
     return suggestions[:3]
