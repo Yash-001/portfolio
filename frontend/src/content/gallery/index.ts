@@ -1,15 +1,7 @@
-// ─────────────────────────────────────────────────────────────────────────────
 // src/content/gallery/index.ts
-// Photo gallery items (speaking, events, workspace, etc.)
-// ─────────────────────────────────────────────────────────────────────────────
+import type { GalleryItem } from '@/types/content'
 
-export interface GalleryItem {
-  id: string
-  src: string
-  alt: string
-  caption?: string
-  category?: string
-}
+export type { GalleryItem }
 
 export const GALLERY_ITEMS: GalleryItem[] = [
   // Example — replace with real data:

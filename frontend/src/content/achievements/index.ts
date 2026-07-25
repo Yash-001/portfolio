@@ -1,16 +1,7 @@
-// ─────────────────────────────────────────────────────────────────────────────
 // src/content/achievements/index.ts
-// Notable achievements, awards, and recognitions.
-// ─────────────────────────────────────────────────────────────────────────────
+import type { Achievement } from '@/types/content'
 
-export interface Achievement {
-  id: string
-  title: string
-  description: string
-  year: number
-  icon?: string
-  url?: string
-}
+export type { Achievement }
 
 export const ACHIEVEMENTS: Achievement[] = [
   // Example — replace with real data:

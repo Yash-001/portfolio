@@ -1,18 +1,7 @@
-// ─────────────────────────────────────────────────────────────────────────────
 // src/content/certifications/index.ts
-// Professional certifications. Add entries as needed.
-// ─────────────────────────────────────────────────────────────────────────────
+import type { Certification } from '@/types/content'
 
-export interface Certification {
-  id: string
-  name: string
-  issuer: string
-  issuedDate: string
-  expiryDate?: string
-  credentialId?: string
-  credentialUrl?: string
-  logo?: string
-}
+export type { Certification }
 
 export const CERTIFICATIONS: Certification[] = [
   // Example — replace with real data:

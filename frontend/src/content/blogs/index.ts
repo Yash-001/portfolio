@@ -1,38 +1,16 @@
-// ─────────────────────────────────────────────────────────────────────────────
 // src/content/blogs/index.ts
-// Blog posts, author, categories, and display config.
-// ─────────────────────────────────────────────────────────────────────────────
-import type { BlogPost } from '@/types'
+import type { BlogAuthor, BlogPostFull, BlogCategory } from '@/types/content'
+import { BLOG_CATEGORIES } from '@/types/content'
 import { OWNER_NAME, OWNER_TITLE, PROFILE_IMAGE } from '@/content/profile'
 
-export interface BlogAuthor {
-  name: string
-  role: string
-  avatar?: string
-}
-
-export interface BlogPostFull extends BlogPost {
-  category: string
-  author: BlogAuthor
-}
+export type { BlogAuthor, BlogPostFull, BlogCategory }
+export { BLOG_CATEGORIES }
 
 export const BLOG_AUTHOR: BlogAuthor = {
   name:   OWNER_NAME,
   role:   OWNER_TITLE,
   avatar: PROFILE_IMAGE,
 }
-
-export const BLOG_CATEGORIES = [
-  'Architecture',
-  'Backend',
-  'Frontend',
-  'DevOps',
-  'AI & ML',
-  'Career',
-  'Performance',
-] as const
-
-export type BlogCategory = typeof BLOG_CATEGORIES[number]
 
 export const BLOG_CATEGORY_CONFIG: Record<string, { color: string; bg: string }> = {
   'Architecture': { color: '#6366f1', bg: 'rgba(99,102,241,0.1)'  },

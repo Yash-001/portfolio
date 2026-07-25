@@ -1,17 +1,7 @@
-// ─────────────────────────────────────────────────────────────────────────────
 // src/content/testimonials/index.ts
-// Client testimonials and loop array for infinite scroll.
-// ─────────────────────────────────────────────────────────────────────────────
-import type { Testimonial } from '@/types'
+import type { TestimonialFull } from '@/types/content'
 
-export interface TestimonialFull extends Testimonial {
-  rating: 1 | 2 | 3 | 4 | 5
-  companyLogo?: string
-  companyUrl?: string
-  projectRef?: string
-  engagement?: string
-  location?: string
-}
+export type { TestimonialFull }
 
 export const TESTIMONIALS: TestimonialFull[] = [
   {

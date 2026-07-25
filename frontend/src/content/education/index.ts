@@ -1,19 +1,7 @@
-// ─────────────────────────────────────────────────────────────────────────────
 // src/content/education/index.ts
-// Academic qualifications. Add entries as needed.
-// ─────────────────────────────────────────────────────────────────────────────
+import type { Education } from '@/types/content'
 
-export interface Education {
-  id: string
-  degree: string
-  field: string
-  institution: string
-  location: string
-  startYear: number
-  endYear: number | 'present'
-  grade?: string
-  highlights?: string[]
-}
+export type { Education }
 
 export const EDUCATION: Education[] = [
   // Example — replace with real data:
