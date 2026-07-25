@@ -1,16 +1,11 @@
 {
   "framework": null,
-  "installCommand": "npm ci",
-  "buildCommand": "cd frontend && npx vite-node scripts/export-knowledge.ts && npx vue-tsc --noEmit && npx vite build",
-  "outputDirectory": "frontend/dist",
-
   "rewrites": [
     {
       "source": "/:path*",
       "destination": "/index.html"
     }
   ],
-
   "headers": [
     {
       "source": "/assets/:path*",
