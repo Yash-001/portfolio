@@ -1,0 +1,20 @@
+export type { EamTabId } from '@/content/projects/featured'
+export {
+  EAM_PROJECT,
+  EAM_METRICS,
+  EAM_TECH,
+  EAM_TECH_CATEGORIES,
+  EAM_FEATURES,
+  EAM_CHALLENGES,
+  EAM_ENGINEERING_DECISIONS,
+  EAM_API,
+  EAM_DATABASE,
+  EAM_SECURITY,
+  EAM_SCALABILITY,
+  EAM_PERFORMANCE,
+  EAM_DEPLOYMENT,
+  EAM_ROADMAP,
+  EAM_TIMELINE,
+  EAM_SCREENSHOTS,
+  EAM_TABS,
+} from '@/content/projects/featured'
