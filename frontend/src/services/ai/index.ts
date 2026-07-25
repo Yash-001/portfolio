@@ -15,3 +15,5 @@ export type {
   AIErrorResponse,
 } from './ai.types'
 export { AIClientError } from './ai.types'
+export { buildKnowledge, getKnowledge, invalidateKnowledge } from './knowledge'
+export type { PortfolioKnowledge } from './knowledge'
