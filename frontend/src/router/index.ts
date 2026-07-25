@@ -108,7 +108,7 @@ router.beforeEach(() => {
 router.afterEach((to) => {
   isNavigating.value = false
 
-  const g = i18n.global as any
+  const g = i18n.global as { te: (key: string) => boolean; t: (key: string) => string }
   const name = String(to.name ?? '')
   const metaKey = `meta.${name}.title`
   const descKey = `meta.${name}.description`

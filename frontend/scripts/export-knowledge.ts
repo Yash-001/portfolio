@@ -13,4 +13,4 @@ const OUTPUT = resolve(__dirname, '../../ai-service/app/knowledge/portfolio_data
 
 mkdirSync(dirname(OUTPUT), { recursive: true })
 writeFileSync(OUTPUT, JSON.stringify(buildKnowledge(), null, 2), 'utf-8')
-console.log('[knowledge-export] Written:', OUTPUT)
+process.stdout.write(`[knowledge-export] Written: ${OUTPUT}\n`)

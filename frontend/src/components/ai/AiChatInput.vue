@@ -1,5 +1,8 @@
 <template>
-  <div class="ai-input" :class="{ 'ai-input--disabled': disabled }">
+  <div
+    class="ai-input"
+    :class="{ 'ai-input--disabled': disabled }"
+  >
     <textarea
       ref="textareaRef"
       v-model="draft"
@@ -15,7 +18,11 @@
     />
 
     <div class="ai-input__actions">
-      <span v-if="draft.length > 3500" class="ai-input__count" :class="{ 'ai-input__count--warn': draft.length > 3800 }">
+      <span
+        v-if="draft.length > 3500"
+        class="ai-input__count"
+        :class="{ 'ai-input__count--warn': draft.length > 3800 }"
+      >
         {{ draft.length }}/4000
       </span>
 

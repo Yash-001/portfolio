@@ -29,8 +29,12 @@
           ref="storyEl"
           class="story-body"
         >
-          <p v-for="(para, i) in (tm('about.story') as string[])"
-            :key="i">{{ para }}</p>
+          <p
+            v-for="(para, i) in (tm('about.story') as string[])"
+            :key="i"
+          >
+            {{ para }}
+          </p>
         </div>
 
         <!-- Signature -->
@@ -64,8 +68,12 @@
                 class="card-icon"
               />
             </div>
-            <h3 class="card-title">{{ t(`about.philosophy.${card.key}.title`) }}</h3>
-            <p class="card-body">{{ t(`about.philosophy.${card.key}.body`) }}</p>
+            <h3 class="card-title">
+              {{ t(`about.philosophy.${card.key}.title`) }}
+            </h3>
+            <p class="card-body">
+              {{ t(`about.philosophy.${card.key}.body`) }}
+            </p>
           </div>
         </div>
 
@@ -74,7 +82,9 @@
           ref="stackEl"
           class="stack-block"
         >
-          <p class="stack-label">{{ t('common.misc.currentlyWorkingWith') }}</p>
+          <p class="stack-label">
+            {{ t('common.misc.currentlyWorkingWith') }}
+          </p>
           <div class="stack-pills">
             <span
               v-for="tech in TECH_STACK"
@@ -130,9 +140,15 @@
         </div>
         <div class="timeline-card">
           <span class="timeline-year">{{ year }}</span>
-          <h4 class="timeline-role">{{ t(`about.timeline.${year}.role`) }}</h4>
-          <p class="timeline-company">{{ t(`about.timeline.${year}.company`) }}</p>
-          <p class="timeline-desc">{{ t(`about.timeline.${year}.desc`) }}</p>
+          <h4 class="timeline-role">
+            {{ t(`about.timeline.${year}.role`) }}
+          </h4>
+          <p class="timeline-company">
+            {{ t(`about.timeline.${year}.company`) }}
+          </p>
+          <p class="timeline-desc">
+            {{ t(`about.timeline.${year}.desc`) }}
+          </p>
         </div>
       </div>
       <div

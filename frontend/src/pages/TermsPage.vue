@@ -1,14 +1,27 @@
 <template>
-  <div class="policy-page" role="main">
+  <div
+    class="policy-page"
+    role="main"
+  >
     <div class="policy-page__inner">
-      <RouterLink to="/" class="back-link">
-        <i class="pi pi-arrow-left" style="font-size:11px;" />
+      <RouterLink
+        to="/"
+        class="back-link"
+      >
+        <i
+          class="pi pi-arrow-left"
+          style="font-size:11px;"
+        />
         <span>Back to home</span>
       </RouterLink>
 
       <header class="policy-header">
-        <h1 class="policy-title">Terms of Use</h1>
-        <p class="policy-date">Last updated: <time datetime="2024-01-01">January 2024</time></p>
+        <h1 class="policy-title">
+          Terms of Use
+        </h1>
+        <p class="policy-date">
+          Last updated: <time datetime="2024-01-01">January 2024</time>
+        </p>
       </header>
 
       <div class="policy-body">
@@ -34,7 +47,12 @@
 
         <section class="policy-section">
           <h2>Contact</h2>
-          <p>For any questions about these terms, contact me at <a :href="`mailto:${APP_EMAIL}`" class="policy-link">{{ APP_EMAIL }}</a>.</p>
+          <p>
+            For any questions about these terms, contact me at <a
+              :href="`mailto:${APP_EMAIL}`"
+              class="policy-link"
+            >{{ APP_EMAIL }}</a>.
+          </p>
         </section>
       </div>
     </div>

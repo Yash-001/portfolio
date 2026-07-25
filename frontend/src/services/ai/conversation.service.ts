@@ -124,7 +124,7 @@ export function saveSession(session: PersistedSession): void {
     }
     // Keep only the most recent N sessions
     localStorage.setItem(STORAGE_KEY, JSON.stringify(all.slice(0, MAX_STORED_SESSIONS)))
-  } catch {
+  } catch (_e) {
     // Storage quota exceeded or unavailable — fail silently
   }
 }
@@ -138,7 +138,7 @@ export function loadAllSessions(): PersistedSession[] {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     return JSON.parse(raw) as PersistedSession[]
-  } catch {
+  } catch (_e) {
     return []
   }
 }
@@ -147,7 +147,7 @@ export function deleteSession(id: string): void {
   try {
     const all = loadAllSessions().filter(s => s.id !== id)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(all))
-  } catch {}
+  } catch (_e) { /* quota exceeded or unavailable */ }
 }
 
 // ── Export ────────────────────────────────────────────────────────────────────

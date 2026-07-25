@@ -1,6 +1,12 @@
 <template>
-  <div class="ai-suggestions" role="list" aria-label="Suggested questions">
-    <p class="ai-suggestions__label">{{ label }}</p>
+  <div
+    class="ai-suggestions"
+    role="list"
+    aria-label="Suggested questions"
+  >
+    <p class="ai-suggestions__label">
+      {{ label }}
+    </p>
     <div class="ai-suggestions__chips">
       <button
         v-for="q in questions"

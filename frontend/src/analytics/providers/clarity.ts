@@ -14,11 +14,12 @@ export const clarityProvider = {
     if (!projectId || typeof window === 'undefined' || this._ready) return
 
     // Official Microsoft Clarity snippet
-    ;(function (c: Window, l: Document, a: string, r: string, i: string) {
-      ;(c as any)[a] =
-        (c as any)[a] ||
+    type ClarityWindow = Window & { [key: string]: ((...args: unknown[]) => void) & { q?: unknown[][] } }
+    ;(function (c: ClarityWindow, l: Document, a: string, r: string, i: string) {
+      c[a] =
+        c[a] ||
         function (...args: unknown[]) {
-          ;((c as any)[a].q = (c as any)[a].q || []).push(args)
+          (c[a].q = c[a].q || []).push(args)
         }
       const t    = l.createElement(r) as HTMLScriptElement
       t.async    = true

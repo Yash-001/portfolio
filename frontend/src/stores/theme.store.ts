@@ -10,6 +10,10 @@ import {
 } from '@/utils/theme.utils'
 import { PRIMEVUE_PRESETS } from '@/plugins/theme.presets'
 
+type PrimeVueWindow = Window & {
+  __primevue_instance__?: { changeTheme?: (prev: unknown, next: unknown, id: string, cb: () => void) => void }
+}
+
 const TRANSITION_DURATION = 300 // ms — matches --theme-transition-duration
 
 export const useThemeStore = defineStore('theme', () => {
@@ -29,7 +33,7 @@ export const useThemeStore = defineStore('theme', () => {
   function _swapPrimeVuePreset(id: ResolvedThemeId): void {
     try {
       // PrimeVue 4 exposes $primevue on globalProperties
-      const pv = (window as any).__primevue_instance__
+      const pv = (window as PrimeVueWindow).__primevue_instance__
       if (pv?.changeTheme) {
         const prev = PRIMEVUE_PRESETS[resolvedTheme.value]
         const next = PRIMEVUE_PRESETS[id]
@@ -87,7 +91,7 @@ export const useThemeStore = defineStore('theme', () => {
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (useViewTransition) {
-      await (document as any).startViewTransition(() => {
+      await (document as Document & { startViewTransition: (cb: () => void) => { ready: Promise<void> } }).startViewTransition(() => {
         _apply(resolved)
       }).ready
     } else {

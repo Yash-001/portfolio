@@ -36,7 +36,7 @@ function makeSessionId(): string {
 function getOrCreateSessionId(): string {
   try {
     return localStorage.getItem(STORAGE_SESSION_KEY) || makeSessionId()
-  } catch {
+  } catch (_e) {
     return makeSessionId()
   }
 }
@@ -73,7 +73,7 @@ export const useChatStore = defineStore('chat', () => {
     saveSession(session)
     try {
       localStorage.setItem(STORAGE_SESSION_KEY, sessionId.value)
-    } catch {}
+    } catch (_e) { /* quota exceeded */ }
   }
 
   function restoreSession(): boolean {
@@ -195,7 +195,7 @@ export const useChatStore = defineStore('chat', () => {
     _persistSession()
     // New session
     sessionId.value = makeSessionId()
-    try { localStorage.setItem(STORAGE_SESSION_KEY, sessionId.value) } catch {}
+    try { localStorage.setItem(STORAGE_SESSION_KEY, sessionId.value) } catch (_e) { /* quota exceeded */ }
     messages.value  = []
     followUps.value = []
   }

@@ -94,7 +94,9 @@
         class="ft-nav"
         aria-label="Footer navigation"
       >
-        <h3 class="ft-nav__heading">{{ t('common.footer.navigation') }}</h3>
+        <h3 class="ft-nav__heading">
+          {{ t('common.footer.navigation') }}
+        </h3>
         <ul class="ft-nav__list">
           <li
             v-for="link in NAV_LINK_KEYS"
@@ -120,7 +122,9 @@
         class="ft-nav"
         aria-label="Services"
       >
-        <h3 class="ft-nav__heading">{{ t('common.footer.services') }}</h3>
+        <h3 class="ft-nav__heading">
+          {{ t('common.footer.services') }}
+        </h3>
         <ul class="ft-nav__list">
           <li
             v-for="key in SERVICE_LINK_KEYS"
@@ -146,7 +150,9 @@
         class="ft-resources"
       >
         <nav aria-label="Resources">
-          <h3 class="ft-nav__heading">{{ t('common.footer.resources') }}</h3>
+          <h3 class="ft-nav__heading">
+            {{ t('common.footer.resources') }}
+          </h3>
           <ul class="ft-nav__list">
             <li
               v-for="r in RESOURCE_LINK_KEYS"
@@ -178,8 +184,15 @@
           class="ft-newsletter"
           aria-label="Newsletter signup"
         >
-          <h3 class="ft-nav__heading" style="margin-top: 32px;">{{ t('common.footer.stayInLoop') }}</h3>
-          <p class="ft-newsletter__sub">{{ t('common.footer.newsletterSub') }}</p>
+          <h3
+            class="ft-nav__heading"
+            style="margin-top: 32px;"
+          >
+            {{ t('common.footer.stayInLoop') }}
+          </h3>
+          <p class="ft-newsletter__sub">
+            {{ t('common.footer.newsletterSub') }}
+          </p>
           <form
             class="ft-newsletter__form"
             novalidate
@@ -189,7 +202,7 @@
               <input
                 v-model="email"
                 type="email"
-              :placeholder="t('common.footer.emailPlaceholder')"
+                :placeholder="t('common.footer.emailPlaceholder')"
                 class="ft-newsletter__input"
                 :class="{ 'ft-newsletter__input--error': emailError }"
                 aria-label="Email address"
@@ -218,7 +231,13 @@
             >
               {{ emailError }}
             </p>
-            <p v-if="subscribed" class="ft-newsletter__success" role="status">{{ t('common.status.onList') }}</p>
+            <p
+              v-if="subscribed"
+              class="ft-newsletter__success"
+              role="status"
+            >
+              {{ t('common.status.onList') }}
+            </p>
           </form>
         </div>
       </div>
@@ -232,14 +251,26 @@
       <div class="ft__bottom-inner">
         <p class="ft-copy">
           {{ t('common.footer.copyright', { year, name: APP_NAME }) }}
-          <span class="ft-copy__heart" aria-label="love">♥</span>
+          <span
+            class="ft-copy__heart"
+            aria-label="love"
+          >♥</span>
           {{ t('common.footer.inIndia') }}
         </p>
 
         <div class="ft-bottom-links">
-          <a href="/privacy" class="ft-bottom-link">{{ t('common.footer.privacy') }}</a>
-          <span class="ft-bottom-sep" aria-hidden="true">·</span>
-          <a href="/terms" class="ft-bottom-link">{{ t('common.footer.terms') }}</a>
+          <a
+            href="/privacy"
+            class="ft-bottom-link"
+          >{{ t('common.footer.privacy') }}</a>
+          <span
+            class="ft-bottom-sep"
+            aria-hidden="true"
+          >·</span>
+          <a
+            href="/terms"
+            class="ft-bottom-link"
+          >{{ t('common.footer.terms') }}</a>
           <span
             class="ft-bottom-sep"
             aria-hidden="true"

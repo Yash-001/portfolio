@@ -42,8 +42,12 @@
       >
         <a href="/#projects">{{ t('common.nav.work') }}</a>
         <a href="/#skills">{{ t('common.nav.expertise') }}</a>
-        <RouterLink to="/services">{{ t('common.nav.process') }}</RouterLink>
-        <RouterLink to="/contact">{{ t('common.nav.contact') }}</RouterLink>
+        <RouterLink to="/services">
+          {{ t('common.nav.process') }}
+        </RouterLink>
+        <RouterLink to="/contact">
+          {{ t('common.nav.contact') }}
+        </RouterLink>
       </nav>
     </div>
   </div>

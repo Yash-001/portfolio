@@ -11,9 +11,15 @@
       aria-haspopup="listbox"
       @click="open = !open"
     >
-      <i :class="currentConfig.icon" class="theme-switcher__icon" />
+      <i
+        :class="currentConfig.icon"
+        class="theme-switcher__icon"
+      />
       <span class="theme-switcher__label">{{ t(currentConfig.labelKey) }}</span>
-      <i class="pi pi-chevron-down theme-switcher__chevron" :class="{ 'theme-switcher__chevron--open': open }" />
+      <i
+        class="pi pi-chevron-down theme-switcher__chevron"
+        :class="{ 'theme-switcher__chevron--open': open }"
+      />
     </button>
 
     <!-- Dropdown -->
@@ -33,7 +39,10 @@
           :class="{ 'theme-switcher__option--active': cfg.id === activeTheme }"
           @click="select(cfg.id)"
         >
-          <i :class="cfg.icon" class="theme-switcher__option-icon" />
+          <i
+            :class="cfg.icon"
+            class="theme-switcher__option-icon"
+          />
           <span class="theme-switcher__option-label">{{ t(cfg.labelKey) }}</span>
           <i
             v-if="cfg.id === activeTheme"

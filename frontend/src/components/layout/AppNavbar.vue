@@ -22,9 +22,9 @@
         <RouterLink
           v-for="link in NAV_LINKS"
           :key="link.to"
+          v-slot="{ href, navigate }"
           :to="link.to"
           custom
-          v-slot="{ href, navigate }"
         >
           <a
             :href="href"
@@ -47,7 +47,10 @@
           class="resume-link hidden md:flex"
           :aria-label="t('common.aria.downloadCv')"
         >
-          <i class="pi pi-download" style="font-size: 13px;" />
+          <i
+            class="pi pi-download"
+            style="font-size: 13px;"
+          />
           <span>{{ t('common.cta.resume') }}</span>
         </a>
 

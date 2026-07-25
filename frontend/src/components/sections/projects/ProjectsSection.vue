@@ -101,8 +101,12 @@
     >
       <div class="projects-cta__inner">
         <div>
-          <p class="projects-cta__heading">{{ t('projects.cta.heading') }}</p>
-          <p class="projects-cta__sub">{{ t('projects.cta.sub') }}</p>
+          <p class="projects-cta__heading">
+            {{ t('projects.cta.heading') }}
+          </p>
+          <p class="projects-cta__sub">
+            {{ t('projects.cta.sub') }}
+          </p>
         </div>
         <RouterLink
           to="/contact"

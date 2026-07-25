@@ -44,8 +44,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-sitemap fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">Architecture Diagram</h3>
-            <p class="fp-panel__cs-sub">System layers, data flow, and infrastructure topology — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              Architecture Diagram
+            </h3>
+            <p class="fp-panel__cs-sub">
+              System layers, data flow, and infrastructure topology — coming soon.
+            </p>
           </div>
         </div>
 
@@ -59,8 +63,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-star fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">Feature Breakdown</h3>
-            <p class="fp-panel__cs-sub">Detailed feature cards covering every module of the EAM system — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              Feature Breakdown
+            </h3>
+            <p class="fp-panel__cs-sub">
+              Detailed feature cards covering every module of the EAM system — coming soon.
+            </p>
           </div>
         </div>
 
@@ -74,8 +82,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-exclamation-triangle fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">Engineering Challenges</h3>
-            <p class="fp-panel__cs-sub">Problem / solution / impact cards for the hardest technical decisions — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              Engineering Challenges
+            </h3>
+            <p class="fp-panel__cs-sub">
+              Problem / solution / impact cards for the hardest technical decisions — coming soon.
+            </p>
           </div>
         </div>
 
@@ -89,8 +101,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-code fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">API Design</h3>
-            <p class="fp-panel__cs-sub">Endpoint table, authentication strategy, and rate-limiting design — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              API Design
+            </h3>
+            <p class="fp-panel__cs-sub">
+              Endpoint table, authentication strategy, and rate-limiting design — coming soon.
+            </p>
           </div>
         </div>
 
@@ -104,8 +120,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-database fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">Database Architecture</h3>
-            <p class="fp-panel__cs-sub">Schema design, Row-Level Security, and index strategy — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              Database Architecture
+            </h3>
+            <p class="fp-panel__cs-sub">
+              Schema design, Row-Level Security, and index strategy — coming soon.
+            </p>
           </div>
         </div>
 
@@ -119,8 +139,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-shield fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">Security Model</h3>
-            <p class="fp-panel__cs-sub">Auth, RBAC, audit logging, and threat mitigation — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              Security Model
+            </h3>
+            <p class="fp-panel__cs-sub">
+              Auth, RBAC, audit logging, and threat mitigation — coming soon.
+            </p>
           </div>
         </div>
 
@@ -134,8 +158,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-gauge fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">Performance & Scalability</h3>
-            <p class="fp-panel__cs-sub">Latency benchmarks, caching strategy, and horizontal scaling design — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              Performance & Scalability
+            </h3>
+            <p class="fp-panel__cs-sub">
+              Latency benchmarks, caching strategy, and horizontal scaling design — coming soon.
+            </p>
           </div>
         </div>
 
@@ -149,8 +177,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-cloud-upload fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">Deployment Pipeline</h3>
-            <p class="fp-panel__cs-sub">CI/CD pipeline steps, infrastructure-as-code, and zero-downtime deploy strategy — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              Deployment Pipeline
+            </h3>
+            <p class="fp-panel__cs-sub">
+              CI/CD pipeline steps, infrastructure-as-code, and zero-downtime deploy strategy — coming soon.
+            </p>
           </div>
         </div>
 
@@ -164,8 +196,12 @@
         >
           <div class="fp-panel__coming-soon">
             <i class="pi pi-map fp-panel__cs-icon" />
-            <h3 class="fp-panel__cs-title">Product Roadmap</h3>
-            <p class="fp-panel__cs-sub">Build history timeline and planned feature milestones — coming soon.</p>
+            <h3 class="fp-panel__cs-title">
+              Product Roadmap
+            </h3>
+            <p class="fp-panel__cs-sub">
+              Build history timeline and planned feature milestones — coming soon.
+            </p>
           </div>
         </div>
       </Transition>

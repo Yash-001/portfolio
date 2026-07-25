@@ -2,8 +2,8 @@
   <Teleport to="body">
     <Transition name="chat-dialog">
       <div
-        ref="dialogRef"
         v-if="chat.isOpen"
+        ref="dialogRef"
         class="ai-dialog"
         role="dialog"
         aria-modal="true"
@@ -15,12 +15,20 @@
         <!-- Header -->
         <header class="ai-dialog__header">
           <div class="ai-dialog__header-left">
-            <div class="ai-dialog__avatar" aria-hidden="true">
+            <div
+              class="ai-dialog__avatar"
+              aria-hidden="true"
+            >
               <i class="pi pi-microchip-ai" />
-              <span class="ai-dialog__status-dot" :class="{ 'ai-dialog__status-dot--active': !chat.isStreaming }" />
+              <span
+                class="ai-dialog__status-dot"
+                :class="{ 'ai-dialog__status-dot--active': !chat.isStreaming }"
+              />
             </div>
             <div>
-              <p class="ai-dialog__title">Portfolio Assistant</p>
+              <p class="ai-dialog__title">
+                Portfolio Assistant
+              </p>
               <p class="ai-dialog__subtitle">
                 {{ chat.isStreaming ? 'Typing…' : chat.hasMessages ? `${chat.messageCount} messages` : 'Ask me anything' }}
               </p>
@@ -73,16 +81,36 @@
         </header>
 
         <!-- Inline reset confirmation (replaces window.confirm) -->
-        <div v-if="confirmingReset" class="ai-dialog__confirm" role="alertdialog" aria-label="Confirm new conversation">
-          <p class="ai-dialog__confirm-text">Start a new conversation? Current one will be saved.</p>
+        <div
+          v-if="confirmingReset"
+          class="ai-dialog__confirm"
+          role="alertdialog"
+          aria-label="Confirm new conversation"
+        >
+          <p class="ai-dialog__confirm-text">
+            Start a new conversation? Current one will be saved.
+          </p>
           <div class="ai-dialog__confirm-actions">
-            <button class="ai-dialog__confirm-btn ai-dialog__confirm-btn--cancel" @click="cancelReset">Cancel</button>
-            <button class="ai-dialog__confirm-btn ai-dialog__confirm-btn--ok" @click="doReset">Start new</button>
+            <button
+              class="ai-dialog__confirm-btn ai-dialog__confirm-btn--cancel"
+              @click="cancelReset"
+            >
+              Cancel
+            </button>
+            <button
+              class="ai-dialog__confirm-btn ai-dialog__confirm-btn--ok"
+              @click="doReset"
+            >
+              Start new
+            </button>
           </div>
         </div>
 
         <!-- Context warning for long conversations -->
-        <div v-if="showContextWarning" class="ai-dialog__context-warn">
+        <div
+          v-if="showContextWarning"
+          class="ai-dialog__context-warn"
+        >
           <i class="pi pi-info-circle" />
           Long conversation — older messages may be summarised to fit context.
         </div>
@@ -96,12 +124,22 @@
           aria-label="Conversation"
         >
           <!-- Empty state -->
-          <div v-if="!chat.hasMessages" class="ai-dialog__empty">
-            <div class="ai-dialog__empty-icon" aria-hidden="true">
+          <div
+            v-if="!chat.hasMessages"
+            class="ai-dialog__empty"
+          >
+            <div
+              class="ai-dialog__empty-icon"
+              aria-hidden="true"
+            >
               <i class="pi pi-microchip-ai" />
             </div>
-            <p class="ai-dialog__empty-title">Hi, I'm Yash's AI assistant</p>
-            <p class="ai-dialog__empty-sub">Ask me about his projects, skills, services, or availability.</p>
+            <p class="ai-dialog__empty-title">
+              Hi, I'm Yash's AI assistant
+            </p>
+            <p class="ai-dialog__empty-sub">
+              Ask me about his projects, skills, services, or availability.
+            </p>
           </div>
 
           <!-- Message list -->
@@ -113,8 +151,14 @@
             />
 
             <!-- Retry button -->
-            <div v-if="chat.lastMessage?.status === 'error'" class="ai-dialog__retry">
-              <button class="ai-dialog__retry-btn" @click="chat.retry">
+            <div
+              v-if="chat.lastMessage?.status === 'error'"
+              class="ai-dialog__retry"
+            >
+              <button
+                class="ai-dialog__retry-btn"
+                @click="chat.retry"
+              >
                 <i class="pi pi-refresh" />
                 Retry
               </button>

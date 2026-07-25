@@ -5,11 +5,20 @@
     :aria-label="message.role === 'user' ? 'Your message' : 'Assistant reply'"
   >
     <!-- Avatar -->
-    <div class="ai-msg__avatar" aria-hidden="true">
-      <span v-if="message.role === 'user'" class="ai-msg__avatar-icon">
+    <div
+      class="ai-msg__avatar"
+      aria-hidden="true"
+    >
+      <span
+        v-if="message.role === 'user'"
+        class="ai-msg__avatar-icon"
+      >
         <i class="pi pi-user" />
       </span>
-      <span v-else class="ai-msg__avatar-icon ai-msg__avatar-icon--ai">
+      <span
+        v-else
+        class="ai-msg__avatar-icon ai-msg__avatar-icon--ai"
+      >
         <i class="pi pi-microchip-ai" />
       </span>
     </div>
@@ -17,7 +26,11 @@
     <!-- Bubble -->
     <div class="ai-msg__bubble">
       <!-- Streaming skeleton -->
-      <div v-if="message.status === 'streaming' && !message.content" class="ai-msg__typing" aria-label="Assistant is typing">
+      <div
+        v-if="message.status === 'streaming' && !message.content"
+        class="ai-msg__typing"
+        aria-label="Assistant is typing"
+      >
         <span /><span /><span />
       </div>
 
@@ -29,13 +42,24 @@
       />
 
       <!-- Error state -->
-      <div v-if="message.status === 'error'" class="ai-msg__error" role="alert">
-        <i class="pi pi-exclamation-triangle" aria-hidden="true" />
+      <div
+        v-if="message.status === 'error'"
+        class="ai-msg__error"
+        role="alert"
+      >
+        <i
+          class="pi pi-exclamation-triangle"
+          aria-hidden="true"
+        />
         <span>{{ message.error || 'Something went wrong.' }}</span>
       </div>
 
       <!-- Streaming cursor -->
-      <span v-if="message.status === 'streaming' && message.content" class="ai-msg__cursor" aria-hidden="true" />
+      <span
+        v-if="message.status === 'streaming' && message.content"
+        class="ai-msg__cursor"
+        aria-hidden="true"
+      />
 
       <!-- Timestamp -->
       <time

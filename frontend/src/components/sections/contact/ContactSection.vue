@@ -149,9 +149,15 @@
               aria-live="polite"
               aria-atomic="true"
             >
-              <template v-if="isLoading">{{ t('common.status.sending') }}</template>
-              <template v-else-if="status === 'success'">{{ t('common.status.messageSent') }}</template>
-              <template v-else-if="hasError">{{ t('common.status.sendFailed') }}</template>
+              <template v-if="isLoading">
+                {{ t('common.status.sending') }}
+              </template>
+              <template v-else-if="status === 'success'">
+                {{ t('common.status.messageSent') }}
+              </template>
+              <template v-else-if="hasError">
+                {{ t('common.status.sendFailed') }}
+              </template>
             </div>
 
             <!-- Honeypot — visually hidden, never filled by real users -->
@@ -170,13 +176,16 @@
               class="cs-field"
               :class="{ 'cs-field--error': errors.name && touched.name }"
             >
-              <label class="cs-field__label" for="cs-name">{{ t('contact.form.name') }} <span aria-hidden="true">*</span></label>
+              <label
+                class="cs-field__label"
+                for="cs-name"
+              >{{ t('contact.form.name') }} <span aria-hidden="true">*</span></label>
               <input
                 id="cs-name"
                 v-model="form.name"
                 type="text"
                 class="cs-input"
-              :placeholder="t('contact.form.placeholder.name')"
+                :placeholder="t('contact.form.placeholder.name')"
                 autocomplete="name"
                 :aria-invalid="!!(errors.name && touched.name)"
                 :aria-describedby="errors.name && touched.name ? 'cs-name-err' : undefined"
@@ -197,13 +206,16 @@
               class="cs-field"
               :class="{ 'cs-field--error': errors.email && touched.email }"
             >
-              <label class="cs-field__label" for="cs-email">{{ t('contact.form.email') }} <span aria-hidden="true">*</span></label>
+              <label
+                class="cs-field__label"
+                for="cs-email"
+              >{{ t('contact.form.email') }} <span aria-hidden="true">*</span></label>
               <input
                 id="cs-email"
                 v-model="form.email"
                 type="email"
                 class="cs-input"
-              :placeholder="t('contact.form.placeholder.email')"
+                :placeholder="t('contact.form.placeholder.email')"
                 autocomplete="email"
                 :aria-invalid="!!(errors.email && touched.email)"
                 :aria-describedby="errors.email && touched.email ? 'cs-email-err' : undefined"
@@ -224,7 +236,10 @@
                 class="cs-field"
                 :class="{ 'cs-field--error': errors.projectType && touched.projectType }"
               >
-              <label class="cs-field__label" for="cs-type">{{ t('contact.form.projectType') }} <span aria-hidden="true">*</span></label>
+                <label
+                  class="cs-field__label"
+                  for="cs-type"
+                >{{ t('contact.form.projectType') }} <span aria-hidden="true">*</span></label>
                 <select
                   id="cs-type"
                   v-model="form.projectType"
@@ -234,7 +249,12 @@
                   :disabled="isDisabled"
                   @blur="onBlur('projectType')"
                 >
-                  <option value="" disabled>{{ t('contact.form.selectType') }}</option>
+                  <option
+                    value=""
+                    disabled
+                  >
+                    {{ t('contact.form.selectType') }}
+                  </option>
                   <option
                     v-for="o in PROJECT_TYPE_OPTIONS"
                     :key="o.value"
@@ -252,14 +272,22 @@
               </div>
 
               <div class="cs-field">
-              <label class="cs-field__label" for="cs-budget">{{ t('contact.form.budget') }}</label>
+                <label
+                  class="cs-field__label"
+                  for="cs-budget"
+                >{{ t('contact.form.budget') }}</label>
                 <select
                   id="cs-budget"
                   v-model="form.budget"
                   class="cs-input cs-select"
                   :disabled="isDisabled"
                 >
-                  <option value="" disabled>{{ t('contact.form.selectRange') }}</option>
+                  <option
+                    value=""
+                    disabled
+                  >
+                    {{ t('contact.form.selectRange') }}
+                  </option>
                   <option
                     v-for="o in BUDGET_OPTIONS"
                     :key="o.value"
@@ -276,12 +304,15 @@
               class="cs-field"
               :class="{ 'cs-field--error': errors.message && touched.message }"
             >
-              <label class="cs-field__label" for="cs-message">{{ t('contact.form.message') }} <span aria-hidden="true">*</span></label>
+              <label
+                class="cs-field__label"
+                for="cs-message"
+              >{{ t('contact.form.message') }} <span aria-hidden="true">*</span></label>
               <textarea
                 id="cs-message"
                 v-model="form.message"
                 class="cs-input cs-textarea"
-              :placeholder="t('contact.form.placeholder.message')"
+                :placeholder="t('contact.form.placeholder.message')"
                 rows="5"
                 :aria-invalid="!!(errors.message && touched.message)"
                 :aria-describedby="errors.message && touched.message ? 'cs-msg-err' : undefined"
@@ -411,7 +442,10 @@
                   aria-hidden="true"
                 />
                 <span>{{ t('common.errors.sendFailed') }}
-                  <a :href="`mailto:${APP_EMAIL}`" class="cs-form-error__link">{{ t('common.errors.emailDirect') }}</a>.
+                  <a
+                    :href="`mailto:${APP_EMAIL}`"
+                    class="cs-form-error__link"
+                  >{{ t('common.errors.emailDirect') }}</a>.
                 </span>
               </div>
             </Transition>

@@ -6,7 +6,7 @@ export const i18n = createI18n({
   legacy:         false,
   locale:         'en' as LocaleCode,
   fallbackLocale: 'en',
-  messages:       { en } as Record<string, any>,
+  messages:       { en } as Record<string, Record<string, unknown>>,
   missingWarn:    false,
   fallbackWarn:   false,
 })
@@ -18,6 +18,6 @@ const loaded = new Set<LocaleCode>(['en'])
 export async function loadLocale(locale: LocaleCode): Promise<void> {
   if (loaded.has(locale)) return
   const messages = await import(/* @vite-ignore */ `./locales/${locale}/index.ts`)
-  ;(i18n.global as any).setLocaleMessage(locale, messages.default)
+  ;(i18n.global as { setLocaleMessage: (locale: string, messages: Record<string, unknown>) => void }).setLocaleMessage(locale, messages.default as Record<string, unknown>)
   loaded.add(locale)
 }

@@ -93,8 +93,12 @@
             />
             <span>{{ t('common.misc.openToNewWork') }}</span>
           </div>
-          <h3 class="svc-cta-panel__heading">{{ t('services.cta.heading') }}</h3>
-          <p class="svc-cta-panel__sub">{{ t('services.cta.sub') }}</p>
+          <h3 class="svc-cta-panel__heading">
+            {{ t('services.cta.heading') }}
+          </h3>
+          <p class="svc-cta-panel__sub">
+            {{ t('services.cta.sub') }}
+          </p>
         </div>
 
         <div class="svc-cta-panel__right">

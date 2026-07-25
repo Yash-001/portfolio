@@ -8,12 +8,27 @@
     @click="chat.toggle"
   >
     <!-- Pulse ring (shown when closed and no messages) -->
-    <span v-if="!chat.isOpen && !chat.hasMessages" class="ai-fab__pulse" aria-hidden="true" />
+    <span
+      v-if="!chat.isOpen && !chat.hasMessages"
+      class="ai-fab__pulse"
+      aria-hidden="true"
+    />
 
     <!-- Icon -->
-    <Transition name="fab-icon" mode="out-in">
-      <i v-if="chat.isOpen" key="close" class="pi pi-times ai-fab__icon" />
-      <i v-else key="open" class="pi pi-microchip-ai ai-fab__icon" />
+    <Transition
+      name="fab-icon"
+      mode="out-in"
+    >
+      <i
+        v-if="chat.isOpen"
+        key="close"
+        class="pi pi-times ai-fab__icon"
+      />
+      <i
+        v-else
+        key="open"
+        class="pi pi-microchip-ai ai-fab__icon"
+      />
     </Transition>
 
     <!-- Unread dot -->

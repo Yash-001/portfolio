@@ -20,11 +20,10 @@ export const primevue = {
     app.directive('tooltip', Tooltip)
 
     // Expose PrimeVue instance for theme store preset swapping
-    app.config.globalProperties.$primevue = app.config.globalProperties.$primevue
     app.mixin({
       mounted() {
-        if (this.$primevue && !(window as any).__primevue_instance__) {
-          ;(window as any).__primevue_instance__ = this.$primevue
+        if (this.$primevue && !(window as { __primevue_instance__?: unknown }).__primevue_instance__) {
+          (window as { __primevue_instance__?: unknown }).__primevue_instance__ = this.$primevue
         }
       },
     })

@@ -71,7 +71,10 @@
             class="hero__btn-primary"
             :aria-label="t('common.cta.hireMe')"
           >
-            <i class="pi pi-send" aria-hidden="true" />
+            <i
+              class="pi pi-send"
+              aria-hidden="true"
+            />
             <span>{{ t('common.cta.hireMe') }}</span>
           </RouterLink>
 
@@ -83,7 +86,10 @@
             :aria-label="t('common.aria.downloadCv')"
             @click="onResumeClick"
           >
-            <i class="pi pi-download" aria-hidden="true" />
+            <i
+              class="pi pi-download"
+              aria-hidden="true"
+            />
             <span>{{ t('common.cta.resume') }}</span>
           </a>
 
