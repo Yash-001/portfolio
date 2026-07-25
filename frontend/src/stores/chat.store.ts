@@ -1,8 +1,17 @@
 // src/stores/chat.store.ts
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { streamChat } from '@/services/ai/chat.service'
-import type { ConversationMessage } from '@/services/ai/chat.service'
+import {
+  trimHistory,
+  buildContextHint,
+  saveSession,
+  loadSession,
+  deleteSession,
+  exportConversation,
+  generateFollowUps,
+} from '@/services/ai/conversation.service'
+import type { PersistedSession } from '@/services/ai/conversation.service'
 
 export type MessageStatus = 'sending' | 'streaming' | 'done' | 'error'
 
@@ -16,33 +25,82 @@ export interface ChatMessageItem {
   timestamp: Date
 }
 
-const SESSION_ID = `session_${Date.now()}_${Math.random().toString(36).slice(2)}`
+// ── Session ID ────────────────────────────────────────────────────────────────
+// Stable per browser tab; persisted to localStorage for session restore.
+const STORAGE_SESSION_KEY = 'ai_chat_active_session'
+
+function makeSessionId(): string {
+  return `session_${Date.now()}_${Math.random().toString(36).slice(2)}`
+}
+
+function getOrCreateSessionId(): string {
+  try {
+    return localStorage.getItem(STORAGE_SESSION_KEY) || makeSessionId()
+  } catch {
+    return makeSessionId()
+  }
+}
+
+// ── Store ─────────────────────────────────────────────────────────────────────
 
 export const useChatStore = defineStore('chat', () => {
-  const isOpen      = ref(false)
-  const messages    = ref<ChatMessageItem[]>([])
-  const isStreaming = ref(false)
-  const isLoading   = ref(false)
+  const isOpen        = ref(false)
+  const messages      = ref<ChatMessageItem[]>([])
+  const isStreaming   = ref(false)
+  const isLoading     = ref(false)
+  const followUps     = ref<string[]>([])
+  const sessionId     = ref<string>(getOrCreateSessionId())
 
   let _abortController: AbortController | null = null
 
   // ── Computed ──────────────────────────────────────────────────────────────
-  const hasMessages   = computed(() => messages.value.length > 0)
-  const canSend       = computed(() => !isStreaming.value && !isLoading.value)
-  const historyForApi = computed((): ConversationMessage[] =>
-    messages.value
-      .filter(m => m.status === 'done' && (m.role === 'user' || m.role === 'assistant'))
-      .map(m => ({ role: m.role, content: m.content }))
+  const hasMessages = computed(() => messages.value.length > 0)
+  const canSend     = computed(() => !isStreaming.value && !isLoading.value)
+  const lastMessage = computed(() =>
+    messages.value.length ? messages.value[messages.value.length - 1] : null,
   )
+  const messageCount = computed(() => messages.value.filter(m => m.status === 'done').length)
+
+  // ── Session persistence ───────────────────────────────────────────────────
+  function _persistSession(): void {
+    if (!messages.value.length) return
+    const session: PersistedSession = {
+      id:         sessionId.value,
+      messages:   messages.value,
+      createdAt:  messages.value[0]?.timestamp?.toISOString() ?? new Date().toISOString(),
+      updatedAt:  new Date().toISOString(),
+    }
+    saveSession(session)
+    try {
+      localStorage.setItem(STORAGE_SESSION_KEY, sessionId.value)
+    } catch {}
+  }
+
+  function restoreSession(): boolean {
+    const session = loadSession(sessionId.value)
+    if (!session || !session.messages.length) return false
+    // Re-hydrate Date objects (JSON serialization loses them)
+    messages.value = session.messages.map(m => ({
+      ...m,
+      timestamp: new Date(m.timestamp),
+    }))
+    followUps.value = generateFollowUps(messages.value)
+    return true
+  }
+
+  // Auto-persist whenever messages change (debounced via watch)
+  watch(messages, _persistSession, { deep: true })
 
   // ── Dialog ────────────────────────────────────────────────────────────────
-  function open()  { isOpen.value = true  }
-  function close() { isOpen.value = false }
+  function open()   { isOpen.value = true  }
+  function close()  { isOpen.value = false }
   function toggle() { isOpen.value = !isOpen.value }
 
   // ── Send ──────────────────────────────────────────────────────────────────
   async function send(text: string): Promise<void> {
     if (!canSend.value || !text.trim()) return
+
+    followUps.value = [] // clear follow-ups while responding
 
     const userMsg: ChatMessageItem = {
       id:        `u_${Date.now()}`,
@@ -62,24 +120,30 @@ export const useChatStore = defineStore('chat', () => {
     }
     messages.value.push(assistantMsg)
 
-    const history = historyForApi.value.slice(0, -1) // exclude the just-added user msg
+    // Build trimmed history (excludes the just-added user msg)
+    const history = trimHistory(messages.value.slice(0, -2))
+
+    // Inject context dedup hint into the first user message of history if needed
+    const contextHint = buildContextHint(messages.value)
+    const messageWithHint = contextHint
+      ? `${contextHint}\n\n${text.trim()}`
+      : text.trim()
 
     isStreaming.value = true
 
     _abortController = streamChat(
-      { message: text.trim(), history, stream: true, session_id: SESSION_ID },
-      // onDelta
-      (chunk) => {
-        assistantMsg.content += chunk
-      },
-      // onDone
-      (requestId) => {
+      { message: messageWithHint, history, stream: true, session_id: sessionId.value },
+      (chunk) => { assistantMsg.content += chunk },
+      (requestId, serverFollowUps) => {
         assistantMsg.status    = 'done'
         assistantMsg.requestId = requestId
         isStreaming.value      = false
         _abortController       = null
+        // Prefer server-generated follow-ups; fall back to client heuristic
+        followUps.value = (serverFollowUps?.length)
+          ? serverFollowUps
+          : generateFollowUps(messages.value)
       },
-      // onError
       (errMsg) => {
         assistantMsg.status  = 'error'
         assistantMsg.error   = errMsg
@@ -89,21 +153,19 @@ export const useChatStore = defineStore('chat', () => {
     )
   }
 
-  /** Retry the last failed assistant message. */
+  // ── Retry ─────────────────────────────────────────────────────────────────
   async function retry(): Promise<void> {
     const last = messages.value[messages.value.length - 1]
     if (!last || last.role !== 'assistant' || last.status !== 'error') return
 
-    // Find the user message that triggered it
     const userMsg = [...messages.value].reverse().find(m => m.role === 'user')
     if (!userMsg) return
 
-    // Remove the failed assistant message and resend
     messages.value.pop()
     await send(userMsg.content)
   }
 
-  /** Cancel an in-progress stream. */
+  // ── Cancel ────────────────────────────────────────────────────────────────
   function cancel(): void {
     _abortController?.abort()
     _abortController = null
@@ -115,16 +177,37 @@ export const useChatStore = defineStore('chat', () => {
     isStreaming.value = false
   }
 
-  /** Clear all messages. */
+  // ── Reset (new conversation) ──────────────────────────────────────────────
+  function reset(): void {
+    cancel()
+    // Archive current session before starting fresh
+    _persistSession()
+    // New session
+    sessionId.value = makeSessionId()
+    try { localStorage.setItem(STORAGE_SESSION_KEY, sessionId.value) } catch {}
+    messages.value  = []
+    followUps.value = []
+  }
+
+  /** Clear messages without creating a new session (legacy clear). */
   function clear(): void {
     cancel()
-    messages.value = []
+    deleteSession(sessionId.value)
+    messages.value  = []
+    followUps.value = []
+  }
+
+  // ── Export ────────────────────────────────────────────────────────────────
+  function exportChat(format: 'txt' | 'md' = 'md'): void {
+    exportConversation(messages.value, format)
   }
 
   return {
     isOpen, messages, isStreaming, isLoading,
-    hasMessages, canSend,
+    followUps, sessionId, messageCount,
+    hasMessages, canSend, lastMessage,
     open, close, toggle,
-    send, retry, cancel, clear,
+    send, retry, cancel, clear, reset,
+    exportChat, restoreSession,
   }
 })

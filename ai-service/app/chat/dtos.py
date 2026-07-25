@@ -34,7 +34,7 @@ class PortfolioChatRequest(BaseModel):
     model      — override default model (optional).
     session_id — opaque client-generated ID for log correlation. Not used for auth.
     """
-    message:    str = Field(..., min_length=1, max_length=4_000)
+    message:    str = Field(..., min_length=1, max_length=4_500)  # +500 for context hint
     history:    List[ConversationMessage] = Field(default_factory=list, max_length=20)
     stream:     bool = Field(default=False)
     provider:   Optional[Literal["openai", "anthropic", "gemini"]] = None
@@ -71,14 +71,15 @@ class TokenUsageDTO(BaseModel):
 
 
 class PortfolioChatResponse(BaseModel):
-    request_id:    str
-    session_id:    Optional[str]
-    content:       str
-    provider:      str
-    model:         str
-    usage:         TokenUsageDTO
-    duration_ms:   int
-    finish_reason: Optional[str] = None
+    request_id:          str
+    session_id:          Optional[str]
+    content:             str
+    provider:            str
+    model:               str
+    usage:               TokenUsageDTO
+    duration_ms:         int
+    finish_reason:       Optional[str] = None
+    suggested_questions: Optional[List[str]] = None
 
 
 # ── Streaming ─────────────────────────────────────────────────────────────────
@@ -97,3 +98,5 @@ class StreamChunkDTO(BaseModel):
     model:      Optional[str]          = None
     usage:      Optional[TokenUsageDTO] = None
     error:      Optional[str]          = None
+    # Sent with the 'done' event so the frontend can show follow-up chips
+    suggested_questions: Optional[List[str]] = None

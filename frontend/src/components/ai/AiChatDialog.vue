@@ -19,12 +19,35 @@
             <div>
               <p class="ai-dialog__title">Portfolio Assistant</p>
               <p class="ai-dialog__subtitle">
-                {{ chat.isStreaming ? 'Typing…' : 'Ask me anything' }}
+                {{ chat.isStreaming ? 'Typing…' : chat.hasMessages ? `${chat.messageCount} messages` : 'Ask me anything' }}
               </p>
             </div>
           </div>
 
           <div class="ai-dialog__header-right">
+            <!-- Export -->
+            <button
+              v-if="chat.hasMessages && !chat.isStreaming"
+              class="ai-dialog__icon-btn"
+              title="Export conversation"
+              aria-label="Export conversation as Markdown"
+              @click="chat.exportChat('md')"
+            >
+              <i class="pi pi-download" />
+            </button>
+
+            <!-- New conversation -->
+            <button
+              v-if="chat.hasMessages"
+              class="ai-dialog__icon-btn"
+              title="New conversation"
+              aria-label="Start new conversation"
+              @click="confirmReset"
+            >
+              <i class="pi pi-plus-circle" />
+            </button>
+
+            <!-- Clear -->
             <button
               v-if="chat.hasMessages"
               class="ai-dialog__icon-btn"
@@ -34,6 +57,7 @@
             >
               <i class="pi pi-trash" />
             </button>
+
             <button
               class="ai-dialog__icon-btn"
               title="Close (Esc)"
@@ -44,6 +68,12 @@
             </button>
           </div>
         </header>
+
+        <!-- Context warning for long conversations -->
+        <div v-if="showContextWarning" class="ai-dialog__context-warn">
+          <i class="pi pi-info-circle" />
+          Long conversation — older messages may be summarised to fit context.
+        </div>
 
         <!-- Messages -->
         <div
@@ -71,10 +101,7 @@
             />
 
             <!-- Retry button -->
-            <div
-              v-if="lastMessage?.status === 'error'"
-              class="ai-dialog__retry"
-            >
+            <div v-if="chat.lastMessage?.status === 'error'" class="ai-dialog__retry">
               <button class="ai-dialog__retry-btn" @click="chat.retry">
                 <i class="pi pi-refresh" />
                 Retry
@@ -83,10 +110,18 @@
           </template>
         </div>
 
-        <!-- Suggested questions (shown when no messages) -->
+        <!-- Suggested questions (empty state) -->
         <AiSuggestedQuestions
           v-if="!chat.hasMessages"
-          :questions="SUGGESTED"
+          :questions="INITIAL_SUGGESTIONS"
+          @select="handleSuggestion"
+        />
+
+        <!-- Follow-up questions (after assistant replies) -->
+        <AiSuggestedQuestions
+          v-else-if="chat.followUps.length && !chat.isStreaming"
+          :questions="chat.followUps"
+          label="Follow up"
           @select="handleSuggestion"
         />
 
@@ -120,7 +155,7 @@ const chat      = useChatStore()
 const scrollRef = ref<HTMLElement | null>(null)
 const inputRef  = ref<InstanceType<typeof AiChatInput> | null>(null)
 
-const SUGGESTED = [
+const INITIAL_SUGGESTIONS = [
   'What projects have you built?',
   'What is your tech stack?',
   'Are you available for freelance work?',
@@ -129,9 +164,8 @@ const SUGGESTED = [
   'Tell me about your AI experience',
 ]
 
-const lastMessage = computed(() =>
-  chat.messages.length ? chat.messages[chat.messages.length - 1] : null
-)
+/** Show context warning when conversation is getting long (>16 done messages). */
+const showContextWarning = computed(() => chat.messageCount > 16)
 
 function scrollToBottom(smooth = true) {
   nextTick(() => {
@@ -145,17 +179,28 @@ function handleSuggestion(q: string) {
   chat.send(q)
 }
 
+function confirmReset() {
+  if (window.confirm('Start a new conversation? The current one will be saved.')) {
+    chat.reset()
+  }
+}
+
 // Auto-scroll on new messages / streaming content
 watch(
   () => chat.messages.map(m => m.content).join(''),
   () => scrollToBottom(),
 )
 
-// Focus input when dialog opens
+// Focus input when dialog opens; restore session on first open
+let _restored = false
 watch(
   () => chat.isOpen,
   (open) => {
     if (open) {
+      if (!_restored) {
+        _restored = true
+        chat.restoreSession()
+      }
       nextTick(() => {
         inputRef.value?.focus()
         scrollToBottom(false)
@@ -274,6 +319,19 @@ onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 }
 .ai-dialog__icon-btn:hover { background: var(--bg-elevated); color: var(--text-primary); }
 .ai-dialog__icon-btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+/* Context warning */
+.ai-dialog__context-warn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 11.5px;
+  color: var(--color-warning);
+  background: rgba(234,179,8,0.06);
+  border-bottom: 1px solid rgba(234,179,8,0.15);
+  flex-shrink: 0;
+}
 
 /* Messages */
 .ai-dialog__messages {

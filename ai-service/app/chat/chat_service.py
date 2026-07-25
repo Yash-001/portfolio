@@ -45,18 +45,70 @@ settings = get_settings()
 # Build the system prompt once at startup — it's pure and static.
 _SYSTEM_PROMPT: str = build_system_prompt()
 
+# Context window budget: reserve ~12k chars for system prompt + response.
+# Remaining ~20k chars (~5k tokens) for history.
+_MAX_HISTORY_CHARS = 20_000
+_MAX_HISTORY_TURNS = 10
+
+
+def _trim_history(history: list) -> list:
+    """
+    Server-side guard: trim history to fit context window.
+    Keeps the most recent complete pairs (user+assistant).
+    """
+    if not history:
+        return history
+
+    # Ensure we start on a user message
+    start = 0
+    if history[0].role == ConversationRole.ASSISTANT:
+        start = 1
+
+    # Keep at most MAX_HISTORY_TURNS * 2 messages from the tail
+    trimmed = history[start:][-(_MAX_HISTORY_TURNS * 2):]
+
+    # Trim by character budget from the front
+    total = sum(len(m.content) for m in trimmed)
+    while total > _MAX_HISTORY_CHARS and len(trimmed) >= 2:
+        total -= len(trimmed[0].content) + len(trimmed[1].content)
+        trimmed = trimmed[2:]
+
+    return trimmed
+
+
+_FOLLOW_UP_PATTERNS: list[tuple] = [
+    ("project", ["What was the biggest challenge?", "What tech stack did you use?"]),
+    ("skill",   ["What are your strongest technical areas?", "Do you have cloud experience?"]),
+    ("service", ["How do I book a discovery call?", "What is your typical project timeline?"]),
+    ("contact", ["Can I book a call directly?"]),
+    ("experience", ["What industries have you worked in?"]),
+    ("available", ["What is your current availability?", "How do I get started?"]),
+]
+
+
+def _generate_follow_ups(content: str) -> list[str]:
+    """Heuristic follow-up suggestions based on the assistant's reply."""
+    content_lower = content.lower()
+    suggestions: list[str] = []
+    for keyword, questions in _FOLLOW_UP_PATTERNS:
+        if keyword in content_lower:
+            suggestions.extend(questions)
+        if len(suggestions) >= 3:
+            break
+    return suggestions[:3]
+
 
 def _to_provider_messages(
     request: PortfolioChatRequest,
 ) -> list[ChatMessage]:
     """
     Assembles the full message list for the provider:
-      [system] + [history turns] + [current user message]
+      [system] + [trimmed history turns] + [current user message]
     """
     messages: list[ChatMessage] = [
         ChatMessage(role=MessageRole.SYSTEM, content=_SYSTEM_PROMPT),
     ]
-    for turn in request.history:
+    for turn in _trim_history(request.history):
         role = (
             MessageRole.USER
             if turn.role == ConversationRole.USER
@@ -155,6 +207,7 @@ class ChatService:
             ),
             duration_ms=duration_ms,
             finish_reason=response.finish_reason,
+            suggested_questions=_generate_follow_ups(response.content),
         )
 
     # ── Streaming ─────────────────────────────────────────────────────────────
@@ -262,9 +315,11 @@ class ChatService:
             stream=True,
         )
 
+        full_content = ""
         async for chunk in stream:
             delta = chunk.choices[0].delta if chunk.choices else None
             if delta and delta.content:
+                full_content += delta.content
                 payload = StreamChunkDTO(
                     event=StreamEventType.DELTA,
                     request_id=request_id,
@@ -277,6 +332,7 @@ class ChatService:
             request_id=request_id,
             provider=provider.provider_name,
             model=request.model or settings.OPENAI_DEFAULT_MODEL,
+            suggested_questions=_generate_follow_ups(full_content),
         )
         yield f"data: {done_chunk.model_dump_json()}\n\n"
 

@@ -1,6 +1,6 @@
 <template>
   <div class="ai-suggestions" role="list" aria-label="Suggested questions">
-    <p class="ai-suggestions__label">Ask me about</p>
+    <p class="ai-suggestions__label">{{ label }}</p>
     <div class="ai-suggestions__chips">
       <button
         v-for="q in questions"
@@ -16,7 +16,10 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ questions: string[] }>()
+withDefaults(
+  defineProps<{ questions: string[]; label?: string }>(),
+  { label: 'Ask me about' },
+)
 defineEmits<{ select: [q: string] }>()
 </script>
 

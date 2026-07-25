@@ -27,6 +27,7 @@ export interface StreamChunk {
   provider?: string
   model?: string
   error?: string
+  suggested_questions?: string[]
 }
 
 export interface ChatResult {
@@ -61,7 +62,7 @@ export async function sendChat(payload: ChatPayload): Promise<ChatResult> {
 export function streamChat(
   payload: ChatPayload,
   onDelta: (chunk: string) => void,
-  onDone: (requestId: string) => void,
+  onDone: (requestId: string, suggestedQuestions?: string[]) => void,
   onError: (message: string) => void,
 ): AbortController {
   const controller = new AbortController()
@@ -108,7 +109,7 @@ export function streamChat(
             if (chunk.event === 'delta' && chunk.content) {
               onDelta(chunk.content)
             } else if (chunk.event === 'done') {
-              onDone(lastRequestId)
+              onDone(lastRequestId, chunk.suggested_questions)
               return
             } else if (chunk.event === 'error') {
               onError(chunk.error || 'Stream error')
@@ -120,7 +121,7 @@ export function streamChat(
         }
       }
 
-      onDone(lastRequestId)
+      onDone(lastRequestId, undefined)
     } catch (err: unknown) {
       if ((err as Error)?.name === 'AbortError') return
       onError((err as Error)?.message || 'Connection failed')
