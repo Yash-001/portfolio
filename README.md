@@ -1,5 +1,7 @@
 # Yash Ranjan — Portfolio Monorepo
 
+[![CI](https://github.com/Yash-001/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/Yash-001/portfolio/actions/workflows/ci.yml)
+
 Enterprise-structured monorepo for the portfolio platform.
 
 ## Structure
