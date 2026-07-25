@@ -1,9 +1,8 @@
 {
   "framework": null,
-  "rootDirectory": "frontend",
-  "installCommand": "cd .. && npm ci",
-  "buildCommand": "npx vite-node scripts/export-knowledge.ts && vue-tsc --noEmit && vite build",
-  "outputDirectory": "dist",
+  "installCommand": "npm ci",
+  "buildCommand": "cd frontend && npx vite-node scripts/export-knowledge.ts && npx vue-tsc --noEmit && npx vite build",
+  "outputDirectory": "frontend/dist",
 
   "rewrites": [
     {
