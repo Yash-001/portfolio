@@ -19,6 +19,9 @@ export const tracker = {
    * No-ops in development unless VITE_ANALYTICS_DEV=true.
    */
   init(): void {
+    // Guard against double-init (HMR hot reload or accidental second call)
+    if (active.length > 0) return
+
     const isDev    = import.meta.env.DEV
     const forceOn  = import.meta.env.VITE_ANALYTICS_DEV === 'true'
     if (isDev && !forceOn) return

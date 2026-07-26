@@ -2,6 +2,7 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { streamChat } from '@/services/ai/chat.service'
+import { tracker, EVENTS } from '@/analytics'
 import {
   trimHistory,
   buildContextHint,
@@ -135,6 +136,8 @@ export const useChatStore = defineStore('chat', () => {
 
     isStreaming.value = true
 
+    tracker.track(EVENTS.AI_CHAT_SEND, { session_id: sessionId.value })
+
     _abortController = streamChat(
       { message: messageWithHint, history, stream: true, session_id: sessionId.value },
       (chunk) => {
@@ -145,6 +148,7 @@ export const useChatStore = defineStore('chat', () => {
         messages.value[assistantIdx].requestId = requestId
         isStreaming.value  = false
         _abortController   = null
+        tracker.track(EVENTS.AI_CHAT_RESPONSE, { session_id: sessionId.value, request_id: requestId })
         followUps.value = serverFollowUps?.length
           ? serverFollowUps
           : generateFollowUps(messages.value)

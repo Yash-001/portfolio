@@ -7,7 +7,7 @@
     "yearsOfExperience": 7,
     "contact": {
       "email": "yash.ranjan.dev@proton.me",
-      "phone": "+91-7779964211",
+      "phone": "+91-0000000000",
       "location": "India (UTC+5:30)",
       "timezone": "Asia/Kolkata",
       "timezoneLabel": "UTC+5:30",
@@ -16,7 +16,7 @@
       "availabilityText": "Available for new projects",
       "siteUrl": "https://yourdomain.com",
       "resumeUrl": "/resume.pdf",
-      "calendlyUrl": "https://calendly.com/yourname/30min",
+      "calendlyUrl": "https://calendly.com/yash-ranjan-dev/30min",
       "github": "https://github.com/Yash-001",
       "linkedin": "https://www.linkedin.com/in/yash-ranjan-a0197b166/"
     }
@@ -1319,5 +1319,5 @@
       "yearsOfExperience": 0
     }
   ],
-  "generatedAt": "2026-07-25T17:25:59.682Z"
+  "generatedAt": "2026-07-26T20:07:51.514Z"
 }

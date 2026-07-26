@@ -4,8 +4,8 @@
     role="main"
   >
     <div class="project-detail-page__inner">
-      <a
-        href="/projects"
+      <RouterLink
+        to="/projects"
         class="back-link"
       >
         <i
@@ -13,7 +13,7 @@
           style="font-size:11px;"
         />
         <span>Back to projects</span>
-      </a>
+      </RouterLink>
 
       <template v-if="project">
         <header class="pd-header">
@@ -192,17 +192,18 @@
             rel="noopener noreferrer"
             class="pd-link"
             :class="`pd-link--${link.type}`"
+            @click="onLinkClick(link.url, link.type)"
           >
             <i :class="link.type === 'github' ? 'pi pi-github' : 'pi pi-external-link'" />
             {{ link.label }}
           </a>
-          <a
-            href="/projects"
+          <RouterLink
+            to="/projects"
             class="pd-link pd-link--back"
           >
             <i class="pi pi-arrow-left" />
             All projects
-          </a>
+          </RouterLink>
         </div>
       </template>
 
@@ -216,23 +217,24 @@
           style="font-size:32px; color:#333;"
         />
         <h1>Project not found</h1>
-        <a
-          href="/projects"
+        <RouterLink
+          to="/projects"
           class="pd-link pd-link--back"
         >
           Back to projects
-        </a>
+        </RouterLink>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { PROJECTS, PROJECT_CATEGORY_CONFIG, PROJECT_GRADIENT } from '@/constants'
 import { usePageMeta } from '@/composables/usePageMeta'
 import { projectDetailMeta } from '@/content/seo'
+import { useAnalytics } from '@/composables/useAnalytics'
 
 const route   = useRoute()
 const slug    = computed(() => route.params.slug as string)
@@ -247,7 +249,16 @@ const categoryStyle = computed(() => ({
   borderColor: `${catConfig.value.color}44`,
 }))
 
-usePageMeta(projectDetailMeta(project.value))
+// Reactive meta — updates when slug changes (deep-link / browser back)
+watch(project, (p) => usePageMeta(projectDetailMeta(p)), { immediate: true })
+
+const { trackProjectLinkClick, trackOutboundClick } = useAnalytics()
+
+function onLinkClick(url: string, type: string) {
+  if (!project.value) return
+  trackProjectLinkClick(project.value.slug, type)
+  trackOutboundClick(url, `${project.value.title} — ${type}`)
+}
 </script>
 
 <style scoped>

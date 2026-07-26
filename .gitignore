@@ -17,6 +17,14 @@ dist-ssr/
 **/.env.*.local
 **/.env.production
 
+# Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+
+# Generated knowledge base (rebuilt by npm run dev/build)
+ai-service/app/knowledge/portfolio_data.json
+
 # Logs
 *.log
 **/npm-debug.log*

@@ -3,6 +3,7 @@
 // Generates a resume from content layer data — zero hardcoded strings.
 // ─────────────────────────────────────────────────────────────────────────────
 import { NAME, TITLE, EMAIL, PHONE, LOCATION, GITHUB, LINKEDIN, RESUME_URL } from '@/content/settings/portfolio.config'
+import { tracker, EVENTS } from '@/analytics'
 import { EXPERIENCES } from '@/content/experience'
 import { EDUCATION } from '@/content/education'
 import { CERTIFICATIONS } from '@/content/certifications'
@@ -198,6 +199,7 @@ export function useResumeGenerator() {
 
   /** Download the static resume.pdf if present, otherwise fall back to print. */
   function download(): void {
+    tracker.track(EVENTS.RESUME_DOWNLOAD)
     if (RESUME_URL) {
       const a = document.createElement('a')
       a.href = RESUME_URL

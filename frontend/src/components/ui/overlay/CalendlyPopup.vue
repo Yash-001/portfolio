@@ -1,5 +1,6 @@
 <template>
   <button
+    v-if="isConfigured"
     type="button"
     class="cal-popup-btn"
     :class="[`cal-popup-btn--${variant}`, `cal-popup-btn--${size}`, { 'cal-popup-btn--loading': isLoading }]"
@@ -45,7 +46,7 @@ withDefaults(defineProps<Props>(), {
   showAvailability: true,
 })
 
-const { isLoading, availability, openPopup } = useCalendly()
+const { isLoading, availability, isConfigured, openPopup } = useCalendly()
 
 async function handleClick(): Promise<void> {
   await openPopup()

@@ -102,7 +102,8 @@ def log_ai_error(
 ) -> None:
     logger = get_logger("ai.error")
     logger.error(
-        "AI request failed",
+        "AI request failed: %s",
+        error,
         extra={
             "provider": provider,
             "model": model,

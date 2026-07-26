@@ -107,7 +107,10 @@ class GeminiProvider(BaseAIProvider):
             )
             chat_session = model.start_chat(history=history)
             response = await chat_session.send_message_async(last_message)
-            content = response.text or ""
+            try:
+                content = response.text or ""
+            except ValueError:
+                content = ""
 
         except AIServiceError:
             raise
@@ -163,7 +166,10 @@ class GeminiProvider(BaseAIProvider):
         response = await chat_session.send_message_async(last_message, stream=True)
 
         async for chunk in response:
-            text = chunk.text if hasattr(chunk, "text") else ""
+            try:
+                text = chunk.text
+            except (ValueError, AttributeError):
+                continue
             if text:
                 yield text
 

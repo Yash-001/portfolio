@@ -51,5 +51,14 @@ export function useAnalytics() {
     trackSectionView(section: string): void {
       tracker.track(EVENTS.SECTION_VIEW, { section })
     },
+
+    // ── AI Chat ───────────────────────────────────────────────────────────
+    trackAiChatSend(sessionId: string): void {
+      tracker.track(EVENTS.AI_CHAT_SEND, { session_id: sessionId })
+    },
+
+    trackAiChatResponse(sessionId: string, requestId: string, provider: string): void {
+      tracker.track(EVENTS.AI_CHAT_RESPONSE, { session_id: sessionId, request_id: requestId, provider })
+    },
   }
 }

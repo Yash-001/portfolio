@@ -72,37 +72,66 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { marked, Renderer } from 'marked'
 import DOMPurify from 'dompurify'
-import hljs from 'highlight.js'
 import type { ChatMessageItem } from '@/stores/chat.store'
 
 const props = defineProps<{ message: ChatMessageItem }>()
 
-// ── marked setup (module-level singleton, configured once) ────────────────────
-// marked v5+ deprecates setOptions — use marked.use() instead.
+// ── Lazy-load highlight.js once per app lifetime ──────────────────────────────
+type HljsModule = typeof import('highlight.js').default
+
+// Module-level cache — shared across all AiChatMessage instances
+let _hljs: HljsModule | null = null
+let _hljsPromise: Promise<HljsModule> | null = null
+
+function loadHljs(): Promise<HljsModule> {
+  if (_hljs) return Promise.resolve(_hljs)
+  if (_hljsPromise) return _hljsPromise
+  _hljsPromise = Promise.all([
+    import('highlight.js'),
+    import('highlight.js/styles/github-dark.css'),
+  ]).then(([{ default: hljs }]) => {
+    _hljs = hljs
+    return hljs
+  })
+  return _hljsPromise
+}
+
+const hljsReady = ref(false)
+
+onMounted(() => {
+  loadHljs().then(() => { hljsReady.value = true })
+})
+
+// ── marked renderer — configured once at module level ────────────────────────
 const _renderer = new Renderer()
 
 _renderer.code = ({ text, lang }: { text: string; lang?: string }) => {
-  const language = lang && hljs.getLanguage(lang) ? lang : 'plaintext'
-  const highlighted = hljs.highlight(text, { language }).value
+  if (!_hljs) return `<pre class="ai-code-block"><code>${text}</code></pre>`
+  const language = lang && _hljs.getLanguage(lang) ? lang : 'plaintext'
+  const highlighted = _hljs.highlight(text, { language }).value
   return `<pre class="ai-code-block"><code class="hljs language-${language}">${highlighted}</code></pre>`
 }
 
 _renderer.codespan = ({ text }: { text: string }) =>
   `<code class="ai-inline-code">${text}</code>`
 
-// Link renderer: force target=_blank + rel=noopener for security
 _renderer.link = ({ href, title, text }: { href: string; title?: string | null; text: string }) => {
   const safeHref = href?.startsWith('javascript:') ? '#' : (href ?? '#')
   const titleAttr = title ? ` title="${title}"` : ''
   return `<a href="${safeHref}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`
 }
 
-marked.use({ renderer: _renderer, breaks: true, gfm: true })
+// Guard against marked.use() being called multiple times on HMR
+let _markedConfigured = false
+if (!_markedConfigured) {
+  marked.use({ renderer: _renderer, breaks: true, gfm: true })
+  _markedConfigured = true
+}
 
-// DOMPurify config: allow safe HTML subset only, block all JS
+// DOMPurify config
 const PURIFY_CONFIG = {
   ALLOWED_TAGS: [
     'p', 'br', 'strong', 'em', 'b', 'i', 'u', 's',
@@ -117,7 +146,9 @@ const PURIFY_CONFIG = {
   FORCE_BODY: false,
 }
 
+// Re-compute rendered content when hljs becomes ready (re-renders code blocks with highlighting)
 const rendered = computed(() => {
+  void hljsReady.value // reactive dependency — re-runs when hljs loads
   if (!props.message.content) return ''
   const raw = marked.parse(props.message.content) as string
   return DOMPurify.sanitize(raw, PURIFY_CONFIG)

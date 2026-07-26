@@ -151,22 +151,36 @@ def _sanitize_message(message: str) -> str:
     return sanitized[:4_500]
 
 
+def _resolve_provider_name(request: PortfolioChatRequest) -> str:
+    """Return the effective provider name for this request."""
+    return request.provider or settings.DEFAULT_AI_PROVIDER
+
+
 def _build_chat_request(
     request: PortfolioChatRequest,
     request_id: str,
 ) -> ChatRequest:
     from app.models.ai_models import AIProvider as _AIProvider
 
+    provider_name = _resolve_provider_name(request)
     provider_enum: AIProvider | None = None
     if request.provider:
         provider_enum = _AIProvider(request.provider)
+
+    # Use provider-appropriate defaults instead of always reading OPENAI_* settings
+    if provider_name == "gemini":
+        max_tokens  = 1024
+        temperature = settings.OPENAI_TEMPERATURE  # shared sensible default
+    else:
+        max_tokens  = settings.OPENAI_MAX_TOKENS
+        temperature = settings.OPENAI_TEMPERATURE
 
     return ChatRequest(
         messages=_to_provider_messages(request),
         provider=provider_enum,
         model=request.model,
-        max_tokens=settings.OPENAI_MAX_TOKENS,
-        temperature=settings.OPENAI_TEMPERATURE,
+        max_tokens=max_tokens,
+        temperature=temperature,
         stream=request.stream,
         context_key="portfolio_chat",
         metadata={"session_id": request.session_id, "request_id": request_id},

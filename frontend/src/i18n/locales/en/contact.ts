@@ -56,6 +56,6 @@ export default {
     doneBtn:     'Done',
   },
   calendly: {
-    viewSchedule: 'View my schedule',
+    viewSchedule: 'See available times',
   },
 } as const

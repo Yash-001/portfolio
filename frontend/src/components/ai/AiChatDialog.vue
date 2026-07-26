@@ -271,12 +271,12 @@ watch(
   () => scrollToBottom(),
 )
 
-// Start a fresh conversation every time the dialog opens (unless streaming)
+// Start a fresh conversation only when dialog opens with no existing messages
 watch(
   () => chat.isOpen,
   (open) => {
     if (open) {
-      if (!chat.isStreaming) chat.reset()
+      if (!chat.isStreaming && !chat.hasMessages) chat.reset()
       nextTick(() => {
         dialogRef.value?.focus()
         inputRef.value?.focus()

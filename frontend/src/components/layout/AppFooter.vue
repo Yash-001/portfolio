@@ -81,6 +81,8 @@
             aria-label="Download resume"
             title="Download resume"
             class="ft-social ft-social--resume"
+            target="_blank"
+            rel="noopener noreferrer"
             download
           >
             <i class="pi pi-file-pdf" />

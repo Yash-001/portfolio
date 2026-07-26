@@ -15,8 +15,8 @@ export const BIO_SHORT    = 'Building production-grade systems for startups and 
 export const YEARS_EXP    = 7
 
 // ── Contact ──────────────────────────────────────────────────────────────────
-export const EMAIL        = (env.VITE_APP_EMAIL    as string) || 'yash.ranjan.dev@gmail.com'
-export const PHONE        = (env.VITE_APP_PHONE    as string) || '+91-7779964211'
+export const EMAIL        = (env.VITE_APP_EMAIL    as string) || 'yash.ranjan.dev@proton.me'
+export const PHONE        = (env.VITE_APP_PHONE    as string) || ''
 export const LOCATION     = 'India (UTC+5:30)'
 export const TIMEZONE     = 'Asia/Kolkata'
 export const TIMEZONE_LABEL = 'UTC+5:30'
@@ -31,7 +31,7 @@ export const AVAILABILITY: 'available' | 'busy' | 'unavailable' = 'available'
 export const AVAILABILITY_TEXT = 'Available for new projects'
 
 // ── URLs ─────────────────────────────────────────────────────────────────────
-export const SITE_URL    = (env.VITE_APP_URL      as string) || 'https://yourdomain.com'
+export const SITE_URL    = (env.VITE_APP_URL      as string) || ''
 export const RESUME_URL  = '/resume.pdf'
 export const CALENDLY_URL = (env.VITE_CALENDLY_URL as string) || 'https://calendly.com/placeholder'
 

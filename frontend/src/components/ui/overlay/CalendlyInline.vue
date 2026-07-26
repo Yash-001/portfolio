@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useCalendly } from '@/composables/useCalendly'
+import { useCalendly, calendlyConfigured } from '@/composables/useCalendly'
 import { CALENDLY_URL } from '@/config/portfolio.config'
 
 interface Props {
@@ -60,6 +60,7 @@ const containerEl  = ref<HTMLElement | null>(null)
 const { isLoading, hasError, mountInline } = useCalendly()
 
 onMounted(async () => {
+  if (!calendlyConfigured) return   // hasError already set true by mountInline guard
   if (containerEl.value) {
     await mountInline(containerEl.value)
   }

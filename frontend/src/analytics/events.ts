@@ -26,6 +26,10 @@ export const EVENTS = {
   CALENDLY_VIEWED:        'calendly_event_type_viewed',
   CALENDLY_DATE_SELECTED: 'calendly_date_selected',
   CALENDLY_BOOKED:        'calendly_booked',
+
+  // AI Chat
+  AI_CHAT_SEND:     'ai_chat_send',
+  AI_CHAT_RESPONSE: 'ai_chat_response',
 } as const
 
 export type EventName = typeof EVENTS[keyof typeof EVENTS]
@@ -72,4 +76,14 @@ export interface CalendlyBookedProps extends EventProps {
   url:     string
   invitee: string
   event:   string
+}
+
+export interface AiChatSendProps extends EventProps {
+  session_id: string
+}
+
+export interface AiChatResponseProps extends EventProps {
+  session_id: string
+  request_id: string
+  provider:   string
 }

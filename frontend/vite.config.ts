@@ -1,25 +1,14 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import compression from 'vite-plugin-compression'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { fileURLToPath, URL } from 'node:url'
+import { sitemapPlugin } from './plugins/sitemap'
 
 export default defineConfig({
   plugins: [
     vue(),
-    compression({
-      algorithm: 'gzip',
-      ext: '.gz',
-      deleteOriginFile: false,
-      threshold: 10240,
-    }),
-    compression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
-      deleteOriginFile: false,
-      threshold: 10240,
-    }),
     visualizer({ open: false, filename: 'stats.html', gzipSize: true }),
+    sitemapPlugin(),
   ],
   resolve: {
     alias: {
@@ -45,14 +34,18 @@ export default defineConfig({
     minify: 'esbuild',
     cssCodeSplit: true,
     outDir: 'dist',
+    // hljs is ~940kB but loaded lazily (only when AI chat opens) — not on initial load
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
-          'vue-vendor':     ['vue', 'vue-router', 'pinia'],
+          'vue-vendor':      ['vue', 'vue-router', 'pinia'],
           'primevue-vendor': ['primevue'],
-          'gsap-vendor':    ['gsap'],
-          'utils-vendor':   ['@vueuse/core'],
-          'ai-vendor':      ['marked', 'highlight.js'],
+          'gsap-vendor':     ['gsap'],
+          'utils-vendor':    ['@vueuse/core'],
+          'markdown-vendor': ['marked'],
+          // highlight.js is lazy-loaded inside AiChatMessage — do NOT pin it here
+          // so Rollup keeps it as a separate async chunk loaded on demand.
         },
       },
     },

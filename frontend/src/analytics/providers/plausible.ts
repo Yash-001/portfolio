@@ -25,8 +25,11 @@ export const plausibleProvider = {
     this._ready = true
   },
 
-  page(_path: string, _title: string): void {
-    // Plausible auto-tracks SPA navigation via its own history listener
+  page(path: string, _title: string): void {
+    if (!this._ready) return
+    // Plausible standard script does not auto-track SPA history changes;
+    // manually fire a pageview so every route change is recorded.
+    window.plausible?.('pageview', { props: { path } })
   },
 
   track(event: EventName | string, props?: EventProps): void {

@@ -208,9 +208,11 @@ export function useContactForm() {
     const result = await submitContactForm({ ...form })
 
     if (result.ok) {
+      retryAttempt.value = result.attempt ?? 1
       trackContactSubmit(true)
-      status.value      = 'success'
-      showSuccess.value = true
+      status.value       = 'success'
+      showSuccess.value  = true
+      isSubmitting.value = false
       resetForm()
     } else {
       trackContactSubmit(false)

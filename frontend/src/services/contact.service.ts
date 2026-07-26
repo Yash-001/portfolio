@@ -280,10 +280,12 @@ export async function submitContactForm(
   // 4. Config check
   const config = getConfig()
   if (!config) {
-    console.warn(
-      '[ContactService] EmailJS not configured.\n' +
-      'Set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY in .env',
-    )
+    if (import.meta.env.DEV) {
+      console.warn(
+        '[ContactService] EmailJS not configured.\n' +
+        'Set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY in .env',
+      )
+    }
     return {
       ok:      false,
       message: 'Contact form is not configured. Please email me directly.',
@@ -300,7 +302,9 @@ export async function submitContactForm(
       // 6. Fire-and-forget auto-reply (non-blocking, non-retried)
       if (config.replyTemplateId) {
         sendEmail(config, config.replyTemplateId, buildReplyParams(payload)).catch((err) => {
-          console.warn('[ContactService] Auto-reply failed (non-critical):', err)
+          if (import.meta.env.DEV) {
+            console.warn('[ContactService] Auto-reply failed (non-critical):', err)
+          }
         })
       }
 

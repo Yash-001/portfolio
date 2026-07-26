@@ -8,6 +8,7 @@
  *  - Availability status from config
  *  - Visitor timezone detection
  *  - Analytics event emission
+ *  - Graceful fallback when VITE_CALENDLY_URL is not configured
  */
 import { ref, readonly } from 'vue'
 import { CALENDLY_URL, OWNER_TIMEZONE, OWNER_AVAILABILITY } from '@/config/portfolio.config'
@@ -50,6 +51,23 @@ interface CalendlyUtm {
   utmCampaign?: string
 }
 
+// ── URL validation ─────────────────────────────────────────────────────────
+
+/** Returns true only when CALENDLY_URL is a real, non-placeholder URL */
+function isConfigured(url: string): boolean {
+  if (!url) return false
+  try {
+    const parsed = new URL(url)
+    // Reject the default placeholder value
+    if (parsed.pathname === '/placeholder' || parsed.pathname === '/yourname/30min') return false
+    return parsed.hostname === 'calendly.com'
+  } catch {
+    return false
+  }
+}
+
+export const calendlyConfigured = isConfigured(CALENDLY_URL)
+
 // ── Script loader (singleton promise) ─────────────────────────────────────
 
 const CALENDLY_CSS = 'https://assets.calendly.com/assets/external/widget.css'
@@ -69,7 +87,7 @@ function loadCalendlyScript(): Promise<void> {
       document.head.appendChild(link)
     }
 
-    // JS
+    // JS — already loaded
     if (window.Calendly) { resolve(); return }
 
     const script    = document.createElement('script')
@@ -77,7 +95,7 @@ function loadCalendlyScript(): Promise<void> {
     script.async    = true
     script.onload   = () => resolve()
     script.onerror  = () => {
-      scriptPromise = null
+      scriptPromise = null   // allow retry on next call
       reject(new Error('Calendly script failed to load'))
     }
     document.head.appendChild(script)
@@ -107,9 +125,9 @@ function attachCalendlyListener(): void {
     }
     if (name === 'calendly.event_scheduled') {
       tracker.track(EVENTS.CALENDLY_BOOKED, {
-        url:      CALENDLY_URL,
-        invitee:  e.data.payload?.invitee?.uri ?? '',
-        event:    e.data.payload?.event?.uri   ?? '',
+        url:     CALENDLY_URL,
+        invitee: e.data.payload?.invitee?.uri ?? '',
+        event:   e.data.payload?.event?.uri   ?? '',
       })
     }
   })
@@ -117,12 +135,19 @@ function attachCalendlyListener(): void {
 
 // ── Composable ─────────────────────────────────────────────────────────────
 
-const isLoading = ref(false)
-const hasError  = ref(false)
-
 export function useCalendly() {
+  // Per-instance state — not shared across popup + inline simultaneously
+  const isLoading = ref(false)
+  const hasError  = ref(false)
+
   /** Visitor's IANA timezone (falls back to owner timezone) */
-  const visitorTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || OWNER_TIMEZONE
+  const visitorTimezone = (() => {
+    try {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone || OWNER_TIMEZONE
+    } catch {
+      return OWNER_TIMEZONE
+    }
+  })()
 
   /** Build a Calendly URL with timezone pre-filled */
   function buildUrl(base = CALENDLY_URL): string {
@@ -134,6 +159,12 @@ export function useCalendly() {
 
   /** Open Calendly popup */
   async function openPopup(prefill?: CalendlyPrefill): Promise<void> {
+    if (!calendlyConfigured) {
+      // Fallback: open raw URL in new tab (works even with a real URL set later)
+      if (CALENDLY_URL) window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
+      return
+    }
+
     isLoading.value = true
     hasError.value  = false
 
@@ -150,8 +181,8 @@ export function useCalendly() {
       })
     } catch {
       hasError.value = true
-      // Fallback: open in new tab
-      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
+      // Fallback: open the built URL (with timezone param) in a new tab
+      window.open(buildUrl(), '_blank', 'noopener,noreferrer')
     } finally {
       isLoading.value = false
     }
@@ -159,6 +190,11 @@ export function useCalendly() {
 
   /** Mount inline widget into a container element */
   async function mountInline(container: HTMLElement, prefill?: CalendlyPrefill): Promise<void> {
+    if (!calendlyConfigured) {
+      hasError.value = true
+      return
+    }
+
     isLoading.value = true
     hasError.value  = false
 
@@ -174,6 +210,9 @@ export function useCalendly() {
         prefill,
         utm: { utmSource: 'portfolio', utmMedium: 'inline', utmCampaign: 'book_call' },
       })
+
+      // Calendly injects an iframe asynchronously — wait for it before hiding skeleton
+      await waitForIframe(container)
     } catch {
       hasError.value = true
     } finally {
@@ -186,12 +225,40 @@ export function useCalendly() {
   }
 
   return {
-    isLoading:       readonly(isLoading),
-    hasError:        readonly(hasError),
-    availability:    OWNER_AVAILABILITY,
+    isLoading:          readonly(isLoading),
+    hasError:           readonly(hasError),
+    availability:       OWNER_AVAILABILITY,
     visitorTimezone,
+    isConfigured:       calendlyConfigured,
     openPopup,
     mountInline,
     closePopup,
   }
+}
+
+// ── Iframe readiness helper ────────────────────────────────────────────────
+
+/**
+ * Resolves when Calendly's injected iframe fires its load event,
+ * or after a 10-second timeout (whichever comes first).
+ */
+function waitForIframe(container: HTMLElement, timeoutMs = 10_000): Promise<void> {
+  return new Promise((resolve) => {
+    const deadline = setTimeout(resolve, timeoutMs)
+
+    const observer = new MutationObserver(() => {
+      const iframe = container.querySelector('iframe')
+      if (!iframe) return
+
+      observer.disconnect()
+      iframe.addEventListener('load', () => { clearTimeout(deadline); resolve() }, { once: true })
+      // If iframe is already loaded (cached)
+      if (iframe.contentDocument?.readyState === 'complete') {
+        clearTimeout(deadline)
+        resolve()
+      }
+    })
+
+    observer.observe(container, { childList: true, subtree: true })
+  })
 }
