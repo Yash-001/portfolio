@@ -160,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { gsap, ScrollTrigger } from '@/plugins/gsap'
 import {
   APP_NAME,
@@ -195,7 +195,9 @@ const TECH_STACK = [
   { name: 'OpenAI API',   color: '#10a37f' },
 ] as const
 
-const TIMELINE_YEARS = ['2017', '2019', '2021', '2023'] as const
+const TIMELINE_YEARS = computed(() =>
+  Object.keys(tm('about.timeline') as object).sort()
+)
 
 // ── Refs ──────────────────────────────────────────────────────────
 const sectionEl   = ref<HTMLElement | null>(null)

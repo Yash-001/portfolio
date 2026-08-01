@@ -31,7 +31,7 @@ export { SITE_URL, RESUME_URL, CALENDLY_URL, PROFILE_IMAGE }
 
 export const HERO_STATS = [
   { value: 7,  suffix: '+', label: 'Years Exp.'  },
-  { value: 10, suffix: '+', label: 'Projects'    },
-  { value: 5,  suffix: '',  label: 'Enterprise'  },
+  { value: 5, suffix: '+', label: 'Projects'    },
+  { value: 4,  suffix: '',  label: 'Enterprise'  },
   { value: 3,  suffix: '',  label: 'Cloud Apps'  },
 ] as const

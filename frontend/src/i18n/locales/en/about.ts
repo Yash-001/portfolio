@@ -3,10 +3,15 @@ export default {
   heading: "I don't just write code.",
   headingAccent: 'I engineer outcomes.',
   story: [
-    "Seven years ago I joined a fintech startup as the only backend engineer. No playbook, no senior to ask — just a production system that needed to handle real money for real people without falling over. That pressure taught me something no course ever could: the difference between code that works in a demo and code that works at 3 AM when the on-call phone rings.",
-    "Since then I've built and shipped enterprise systems across banking, logistics, and SaaS — things like a payment reconciliation engine processing ₹40 Cr daily, a multi-tenant Spring Boot platform serving 12 enterprise clients, and a CI/CD pipeline that cut deployment time from 4 hours to 18 minutes. The stack changes. The discipline doesn't.",
-    "My approach is boring in the best way: understand the domain first, model it correctly, then pick the simplest technology that survives production. I've seen too many projects collapse under clever abstractions that nobody could debug at midnight. I'd rather write code my future self can read than code that impresses in a code review.",
-    "Lately I've been integrating AI tooling — not as a gimmick, but as a force multiplier. LLM-assisted code generation, intelligent search over internal knowledge bases, automated anomaly detection in data pipelines. The goal is always the same: ship more value with less friction, and make the system easier to reason about, not harder.",
+    "Over the past seven years, I've built enterprise software for organizations where reliability is critical—from Electronic Medical Record (EMR) platforms serving hospitals across the United States to digital platforms for Jaguar Land Rover, and today, modernizing government systems for the Government of Hawaii. Working across healthcare, automotive, and public sectors has taught me that great software isn't just about writing code—it's about building systems people can trust every day.",
+
+    "My expertise spans Java, Spring Boot, Vue.js, REST APIs, SQL, cloud platforms, CI/CD, and AI-powered development. I specialize in designing scalable backend services, building intuitive frontend applications, integrating enterprise systems, and transforming complex business requirements into secure, maintainable, and production-ready software.",
+
+    "My engineering philosophy is simple: build software that teams can confidently maintain for years. Clean architecture, thoughtful design, meaningful testing, and clear communication consistently outperform clever shortcuts. I believe the best software is easy to understand, resilient in production, and built with the business in mind.",
+
+    "Today, I leverage AI as an engineering accelerator—from LLM integrations and intelligent automation to AI-assisted development workflows—to help clients ship better products faster without compromising quality.",
+
+    "If you're looking for an engineer with proven enterprise experience across US healthcare, Jaguar Land Rover, and Government of Hawaii projects who can deliver scalable, production-ready solutions, I'd love to help bring your project to life.",
   ],
   signatureTitle: 'Enterprise Software & AI Consultant · {years}+ yrs',
   philosophy: {
@@ -29,25 +34,25 @@ export default {
   },
   respondsIn: 'Responds in {time}',
   timeline: {
-    2017: {
-      role:    'Junior Backend Engineer',
-      company: 'Fintech Startup',
-      desc:    'First production system. Learned that uptime is a feature and that nobody reads the runbook until 2 AM.',
-    },
     2019: {
-      role:    'Software Engineer',
-      company: 'Enterprise SaaS',
-      desc:    'Migrated a monolith to modular services. Reduced p99 latency by 60% through query optimization and caching strategy.',
+      role: 'Junior Full Stack Engineer',
+      company: 'L Cube Innovative Solutions Private Limited',
+      desc: 'Built and maintained enterprise Electronic Medical Record (EMR) solutions for US hospitals, developing production-grade applications where reliability, security, and performance were critical.',
     },
     2021: {
-      role:    'Senior Engineer',
-      company: 'Logistics Platform',
-      desc:    'Designed a real-time tracking pipeline on Kafka + AWS. Owned architecture decisions end-to-end for the first time.',
+      role: 'Software Engineer',
+      company: 'TCS (Jaguar Land Rover)',
+      desc: 'Delivered enterprise applications for Jaguar Land Rover, collaborating with global teams to build scalable, maintainable, and high-quality software solutions.',
     },
-    2023: {
-      role:    'Lead Engineer / Consultant',
+    2024: {
+      role: 'Senior Engineer',
+      company: 'Innovan Technologies',
+      desc: 'Developing enterprise applications for Government of Hawaii projects, focusing on secure, scalable systems, modern full-stack development, and long-term maintainability.',
+    },
+    2026: {
+      role: 'Enterprise Software & AI Consultant',
       company: 'Independent',
-      desc:    'Working directly with founders and CTOs. Shipping full-stack systems, cloud infrastructure, and AI-integrated backends.',
+      desc: 'Partnering with startups and businesses to design and deliver scalable web applications, enterprise APIs, cloud solutions, and AI-integrated products from concept to production.',
     },
   },
 } as const
