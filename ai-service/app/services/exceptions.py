@@ -52,6 +52,16 @@ class AITimeoutError(AIServiceError):
         )
 
 
+class AIQuotaExceededError(AIServiceError):
+    def __init__(self, provider: str, retry_after: float = 3600.0) -> None:
+        super().__init__(
+            provider=provider,
+            message=f"AI service is temporarily busy. Free tier quota exhausted for provider '{provider}'. Please try again later.",
+            error_code=AIErrorCode.RATE_LIMITED,
+            retry_after=retry_after,
+        )
+
+
 class AIProviderUnavailableError(AIServiceError):
     def __init__(self, provider: str) -> None:
         super().__init__(

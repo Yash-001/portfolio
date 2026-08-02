@@ -18,24 +18,40 @@ settings = get_settings()
 P = ParamSpec("P")
 T = TypeVar("T")
 
-# Errors that are worth retrying (transient)
-RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+# Errors that should NEVER be retried (permanent failures)
+_NON_RETRYABLE_SIGNALS = [
+    "quota exceeded",
+    "free tier",
+    "billing",
+    "api key",
+    "unauthenticated",
+    "permission_denied",
+    "invalid api key",
+]
+
+# Errors worth retrying (transient)
+_RETRYABLE_SIGNALS = [
+    "rate limit",
+    "timeout",
+    "connection",
+    "temporarily unavailable",
+    "service unavailable",
+    "overloaded",
+    "too many requests",
+    "internal server error",
+]
 
 
 def is_retryable_error(exc: Exception) -> bool:
     """Determine if an exception is transient and worth retrying."""
+    from app.services.exceptions import AINotConfiguredError, AIQuotaExceededError
+    # Never retry configuration or quota errors
+    if isinstance(exc, (AINotConfiguredError, AIQuotaExceededError)):
+        return False
     msg = str(exc).lower()
-    transient_signals = [
-        "rate limit",
-        "timeout",
-        "connection",
-        "temporarily unavailable",
-        "service unavailable",
-        "overloaded",
-        "too many requests",
-        "internal server error",
-    ]
-    return any(signal in msg for signal in transient_signals)
+    if any(s in msg for s in _NON_RETRYABLE_SIGNALS):
+        return False
+    return any(s in msg for s in _RETRYABLE_SIGNALS)
 
 
 async def with_retry(

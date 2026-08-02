@@ -2,7 +2,10 @@
 # FastAPI application factory.
 # Wires config, logging, CORS, middleware, error handlers, and routers.
 
-from fastapi import FastAPI
+import logging
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -19,6 +22,34 @@ from app.services.exceptions import AIServiceError
 setup_logging()
 
 settings = get_settings()
+logger = logging.getLogger("ai.startup")
+
+
+def _validate_config() -> None:
+    """Fail fast on critical misconfigurations at startup."""
+    provider = settings.DEFAULT_AI_PROVIDER
+
+    if provider == "gemini":
+        if not settings.GEMINI_API_KEY:
+            logger.warning("GEMINI_API_KEY is not set — Gemini provider will fail at runtime")
+        if not settings.GEMINI_DEFAULT_MODEL:
+            raise RuntimeError("GEMINI_DEFAULT_MODEL must not be empty")
+        logger.info("Config OK: provider=gemini model=%s", settings.GEMINI_DEFAULT_MODEL)
+    elif provider == "openai":
+        if not settings.OPENAI_API_KEY:
+            logger.warning("OPENAI_API_KEY is not set — OpenAI provider will fail at runtime")
+        logger.info("Config OK: provider=openai model=%s", settings.OPENAI_DEFAULT_MODEL)
+
+    if settings.ENVIRONMENT == "production" and settings.APP_DEBUG:
+        raise RuntimeError("APP_DEBUG must be false in production")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    _validate_config()
+    logger.info("AI service started: env=%s provider=%s", settings.ENVIRONMENT, settings.DEFAULT_AI_PROVIDER)
+    yield
+    logger.info("AI service shutting down")
 
 
 def create_app() -> FastAPI:
@@ -28,7 +59,20 @@ def create_app() -> FastAPI:
         docs_url="/docs" if settings.APP_DEBUG else None,
         redoc_url="/redoc" if settings.APP_DEBUG else None,
         openapi_url="/openapi.json" if settings.APP_DEBUG else None,
+        lifespan=lifespan,
     )
+
+    # ── Security headers ──────────────────────────────────────────────────
+    @app.middleware("http")
+    async def security_headers(request: Request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["Cache-Control"] = "no-store"
+        response.headers["Referrer-Policy"] = "no-referrer"
+        if "server" in response.headers:
+            del response.headers["server"]
+        return response
 
     # ── CORS ──────────────────────────────────────────────────────────────
     app.add_middleware(

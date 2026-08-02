@@ -366,10 +366,13 @@ const overlayStyle = computed(() => ({
   border-radius: 20px;
   isolation: isolate;
   will-change: transform;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.proj-card:hover { transform: translateY(-4px); }
+.proj-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5), 0 8px 16px rgba(0, 0, 0, 0.3);
+}
 
 .proj-card__border {
   position: absolute;
@@ -391,7 +394,7 @@ const overlayStyle = computed(() => ({
   position: relative;
   z-index: 1;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   background: rgba(17, 17, 17, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -400,10 +403,23 @@ const overlayStyle = computed(() => ({
   flex-direction: column;
 }
 
+/* Featured accent */
+.proj-card--featured .proj-card__inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+  z-index: 2;
+  border-radius: 20px 20px 0 0;
+}
+
 /* ── Visual area ───────────────────────────────────────────────── */
 .proj-card__visual {
   position: relative;
-  height: 200px;
+  height: 220px;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -511,13 +527,14 @@ const overlayStyle = computed(() => ({
   letter-spacing: 0.06em;
 }
 
-/* ── Content ───────────────────────────────────────────────────── */
+/* ── Content ───────────────────────────────────────────────── */
 .proj-card__content {
-  padding: 24px 28px 28px;
+  padding: 24px 24px 28px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
   flex: 1;
+  min-width: 0;
 }
 
 /* Header */
@@ -525,8 +542,8 @@ const overlayStyle = computed(() => ({
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
 }
 
 .proj-card__title-row {
@@ -535,14 +552,17 @@ const overlayStyle = computed(() => ({
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 4px;
+  min-width: 0;
 }
 
 .proj-card__title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #f5f5f5;
   letter-spacing: -0.025em;
-  line-height: 1.2;
+  line-height: 1.25;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .proj-card__featured-tag {
@@ -556,30 +576,35 @@ const overlayStyle = computed(() => ({
   border: 1px solid rgba(245, 158, 11, 0.3);
   padding: 2px 7px;
   border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .proj-card__tagline {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
-  color: #737373;
+  color: #888888;
   line-height: 1.5;
+  overflow-wrap: break-word;
 }
 
 .proj-card__meta-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  gap: 5px;
   flex-shrink: 0;
+  min-width: 0;
 }
 
 .proj-card__duration {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-family: 'Geist Mono', monospace;
   color: #555555;
+  white-space: nowrap;
 }
 
 .proj-card__role-badge {
@@ -588,21 +613,23 @@ const overlayStyle = computed(() => ({
   font-family: 'Geist Mono', monospace;
   color: #737373;
   text-align: right;
-  max-width: 160px;
-  line-height: 1.4;
+  max-width: 120px;
+  line-height: 1.35;
+  overflow-wrap: break-word;
 }
 
 /* Description */
 .proj-card__desc {
   font-size: 13.5px;
-  line-height: 1.75;
-  color: #737373;
+  line-height: 1.7;
+  color: #6b6b6b;
+  overflow-wrap: break-word;
 }
 
 /* Metrics */
 .proj-card__metrics {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
   border: 1px solid #1a1a1a;
   border-radius: 12px;
@@ -610,52 +637,58 @@ const overlayStyle = computed(() => ({
   background: #1a1a1a;
 }
 
-@media (min-width: 480px) {
-  .proj-card__metrics { grid-template-columns: repeat(4, 1fr); }
-}
-
 .metric-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  justify-content: center;
+  gap: 4px;
   padding: 14px 10px;
   background: #0d0d0d;
   cursor: default;
   transition: background 0.2s;
+  min-width: 0;
+  text-align: center;
 }
 
 .metric-item:hover { background: #111111; }
 
 .metric-value {
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: 1.3;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
+  text-align: center;
 }
 
 .metric-label {
   font-size: 9px;
   font-family: 'Geist Mono', monospace;
   color: #555555;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   text-align: center;
   line-height: 1.3;
+  word-break: break-word;
+  width: 100%;
 }
 
 /* Tech badges */
 .proj-card__tech {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
+  min-width: 0;
 }
 
 .tech-badge {
-  padding: 3px 9px;
+  padding: 4px 9px;
   border-radius: 5px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 500;
   font-family: 'Geist Mono', monospace;
   color: #737373;
@@ -663,6 +696,8 @@ const overlayStyle = computed(() => ({
   background: rgba(255, 255, 255, 0.02);
   transition: border-color 0.2s, color 0.2s;
   letter-spacing: 0.02em;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .proj-card:hover .tech-badge {
@@ -675,8 +710,10 @@ const overlayStyle = computed(() => ({
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
   margin-top: auto;
 }
 
@@ -691,6 +728,7 @@ const overlayStyle = computed(() => ({
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
+  min-height: 36px;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
@@ -728,6 +766,7 @@ const overlayStyle = computed(() => ({
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
+  min-height: 36px;
   border-radius: 8px;
   border: 1px solid #222222;
   background: transparent;
@@ -756,16 +795,16 @@ const overlayStyle = computed(() => ({
 .deep-dive__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 12px;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 1400px) {
   .deep-dive__grid { grid-template-columns: 1fr 1fr; }
 }
 
 .deep-dive__block {
-  padding: 16px;
-  border-radius: 12px;
+  padding: 18px;
+  border-radius: 14px;
   border: 1px solid #1a1a1a;
   background: rgba(255, 255, 255, 0.015);
   display: flex;

@@ -46,7 +46,7 @@ class Settings(BaseSettings):
 
     # ── Google Gemini (future) ────────────────────────────────────────────
     GEMINI_API_KEY: str = ""
-    GEMINI_DEFAULT_MODEL: str = "gemini-flash-latest"
+    GEMINI_DEFAULT_MODEL: str = "gemini-2.0-flash"
 
     # ── Rate limiting ─────────────────────────────────────────────────────
     RATE_LIMIT_ENABLED: bool = True

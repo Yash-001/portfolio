@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from app.models.ai_models import AIErrorCode, AIErrorResponse
 from app.services.exceptions import (
     AINotConfiguredError,
+    AIQuotaExceededError,
     AIRateLimitError,
     AIServiceError,
     AITimeoutError,
@@ -20,18 +21,18 @@ async def ai_service_error_handler(request: Request, exc: AIServiceError) -> JSO
     request_id = getattr(request.state, "request_id", str(uuid.uuid4()))
 
     logger.error(
-        "AI service error",
+        "AI service error: %s",
+        exc.message,
         extra={
             "request_id": request_id,
             "error_code": exc.error_code,
             "provider":   exc.provider,
-            "message":    exc.message,
         },
     )
 
     if isinstance(exc, AINotConfiguredError):
         status_code = 503
-    elif isinstance(exc, AIRateLimitError):
+    elif isinstance(exc, (AIRateLimitError, AIQuotaExceededError)):
         status_code = 429
     elif isinstance(exc, AITimeoutError):
         status_code = 504

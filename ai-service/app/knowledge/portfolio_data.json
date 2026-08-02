@@ -307,7 +307,7 @@
       "featured": true,
       "year": 2021,
       "duration": "2 years",
-      "role": "Senior Backend Engineer — Architecture Owner",
+      "role": "Software Engineer — Full Stack",
       "problem": "Vehicle emissions depend on numerous variables including market, model, model year, and vehicle configuration. The platform needed to provide accurate calculations and reliable downstream integrations.",
       "approach": "Developed frontend and backend enhancements using AngularJS and Spring Boot, implemented business logic, resolved production issues, and supported post-deployment releases within a microservices architecture.",
       "outcome": "Delivered multiple enhancements while supporting stable enterprise releases for global automotive teams.",
@@ -354,7 +354,7 @@
       "featured": false,
       "year": 2019,
       "duration": "1.5 years",
-      "role": "Software Engineer — Backend Lead",
+      "role": "Junior Full Stack Engineer",
       "problem": "Healthcare providers required a reliable platform for managing patient records, clinical notes, scheduling, prescriptions, and day-to-day clinical operations while ensuring system stability and usability.",
       "approach": "Developed and enhanced enterprise modules including FAX, Clinical Notes Management (CNM), Blackboard, SOAP templates, and Scheduler using Java, Spring MVC, Hibernate, GWT, JSP, and PostgreSQL. Collaborated with cross-functional teams to implement new features, modernize existing functionality, resolve production issues, and improve user experience.",
       "outcome": "Successfully delivered multiple production features and enhancements that improved clinical workflows while maintaining the reliability expected from mission-critical healthcare software.",
@@ -1289,5 +1289,5 @@
       "yearsOfExperience": 0
     }
   ],
-  "generatedAt": "2026-08-01T01:40:01.866Z"
+  "generatedAt": "2026-08-02T08:50:55.316Z"
 }

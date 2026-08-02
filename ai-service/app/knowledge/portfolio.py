@@ -233,5 +233,4 @@ def get_knowledge() -> PortfolioKnowledge:
     return _cached_knowledge
 
 
-# Keep PORTFOLIO_KNOWLEDGE for any direct imports that still reference it.
-PORTFOLIO_KNOWLEDGE: PortfolioKnowledge = get_knowledge()
+# Always call get_knowledge() — never import PORTFOLIO_KNOWLEDGE directly.

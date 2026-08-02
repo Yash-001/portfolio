@@ -14,10 +14,38 @@ from app.models.ai_models import (
     MessageRole, ProviderStatus, TokenUsage,
 )
 from app.providers.base import BaseAIProvider
-from app.services.exceptions import AINotConfiguredError, AIServiceError
+from app.services.exceptions import AINotConfiguredError, AIQuotaExceededError, AIServiceError, AITimeoutError
 
 logger = logging.getLogger("ai.provider.gemini")
 settings = get_settings()
+
+
+_QUOTA_SIGNALS = (
+    "quota",
+    "429",
+    "resource_exhausted",
+    "too many requests",
+    "free tier",
+    "billing",
+)
+_AUTH_SIGNALS = ("api key", "401", "unauthenticated", "permission_denied", "403")
+_TIMEOUT_SIGNALS = ("timeout", "deadline", "timed out")
+
+
+def _classify_gemini_error(exc: Exception) -> AIServiceError:
+    """Map raw Gemini SDK exceptions to typed AIServiceError subclasses."""
+    msg = str(exc).lower()
+    if any(s in msg for s in _QUOTA_SIGNALS):
+        return AIQuotaExceededError(provider="gemini")
+    if any(s in msg for s in _AUTH_SIGNALS):
+        from app.services.exceptions import AINotConfiguredError
+        return AINotConfiguredError(
+            provider="gemini",
+            message="Gemini API key is invalid or lacks permission.",
+        )
+    if any(s in msg for s in _TIMEOUT_SIGNALS):
+        return AITimeoutError(provider="gemini")
+    return AIServiceError(provider="gemini", message=str(exc))
 
 
 def _to_gemini_history(messages: list) -> List[dict]:
@@ -76,6 +104,10 @@ class GeminiProvider(BaseAIProvider):
                     message="google-generativeai not installed. Run: pip install google-generativeai",
                 ) from e
             genai.configure(api_key=settings.GEMINI_API_KEY)
+            logger.info(
+                "Gemini provider initialised",
+                extra={"model": settings.GEMINI_DEFAULT_MODEL, "key_set": True},
+            )
             self._genai = genai
         return self._genai
 
@@ -115,6 +147,7 @@ class GeminiProvider(BaseAIProvider):
         except AIServiceError:
             raise
         except Exception as exc:
+            classified = _classify_gemini_error(exc)
             log_ai_error(
                 provider=self.provider_name,
                 model=model_id,
@@ -122,7 +155,7 @@ class GeminiProvider(BaseAIProvider):
                 error=str(exc),
                 attempt=1,
             )
-            raise AIServiceError(provider="gemini", message=str(exc)) from exc
+            raise classified from exc
 
         duration_ms = now_ms() - start_ms
         log_ai_response(
@@ -163,7 +196,10 @@ class GeminiProvider(BaseAIProvider):
             ),
         )
         chat_session = model.start_chat(history=history)
-        response = await chat_session.send_message_async(last_message, stream=True)
+        try:
+            response = await chat_session.send_message_async(last_message, stream=True)
+        except Exception as exc:
+            raise _classify_gemini_error(exc) from exc
 
         async for chunk in response:
             try:

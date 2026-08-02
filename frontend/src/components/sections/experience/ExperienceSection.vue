@@ -121,10 +121,10 @@ import { useLocale } from '@/composables/useLocale'
 const { t } = useLocale()
 
 const SUMMARY = [
-  { key: 'years'     },
-  { key: 'companies' },
-  { key: 'txn'       },
-  { key: 'latency'   },
+  { key: 'years'       },
+  { key: 'enterprises' },
+  { key: 'sectors'     },
+  { key: 'stack'       },
 ] as const
 
 // ── Refs ──────────────────────────────────────────────────────────
@@ -249,6 +249,8 @@ onUnmounted(() => {
   padding: 0 24px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 20px;
 }
 
