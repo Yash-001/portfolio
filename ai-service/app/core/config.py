@@ -29,8 +29,15 @@ class Settings(BaseSettings):
         return [o.strip() for o in self.ALLOWED_ORIGINS.split(",") if o.strip()]
 
     # ── AI Provider selection ─────────────────────────────────────────────
-    # Which provider to use as default: "openai" | "anthropic" | "gemini"
-    DEFAULT_AI_PROVIDER: Literal["openai", "anthropic", "gemini"] = "openai"
+    # Which provider to use as default: "openai" | "anthropic" | "gemini" | "groq" | "openrouter"
+    DEFAULT_AI_PROVIDER: str = "groq"
+
+    # auto = try providers in priority order with failover
+    # single = use DEFAULT_AI_PROVIDER only (no failover)
+    AI_PROVIDER_MODE: str = "auto"
+
+    # Comma-separated priority list for auto mode
+    AI_PROVIDER_PRIORITY: str = "groq,openrouter,gemini,openai"
 
     # ── OpenAI ────────────────────────────────────────────────────────────
     OPENAI_API_KEY: str = ""
@@ -44,9 +51,17 @@ class Settings(BaseSettings):
     ANTHROPIC_DEFAULT_MODEL: str = "claude-3-haiku-20240307"
     ANTHROPIC_MAX_TOKENS: int = 1024
 
-    # ── Google Gemini (future) ────────────────────────────────────────────
+    # ── Google Gemini ─────────────────────────────────────────────────────
     GEMINI_API_KEY: str = ""
     GEMINI_DEFAULT_MODEL: str = "gemini-2.0-flash"
+
+    # ── Groq ──────────────────────────────────────────────────────────────
+    GROQ_API_KEY: str = ""
+    GROQ_DEFAULT_MODEL: str = "llama-3.3-70b-versatile"
+
+    # ── OpenRouter ────────────────────────────────────────────────────────
+    OPENROUTER_API_KEY: str = ""
+    OPENROUTER_DEFAULT_MODEL: str = "meta-llama/llama-3.1-8b-instruct:free"
 
     # ── Rate limiting ─────────────────────────────────────────────────────
     RATE_LIMIT_ENABLED: bool = True

@@ -27,18 +27,16 @@ logger = logging.getLogger("ai.startup")
 
 def _validate_config() -> None:
     """Fail fast on critical misconfigurations at startup."""
-    provider = settings.DEFAULT_AI_PROVIDER
-
-    if provider == "gemini":
-        if not settings.GEMINI_API_KEY:
-            logger.warning("GEMINI_API_KEY is not set — Gemini provider will fail at runtime")
-        if not settings.GEMINI_DEFAULT_MODEL:
-            raise RuntimeError("GEMINI_DEFAULT_MODEL must not be empty")
-        logger.info("Config OK: provider=gemini model=%s", settings.GEMINI_DEFAULT_MODEL)
-    elif provider == "openai":
-        if not settings.OPENAI_API_KEY:
-            logger.warning("OPENAI_API_KEY is not set — OpenAI provider will fail at runtime")
-        logger.info("Config OK: provider=openai model=%s", settings.OPENAI_DEFAULT_MODEL)
+    from app.providers.registry import get_provider_chain
+    try:
+        chain = get_provider_chain()
+        logger.info("Config OK: mode=%s priority=%s active_chain=%s",
+                    settings.AI_PROVIDER_MODE,
+                    settings.AI_PROVIDER_PRIORITY,
+                    [p.provider_name for p in chain])
+    except Exception as exc:
+        logger.error("Provider configuration error: %s", exc)
+        raise RuntimeError(str(exc)) from exc
 
     if settings.ENVIRONMENT == "production" and settings.APP_DEBUG:
         raise RuntimeError("APP_DEBUG must be false in production")

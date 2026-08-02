@@ -35,8 +35,8 @@ from app.models.ai_models import (
     ChatRequest,
     MessageRole,
 )
-from app.providers.registry import get_provider
-from app.services.exceptions import AIRateLimitError, AIServiceError
+from app.providers.registry import get_provider, get_provider_chain
+from app.services.exceptions import AINotConfiguredError, AIQuotaExceededError, AIRateLimitError, AIServiceError
 
 logger = logging.getLogger("ai.chat")
 settings = get_settings()
@@ -151,9 +151,15 @@ def _sanitize_message(message: str) -> str:
     return sanitized[:4_500]
 
 
-def _resolve_provider_name(request: PortfolioChatRequest) -> str:
-    """Return the effective provider name for this request."""
-    return request.provider or settings.DEFAULT_AI_PROVIDER
+def _is_failover_error(exc: Exception) -> bool:
+    """True = try next provider. False = fail immediately (config/auth errors)."""
+    from app.services.exceptions import AIProviderUnavailableError, AITimeoutError
+    if isinstance(exc, AINotConfiguredError):
+        return False
+    if isinstance(exc, (AIQuotaExceededError, AIProviderUnavailableError, AITimeoutError)):
+        return True
+    msg = str(exc).lower()
+    return any(s in msg for s in ("429", "quota", "rate limit", "timeout", "unavailable", "503", "overloaded"))
 
 
 def _build_chat_request(
@@ -162,25 +168,16 @@ def _build_chat_request(
 ) -> ChatRequest:
     from app.models.ai_models import AIProvider as _AIProvider
 
-    provider_name = _resolve_provider_name(request)
     provider_enum: AIProvider | None = None
     if request.provider:
         provider_enum = _AIProvider(request.provider)
-
-    # Use provider-appropriate defaults instead of always reading OPENAI_* settings
-    if provider_name == "gemini":
-        max_tokens  = 1024
-        temperature = settings.OPENAI_TEMPERATURE  # shared sensible default
-    else:
-        max_tokens  = settings.OPENAI_MAX_TOKENS
-        temperature = settings.OPENAI_TEMPERATURE
 
     return ChatRequest(
         messages=_to_provider_messages(request),
         provider=provider_enum,
         model=request.model,
-        max_tokens=max_tokens,
-        temperature=temperature,
+        max_tokens=settings.OPENAI_MAX_TOKENS,
+        temperature=settings.OPENAI_TEMPERATURE,
         stream=request.stream,
         context_key="portfolio_chat",
         metadata={"session_id": request.session_id, "request_id": request_id},
@@ -199,61 +196,75 @@ class ChatService:
         self._check_rate_limit(client_id)
 
         request_id = generate_request_id()
-        provider   = get_provider(
-            AIProvider(request.provider) if request.provider else None
-        )
         chat_req   = _build_chat_request(request, request_id)
 
-        log_ai_request(
-            provider=provider.provider_name,
-            model=request.model or provider.default_model,
-            request_id=request_id,
-            extra={
-                "session_id":    request.session_id,
-                "history_turns": len(request.history),
-                "client_id":     client_id,
-            },
-        )
+        # If the request pins a specific provider, use only that one.
+        # Otherwise use the full failover chain.
+        if request.provider:
+            chain = [get_provider(AIProvider(request.provider))]
+        else:
+            chain = get_provider_chain()
 
+        last_exc: AIServiceError = AIServiceError(provider="none", message="No providers available.")
         start_ms = now_ms()
-        try:
-            response = await provider.chat(chat_req)
-        except AIServiceError:
-            raise
-        except Exception as exc:
-            log_ai_error(
+
+        for attempt, provider in enumerate(chain, 1):
+            log_ai_request(
                 provider=provider.provider_name,
                 model=request.model or provider.default_model,
                 request_id=request_id,
-                error=str(exc),
-                attempt=1,
+                extra={
+                    "session_id":    request.session_id,
+                    "history_turns": len(request.history),
+                    "client_id":     client_id,
+                    "attempt":       attempt,
+                },
             )
-            raise AIServiceError(provider=provider.provider_name, message=str(exc)) from exc
+            try:
+                response = await provider.chat(chat_req)
+            except AIServiceError as exc:
+                log_ai_error(provider=provider.provider_name,
+                             model=request.model or provider.default_model,
+                             request_id=request_id, error=exc.message, attempt=attempt)
+                last_exc = exc
+                if _is_failover_error(exc) and attempt < len(chain):
+                    logger.warning("Provider '%s' failed (%s) — trying next",
+                                   provider.provider_name, exc.message)
+                    continue
+                raise
+            except Exception as exc:
+                log_ai_error(provider=provider.provider_name,
+                             model=request.model or provider.default_model,
+                             request_id=request_id, error=str(exc), attempt=attempt)
+                last_exc = AIServiceError(provider=provider.provider_name, message=str(exc))
+                if _is_failover_error(exc) and attempt < len(chain):
+                    logger.warning("Provider '%s' failed (%s) — trying next",
+                                   provider.provider_name, str(exc))
+                    continue
+                raise last_exc from exc
 
-        duration_ms = now_ms() - start_ms
-        log_ai_response(
-            provider=provider.provider_name,
-            model=response.model,
-            request_id=request_id,
-            duration_ms=duration_ms,
-            tokens_used=response.usage.total_tokens,
-        )
+            duration_ms = now_ms() - start_ms
+            log_ai_response(provider=provider.provider_name, model=response.model,
+                            request_id=request_id, duration_ms=duration_ms,
+                            tokens_used=response.usage.total_tokens)
 
-        return PortfolioChatResponse(
-            request_id=request_id,
-            session_id=request.session_id,
-            content=response.content,
-            provider=response.provider.value,
-            model=response.model,
-            usage=TokenUsageDTO(
-                prompt_tokens=response.usage.prompt_tokens,
-                completion_tokens=response.usage.completion_tokens,
-                total_tokens=response.usage.total_tokens,
-            ),
-            duration_ms=duration_ms,
-            finish_reason=response.finish_reason,
-            suggested_questions=_generate_follow_ups(response.content),
-        )
+            return PortfolioChatResponse(
+                request_id=request_id,
+                session_id=request.session_id,
+                content=response.content,
+                provider=response.provider.value,
+                model=response.model,
+                usage=TokenUsageDTO(
+                    prompt_tokens=response.usage.prompt_tokens,
+                    completion_tokens=response.usage.completion_tokens,
+                    total_tokens=response.usage.total_tokens,
+                ),
+                duration_ms=duration_ms,
+                finish_reason=response.finish_reason,
+                suggested_questions=_generate_follow_ups(response.content),
+            )
+
+        raise last_exc
 
     # ── Streaming ─────────────────────────────────────────────────────────────
 
@@ -269,58 +280,49 @@ class ChatService:
         self._check_rate_limit(client_id)
 
         request_id = generate_request_id()
-        provider   = get_provider(
-            AIProvider(request.provider) if request.provider else None
-        )
-        model      = request.model or provider.default_model
 
-        log_ai_request(
-            provider=provider.provider_name,
-            model=model,
-            request_id=request_id,
-            extra={
-                "session_id":    request.session_id,
-                "history_turns": len(request.history),
-                "client_id":     client_id,
-                "streaming":     True,
-            },
-        )
+        if request.provider:
+            chain = [get_provider(AIProvider(request.provider))]
+        else:
+            chain = get_provider_chain()
 
-        start_ms = now_ms()
+        start_ms  = now_ms()
+        last_exc: Exception = AIServiceError(provider="none", message="No providers available.")
 
-        try:
-            async for chunk in self._stream_from_provider(provider, request, request_id):
-                yield chunk
-        except AIServiceError as exc:
-            error_chunk = StreamChunkDTO(
-                event=StreamEventType.ERROR,
-                request_id=request_id,
-                error=exc.message,
+        for attempt, provider in enumerate(chain, 1):
+            model = request.model or provider.default_model
+            log_ai_request(
+                provider=provider.provider_name, model=model, request_id=request_id,
+                extra={"session_id": request.session_id, "history_turns": len(request.history),
+                       "client_id": client_id, "streaming": True, "attempt": attempt},
             )
-            yield f"data: {error_chunk.model_dump_json()}\n\n"
-            return
-        except Exception as exc:
-            log_ai_error(
-                provider=provider.provider_name,
-                model=model,
-                request_id=request_id,
-                error=str(exc),
-                attempt=1,
-            )
-            error_chunk = StreamChunkDTO(
-                event=StreamEventType.ERROR,
-                request_id=request_id,
-                error="An unexpected error occurred.",
-            )
-            yield f"data: {error_chunk.model_dump_json()}\n\n"
-            return
+            try:
+                async for chunk in self._stream_from_provider(provider, request, request_id):
+                    yield chunk
+                log_ai_response(provider=provider.provider_name, model=model,
+                                request_id=request_id, duration_ms=now_ms() - start_ms)
+                return
+            except AIServiceError as exc:
+                last_exc = exc
+                if _is_failover_error(exc) and attempt < len(chain):
+                    logger.warning("Stream provider '%s' failed (%s) — trying next",
+                                   provider.provider_name, exc.message)
+                    continue
+                yield f"data: {StreamChunkDTO(event=StreamEventType.ERROR, request_id=request_id, error=exc.message).model_dump_json()}\n\n"
+                return
+            except Exception as exc:
+                last_exc = exc
+                if _is_failover_error(exc) and attempt < len(chain):
+                    logger.warning("Stream provider '%s' failed (%s) — trying next",
+                                   provider.provider_name, str(exc))
+                    continue
+                log_ai_error(provider=provider.provider_name, model=model,
+                             request_id=request_id, error=str(exc), attempt=attempt)
+                yield f"data: {StreamChunkDTO(event=StreamEventType.ERROR, request_id=request_id, error='An unexpected error occurred.').model_dump_json()}\n\n"
+                return
 
-        log_ai_response(
-            provider=provider.provider_name,
-            model=model,
-            request_id=request_id,
-            duration_ms=now_ms() - start_ms,
-        )
+        err_msg = last_exc.message if isinstance(last_exc, AIServiceError) else "All providers failed."
+        yield f"data: {StreamChunkDTO(event=StreamEventType.ERROR, request_id=request_id, error=err_msg).model_dump_json()}\n\n"
 
     async def _stream_from_provider(
         self,
@@ -329,14 +331,13 @@ class ChatService:
         request_id: str,
     ) -> AsyncGenerator[str, None]:
         """
-        Delegates streaming to the active provider.
-        Supports openai and gemini. Add a stream() method to any provider
-        to enable streaming for it — falls back to non-streaming chat() otherwise.
+        Delegates streaming to the provider.
+        Any provider with a stream() method gets native streaming.
+        All others fall back to a single non-streaming chat() call.
         """
         messages = _to_provider_messages(request)
         model    = request.model or provider.default_model
 
-        # Build a ChatRequest for providers that need it
         from app.models.ai_models import ChatRequest as _ChatRequest
         chat_req = _ChatRequest(
             messages=messages,
@@ -349,40 +350,13 @@ class ChatService:
 
         full_content = ""
 
-        if provider.provider_name == "openai":
-            # ── OpenAI streaming ──────────────────────────────────────────────
-            from openai import AsyncOpenAI  # type: ignore
-            if not settings.OPENAI_API_KEY:
-                from app.services.exceptions import AINotConfiguredError
-                raise AINotConfiguredError(provider="openai", message="OPENAI_API_KEY is not set.")
-
-            client = AsyncOpenAI(
-                api_key=settings.OPENAI_API_KEY,
-                timeout=settings.OPENAI_TIMEOUT_SECONDS,
-                max_retries=0,
-            )
-            oai_messages = [{"role": m.role.value, "content": m.content} for m in messages]
-            stream = await client.chat.completions.create(
-                model=model,
-                messages=oai_messages,
-                max_tokens=settings.OPENAI_MAX_TOKENS,
-                temperature=settings.OPENAI_TEMPERATURE,
-                stream=True,
-            )
-            async for chunk in stream:
-                delta = chunk.choices[0].delta if chunk.choices else None
-                if delta and delta.content:
-                    full_content += delta.content
-                    yield f"data: {StreamChunkDTO(event=StreamEventType.DELTA, request_id=request_id, content=delta.content).model_dump_json()}\n\n"
-
-        elif provider.provider_name == "gemini":
-            # ── Gemini streaming ──────────────────────────────────────────────
+        if hasattr(provider, "stream"):
+            # Native streaming — works for openai, groq, openrouter, gemini
             async for text in provider.stream(chat_req, request_id):
                 full_content += text
                 yield f"data: {StreamChunkDTO(event=StreamEventType.DELTA, request_id=request_id, content=text).model_dump_json()}\n\n"
-
         else:
-            # ── Fallback: non-streaming for other providers ────────────────────
+            # Fallback: non-streaming
             response = await provider.chat(chat_req)
             full_content = response.content
             yield f"data: {StreamChunkDTO(event=StreamEventType.DELTA, request_id=request_id, content=full_content).model_dump_json()}\n\n"

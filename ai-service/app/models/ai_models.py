@@ -12,9 +12,11 @@ from pydantic import BaseModel, Field, field_validator
 # ── Enums ─────────────────────────────────────────────────────────────────────
 
 class AIProvider(str, Enum):
-    OPENAI    = "openai"
-    ANTHROPIC = "anthropic"
-    GEMINI    = "gemini"
+    OPENAI      = "openai"
+    ANTHROPIC   = "anthropic"
+    GEMINI      = "gemini"
+    GROQ        = "groq"
+    OPENROUTER  = "openrouter"
 
 
 class MessageRole(str, Enum):
