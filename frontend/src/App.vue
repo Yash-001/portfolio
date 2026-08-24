@@ -43,6 +43,9 @@
     <!-- AI Assistant -->
     <AiChatButton />
     <AiChatDialog />
+
+    <!-- Vercel Web Analytics -->
+    <Analytics />
   </div>
 </template>
 
@@ -50,6 +53,7 @@
 import { onMounted } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import ProgressSpinner from 'primevue/progressspinner'
+import { Analytics } from '@vercel/analytics/vue'
 import AppCursor from '@/components/layout/AppCursor.vue'
 import AppToast  from '@/components/layout/AppToast.vue'
 import { isNavigating } from '@/router'

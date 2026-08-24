@@ -10,7 +10,11 @@ export default defineConfig({
     visualizer({ open: false, filename: 'stats.html', gzipSize: true }),
     sitemapPlugin(),
   ],
+  optimizeDeps: {
+    include: ['@vercel/analytics/vue', 'vue-router'],
+  },
   resolve: {
+    dedupe: ['vue', 'vue-router'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
