@@ -64,8 +64,18 @@
           >#{{ tag.name }}</span>
         </div>
 
-        <!-- Content placeholder -->
-        <div class="post-content-placeholder">
+        <!-- Article content -->
+        <div
+          v-if="post.content"
+          class="post-content prose"
+          v-html="renderedContent"
+        />
+
+        <!-- Coming soon placeholder -->
+        <div
+          v-else
+          class="post-content-placeholder"
+        >
           <div class="placeholder-panel">
             <i class="pi pi-file-edit placeholder-panel__icon" />
             <h2 class="placeholder-panel__heading">
@@ -110,6 +120,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { marked } from 'marked'
 import { useRoute } from 'vue-router'
 import { BLOG_POSTS, BLOG_CATEGORY_CONFIG } from '@/constants/blog.constants'
 import { usePageMeta } from '@/composables/usePageMeta'
@@ -118,6 +129,10 @@ import { blogPostMeta } from '@/content/seo'
 const route = useRoute()
 const slug  = computed(() => route.params.slug as string)
 const post  = computed(() => BLOG_POSTS.find(p => p.slug === slug.value) ?? null)
+
+const renderedContent = computed(() =>
+  post.value?.content ? marked.parse(post.value.content) as string : ''
+)
 
 const initials = computed(() => {
   if (!post.value) return ''
@@ -235,6 +250,109 @@ usePageMeta(blogPostMeta(post.value))
 }
 
 /* Content placeholder */
+/* Article body */
+.post-content {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: #a0a0a0;
+}
+
+.post-content :deep(h2) {
+  font-size: 24px;
+  font-weight: 800;
+  color: #f0f0f0;
+  letter-spacing: -0.025em;
+  margin: 48px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.post-content :deep(h3) {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e0e0e0;
+  letter-spacing: -0.02em;
+  margin: 32px 0 12px;
+}
+
+.post-content :deep(p) {
+  margin: 0 0 20px;
+}
+
+.post-content :deep(ul),
+.post-content :deep(ol) {
+  padding-left: 24px;
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.post-content :deep(li) {
+  color: #a0a0a0;
+}
+
+.post-content :deep(strong) {
+  color: #e5e5e5;
+  font-weight: 700;
+}
+
+.post-content :deep(em) {
+  color: #c0c0c0;
+  font-style: italic;
+}
+
+.post-content :deep(code) {
+  font-family: 'Geist Mono', monospace;
+  font-size: 13px;
+  background: rgba(99,102,241,0.1);
+  color: #a5b4fc;
+  padding: 2px 7px;
+  border-radius: 5px;
+  border: 1px solid rgba(99,102,241,0.2);
+}
+
+.post-content :deep(pre) {
+  background: #0d0d0d;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 24px;
+  overflow-x: auto;
+  margin: 0 0 24px;
+}
+
+.post-content :deep(pre code) {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #e0e0e0;
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.post-content :deep(blockquote) {
+  border-left: 3px solid #6366f1;
+  padding: 4px 0 4px 20px;
+  margin: 0 0 24px;
+  color: #737373;
+  font-style: italic;
+}
+
+.post-content :deep(hr) {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin: 40px 0;
+}
+
+.post-content :deep(a) {
+  color: #818cf8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.post-content :deep(a:hover) { color: #a5b4fc; }
+
 .post-content-placeholder {
   margin-top: 16px;
 }

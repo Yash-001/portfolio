@@ -44,6 +44,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'contact',     name: 'contact',       component: () => import('@/pages/ContactPage.vue'),                 meta: meta('contact') },
       { path: 'privacy',     name: 'privacy',       component: () => import('@/pages/PrivacyPage.vue'),                 meta: meta('privacy') },
       { path: 'terms',       name: 'terms',         component: () => import('@/pages/TermsPage.vue'),                   meta: meta('terms') },
+      { path: 'blog',        name: 'blog',          component: () => import('@/pages/BlogPage.vue'),                    meta: meta('blog') },
+      { path: 'blog/:slug',  name: 'blog-post',     component: () => import('@/pages/BlogPostPage.vue'),                meta: { title: 'Blog | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' } },
       {
         path: 'projects',
         name: 'projects',
@@ -54,21 +56,7 @@ const routes: RouteRecordRaw[] = [
             path: ':slug',
             name: 'project-detail',
             component: () => import('@/pages/projects/ProjectDetailPage.vue'),
-            meta: { title: 'Project | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' }, // overridden dynamically in ProjectDetailPage
-          },
-        ],
-      },
-      {
-        path: 'blog',
-        name: 'blog',
-        component: () => import('@/pages/BlogPage.vue'),
-        meta: meta('blog'),
-        children: [
-          {
-            path: ':slug',
-            name: 'blog-post',
-            component: () => import('@/pages/BlogPostPage.vue'),
-            meta: { title: 'Blog | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' }, // overridden dynamically in BlogPostPage
+            meta: { title: 'Project | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' },
           },
         ],
       },
@@ -88,7 +76,6 @@ export const router = createRouter({
   scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) return savedPosition
     if (to.hash) {
-      // Defer to next tick so async components have time to mount
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve({ el: to.hash, behavior: 'smooth', top: 80 })
@@ -101,7 +88,6 @@ export const router = createRouter({
 
 router.beforeEach(() => {
   isNavigating.value = true
-  // Ensure body scroll is never left locked between page navigations
   document.body.style.overflow = ''
 })
 
@@ -120,13 +106,11 @@ router.afterEach((to) => {
   setMetaTag('name',     'description',   description as string)
   setLinkTag('canonical', canonical)
 
-  // Open Graph
   setMetaTag('property', 'og:title',       to.meta.title       ?? DEFAULT_META.title)
   setMetaTag('property', 'og:description', to.meta.description ?? DEFAULT_META.description!)
   setMetaTag('property', 'og:url',         canonical)
   setMetaTag('property', 'og:image',       to.meta.ogImage     ?? DEFAULT_META.ogImage!)
 
-  // Robots
   setMetaTag('name', 'robots', to.meta.noIndex ? 'noindex, nofollow' : 'index, follow')
 })
 
