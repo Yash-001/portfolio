@@ -104,8 +104,8 @@
             v-for="link in NAV_LINK_KEYS"
             :key="link.key"
           >
-            <a
-              :href="link.href"
+            <RouterLink
+              :to="link.href"
               class="ft-nav__link"
             >
               <span
@@ -113,7 +113,7 @@
                 aria-hidden="true"
               >→</span>
               {{ t(`common.footer.${link.key}`) }}
-            </a>
+            </RouterLink>
           </li>
         </ul>
       </nav>
@@ -132,8 +132,8 @@
             v-for="key in SERVICE_LINK_KEYS"
             :key="key"
           >
-            <a
-              href="/services"
+            <RouterLink
+              to="/services"
               class="ft-nav__link"
             >
               <span
@@ -141,7 +141,7 @@
                 aria-hidden="true"
               >→</span>
               {{ t(`common.footer.${key}`) }}
-            </a>
+            </RouterLink>
           </li>
         </ul>
       </nav>
@@ -160,11 +160,10 @@
               v-for="r in RESOURCE_LINK_KEYS"
               :key="r.key"
             >
-              <a
-                :href="r.href"
+              <component
+                :is="r.external ? 'a' : 'RouterLink'"
+                v-bind="r.external ? { href: r.href, target: '_blank', rel: 'noopener noreferrer' } : { to: r.href }"
                 class="ft-nav__link"
-                :target="r.external ? '_blank' : undefined"
-                :rel="r.external ? 'noopener noreferrer' : undefined"
               >
                 <span
                   class="ft-nav__link-arrow"
@@ -176,7 +175,7 @@
                   class="ft-nav__ext"
                   aria-hidden="true"
                 >↗</span>
-              </a>
+              </component>
             </li>
           </ul>
         </nav>
@@ -261,18 +260,18 @@
         </p>
 
         <div class="ft-bottom-links">
-          <a
-            href="/privacy"
+          <RouterLink
+            to="/privacy"
             class="ft-bottom-link"
-          >{{ t('common.footer.privacy') }}</a>
+          >{{ t('common.footer.privacy') }}</RouterLink>
           <span
             class="ft-bottom-sep"
             aria-hidden="true"
           >·</span>
-          <a
-            href="/terms"
+          <RouterLink
+            to="/terms"
             class="ft-bottom-link"
-          >{{ t('common.footer.terms') }}</a>
+          >{{ t('common.footer.terms') }}</RouterLink>
           <span
             class="ft-bottom-sep"
             aria-hidden="true"

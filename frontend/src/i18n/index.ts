@@ -15,6 +15,6 @@ export type I18nInstance = typeof i18n
 
 export async function loadLocale(locale: LocaleCode): Promise<void> {
   if (locale === 'en') return  // en is bundled at startup, always current
-  const messages = await import(/* @vite-ignore */ `./locales/${locale}/index.ts`)
+  const messages = await import(`./locales/${locale}/index`)
   ;((i18n.global as unknown) as { setLocaleMessage: (locale: string, messages: LocaleMessages<VueMessageType>) => void }).setLocaleMessage(locale, messages.default as LocaleMessages<VueMessageType>)
 }
