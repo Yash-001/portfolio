@@ -13,8 +13,12 @@ export const i18n = createI18n({
 
 export type I18nInstance = typeof i18n
 
+const localeModules = import.meta.glob('./locales/*/index.ts')
+
 export async function loadLocale(locale: LocaleCode): Promise<void> {
   if (locale === 'en') return  // en is bundled at startup, always current
-  const messages = await import(`./locales/${locale}/index`)
-  ;((i18n.global as unknown) as { setLocaleMessage: (locale: string, messages: LocaleMessages<VueMessageType>) => void }).setLocaleMessage(locale, messages.default as LocaleMessages<VueMessageType>)
+  const loader = localeModules[`./locales/${locale}/index.ts`]
+  if (!loader) return
+  const messages = await loader()
+  ;((i18n.global as unknown) as { setLocaleMessage: (locale: string, messages: LocaleMessages<VueMessageType>) => void }).setLocaleMessage(locale, (messages as { default: LocaleMessages<VueMessageType> }).default)
 }
