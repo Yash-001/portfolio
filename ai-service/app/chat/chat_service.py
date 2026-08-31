@@ -159,7 +159,10 @@ def _is_failover_error(exc: Exception) -> bool:
     if isinstance(exc, (AIQuotaExceededError, AIProviderUnavailableError, AITimeoutError)):
         return True
     msg = str(exc).lower()
-    return any(s in msg for s in ("429", "quota", "rate limit", "timeout", "unavailable", "503", "overloaded"))
+    return any(s in msg for s in (
+        "429", "quota", "rate limit", "timeout", "unavailable", "503", "overloaded",
+        "404", "model_not_found", "does not exist", "no access",
+    ))
 
 
 def _build_chat_request(

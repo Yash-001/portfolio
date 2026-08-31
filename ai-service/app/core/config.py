@@ -53,11 +53,11 @@ class Settings(BaseSettings):
 
     # ── Google Gemini ─────────────────────────────────────────────────────
     GEMINI_API_KEY: str = ""
-    GEMINI_DEFAULT_MODEL: str = "gemini-2.0-flash"
+    GEMINI_DEFAULT_MODEL: str = "gemini-3.5-flash-lite"
 
     # ── Groq ──────────────────────────────────────────────────────────────
     GROQ_API_KEY: str = ""
-    GROQ_DEFAULT_MODEL: str = "llama-3.3-70b-versatile"
+    GROQ_DEFAULT_MODEL: str = "qwen/qwen3.8-27b"
 
     # ── OpenRouter ────────────────────────────────────────────────────────
     OPENROUTER_API_KEY: str = ""
