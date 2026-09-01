@@ -9,6 +9,7 @@ import { gsapPlugin }      from '@/plugins/gsap'
 import { i18nPlugin }      from '@/plugins/i18n'
 import { analyticsPlugin } from '@/plugins/analytics'
 
+import 'primeicons/primeicons.css'
 import '@/styles/main.css'
 
 const app = createApp(App)

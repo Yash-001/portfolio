@@ -29,14 +29,8 @@ class Settings(BaseSettings):
         return [o.strip() for o in self.ALLOWED_ORIGINS.split(",") if o.strip()]
 
     # ── AI Provider selection ─────────────────────────────────────────────
-    # Which provider to use as default: "openai" | "anthropic" | "gemini" | "groq" | "openrouter"
     DEFAULT_AI_PROVIDER: str = "groq"
-
-    # auto = try providers in priority order with failover
-    # single = use DEFAULT_AI_PROVIDER only (no failover)
     AI_PROVIDER_MODE: str = "auto"
-
-    # Comma-separated priority list for auto mode
     AI_PROVIDER_PRIORITY: str = "groq,openrouter,gemini,openai"
 
     # ── OpenAI ────────────────────────────────────────────────────────────
@@ -77,16 +71,24 @@ class Settings(BaseSettings):
     # ── Logging ───────────────────────────────────────────────────────────
     LOG_LEVEL: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     LOG_FORMAT: Literal["json", "text"] = "json"
-    LOG_AI_REQUESTS: bool = True       # log provider calls (no content in prod)
-    LOG_AI_RESPONSES: bool = False     # never log response content in prod
+    LOG_AI_REQUESTS: bool = True
+    LOG_AI_RESPONSES: bool = False
 
     # ── Chat ──────────────────────────────────────────────────────────────
     CHAT_MAX_HISTORY_TURNS: int = 20
     CHAT_MAX_MESSAGE_LENGTH: int = 4_000
 
+    # ── Reviews / clients database ────────────────────────────────────────
+    DB_PATH: str = "portfolio.db"
+    REVIEW_MIN_LENGTH: int = 20
+    REVIEW_MAX_LENGTH: int = 300
+    # Set a strong random value in production .env — empty disables admin routes
+    ADMIN_API_KEY: str = ""
+    # Per-IP rate limit for public review endpoints (per hour)
+    REVIEW_RATE_LIMIT_PER_HOUR: int = 10
+
     # ── Auth (future) ─────────────────────────────────────────────────────
     # Set AUTH_ENABLED=true and provide JWT_SECRET when auth is added.
-    # The chat router _client_id() will switch from IP to JWT sub claim.
     AUTH_ENABLED: bool = False
     JWT_SECRET: str = ""
     JWT_ALGORITHM: str = "HS256"

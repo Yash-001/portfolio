@@ -22,6 +22,14 @@ dist-ssr/
 **/*.pyc
 **/*.pyo
 
+# SQLite database files
+ai-service/portfolio.db
+ai-service/portfolio.db-shm
+ai-service/portfolio.db-wal
+*.db
+*.db-shm
+*.db-wal
+
 # Generated knowledge base (rebuilt by npm run dev/build)
 ai-service/app/knowledge/portfolio_data.json
 

@@ -8,4 +8,5 @@ export interface TestimonialFull extends Testimonial {
   projectRef?: string
   engagement?: string
   location?: string
+  date?: string
 }

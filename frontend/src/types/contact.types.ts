@@ -8,10 +8,11 @@ export type ProjectType =
   | 'other'
 
 export type BudgetRange =
-  | 'under-5k'
-  | '5k-15k'
-  | '15k-30k'
-  | '30k-plus'
+  | 'under-10k'
+  | '10k-25k'
+  | '25k-50k'
+  | '50k-1L'
+  | '1L-plus'
   | 'discuss'
 
 export type ContactStatus = 'idle' | 'loading' | 'success' | 'error'
@@ -126,9 +127,10 @@ export const PROJECT_TYPE_OPTIONS: SelectOption<ProjectType>[] = [
 ]
 
 export const BUDGET_OPTIONS: SelectOption<BudgetRange>[] = [
-  { value: 'under-5k',  label: 'Under $5k'    },
-  { value: '5k-15k',    label: '$5k – $15k'   },
-  { value: '15k-30k',   label: '$15k – $30k'  },
-  { value: '30k-plus',  label: '$30k+'         },
-  { value: 'discuss',   label: "Let's discuss" },
+  { value: 'under-10k', label: 'Under ₹10,000'          },
+  { value: '10k-25k',   label: '₹10,000 – ₹25,000'      },
+  { value: '25k-50k',   label: '₹25,000 – ₹50,000'      },
+  { value: '50k-1L',    label: '₹50,000 – ₹1,00,000'    },
+  { value: '1L-plus',   label: '₹1,00,000+'              },
+  { value: 'discuss',   label: "Let's discuss"           },
 ]

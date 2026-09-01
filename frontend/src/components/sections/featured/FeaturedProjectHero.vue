@@ -25,39 +25,42 @@
             class="fp-hero__status-dot"
             aria-hidden="true"
           />
-          <span class="fp-hero__status">Live in Production</span>
+          <span class="fp-hero__status">{{ featured.project.status }}</span>
           <span
             class="fp-hero__sep"
             aria-hidden="true"
           >·</span>
-          <span class="fp-hero__meta-text">{{ EAM_PROJECT.year }}</span>
+          <span class="fp-hero__meta-text">{{ featured.project.year }}</span>
           <span
             class="fp-hero__sep"
             aria-hidden="true"
           >·</span>
-          <span class="fp-hero__meta-text">{{ EAM_PROJECT.duration }}</span>
+          <span class="fp-hero__meta-text">{{ featured.project.duration }}</span>
+        </div>
+
+        <div class="fp-hero__type-badge">
+          <i :class="featured.icon" />
+          {{ featured.project.type }}
         </div>
 
         <h1
           ref="titleEl"
           class="fp-hero__title"
         >
-          Enterprise<br />
-          <span class="fp-hero__title-accent">Asset Management</span><br />
-          System
+          {{ featured.project.title }}
         </h1>
 
         <p
           ref="taglineEl"
           class="fp-hero__tagline"
         >
-          {{ EAM_PROJECT.tagline }}
+          {{ featured.project.tagline }}
         </p>
         <p
           ref="descEl"
           class="fp-hero__desc"
         >
-          {{ EAM_PROJECT.description }}
+          {{ featured.project.description }}
         </p>
 
         <div
@@ -66,11 +69,7 @@
         >
           <div class="fp-hero__meta-item">
             <i class="pi pi-user" />
-            <span>{{ EAM_PROJECT.role }}</span>
-          </div>
-          <div class="fp-hero__meta-item">
-            <i class="pi pi-building" />
-            <span>{{ EAM_PROJECT.clients }} enterprise clients</span>
+            <span>{{ featured.project.role }}</span>
           </div>
         </div>
 
@@ -79,11 +78,25 @@
           class="fp-hero__tech"
         >
           <span
-            v-for="t in HERO_TECH"
+            v-for="t in heroTech"
             :key="t.name"
             class="fp-hero__tech-pill"
             :style="{ '--tc': t.color }"
           >{{ t.name }}</span>
+        </div>
+
+        <!-- Live link -->
+        <div class="fp-hero__actions">
+          <a
+            :href="featured.project.liveUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="fp-hero__live-btn"
+            :style="{ '--pc': featured.color }"
+          >
+            <i class="pi pi-external-link" />
+            View Live
+          </a>
         </div>
       </div>
 
@@ -97,65 +110,37 @@
             <span class="fp-diagram__dot fp-diagram__dot--r" />
             <span class="fp-diagram__dot fp-diagram__dot--y" />
             <span class="fp-diagram__dot fp-diagram__dot--g" />
-            <span class="fp-diagram__url">eam.enterprise.app</span>
+            <span class="fp-diagram__url">{{ diagramUrl }}</span>
           </div>
 
           <div class="fp-diagram__body">
-            <div class="fp-diagram__layer fp-diagram__layer--client">
-              <span class="fp-diagram__layer-label">Client Layer</span>
-              <div class="fp-diagram__nodes">
-                <div class="fp-diagram__node fp-diagram__node--vue">
-                  <i class="pi pi-desktop" /><span>Vue 3 SPA</span>
-                </div>
-                <div class="fp-diagram__node fp-diagram__node--mobile">
-                  <i class="pi pi-mobile" /><span>Mobile QR</span>
+            <div
+              v-for="layer in diagramLayers"
+              :key="layer.label"
+            >
+              <div
+                class="fp-diagram__layer"
+                :class="`fp-diagram__layer--${layer.variant}`"
+              >
+                <span class="fp-diagram__layer-label">{{ layer.label }}</span>
+                <div class="fp-diagram__nodes">
+                  <div
+                    v-for="node in layer.nodes"
+                    :key="node.label"
+                    class="fp-diagram__node"
+                    :class="`fp-diagram__node--${node.variant}`"
+                  >
+                    <i :class="node.icon" /><span>{{ node.label }}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div
-              class="fp-diagram__arrow"
-              aria-hidden="true"
-            >
-              <div class="fp-diagram__arrow-line" />
-              <i class="pi pi-arrow-down fp-diagram__arrow-icon" />
-            </div>
-
-            <div class="fp-diagram__layer fp-diagram__layer--api">
-              <span class="fp-diagram__layer-label">API Layer</span>
-              <div class="fp-diagram__nodes">
-                <div class="fp-diagram__node fp-diagram__node--alb">
-                  <i class="pi pi-share-alt" /><span>AWS ALB</span>
-                </div>
-                <div class="fp-diagram__node fp-diagram__node--spring">
-                  <i class="pi pi-server" /><span>Spring Boot 3</span>
-                </div>
-                <div class="fp-diagram__node fp-diagram__node--spring">
-                  <i class="pi pi-server" /><span>Spring Boot 3</span>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="fp-diagram__arrow"
-              aria-hidden="true"
-            >
-              <div class="fp-diagram__arrow-line" />
-              <i class="pi pi-arrow-down fp-diagram__arrow-icon" />
-            </div>
-
-            <div class="fp-diagram__layer fp-diagram__layer--data">
-              <span class="fp-diagram__layer-label">Data Layer</span>
-              <div class="fp-diagram__nodes">
-                <div class="fp-diagram__node fp-diagram__node--pg">
-                  <i class="pi pi-database" /><span>PostgreSQL + RLS</span>
-                </div>
-                <div class="fp-diagram__node fp-diagram__node--redis">
-                  <i class="pi pi-bolt" /><span>Redis Cache</span>
-                </div>
-                <div class="fp-diagram__node fp-diagram__node--s3">
-                  <i class="pi pi-cloud" /><span>AWS S3</span>
-                </div>
+              <div
+                v-if="layer.arrow"
+                class="fp-diagram__arrow"
+                aria-hidden="true"
+              >
+                <div class="fp-diagram__arrow-line" />
+                <i class="pi pi-arrow-down fp-diagram__arrow-icon" />
               </div>
             </div>
           </div>
@@ -179,7 +164,7 @@
       class="fp-hero__metrics"
     >
       <div
-        v-for="m in EAM_METRICS"
+        v-for="m in featured.metrics"
         :key="m.label"
         class="fp-hero__metric"
         :title="m.description"
@@ -192,11 +177,52 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { gsap } from '@/plugins/gsap'
-import { EAM_PROJECT, EAM_METRICS, EAM_TECH } from '@/constants/featured-project.constants'
+import type { FeaturedProject } from '@/constants/featured-project.constants'
 
-const HERO_TECH = EAM_TECH.slice(0, 8)
+const props = defineProps<{ featured: FeaturedProject }>()
+
+const heroTech = computed(() => [...props.featured.tech].slice(0, 8))
+
+const diagramUrl = computed(() =>
+  props.featured.key === 'careerforge'
+    ? 'careerforge.yashranjan.com'
+    : 'eams-frontend.onrender.com'
+)
+
+const diagramLayers = computed(() => {
+  if (props.featured.key === 'careerforge') {
+    return [
+      { label: 'Frontend', variant: 'client', arrow: true, nodes: [
+        { label: 'Vue 3 + Vite', variant: 'vue',    icon: 'pi pi-desktop'     },
+        { label: 'Nginx',        variant: 'mobile',  icon: 'pi pi-server'      },
+      ]},
+      { label: 'Backend', variant: 'api', arrow: true, nodes: [
+        { label: 'Spring Boot',  variant: 'spring',  icon: 'pi pi-server'      },
+        { label: 'Stripe',       variant: 'alb',     icon: 'pi pi-credit-card' },
+      ]},
+      { label: 'Data', variant: 'data', arrow: false, nodes: [
+        { label: 'PostgreSQL',   variant: 'pg',      icon: 'pi pi-database'    },
+        { label: 'OpenPDF',      variant: 'redis',   icon: 'pi pi-file-pdf'    },
+      ]},
+    ]
+  }
+  return [
+    { label: 'Frontend', variant: 'client', arrow: true, nodes: [
+      { label: 'Vue.js 3',     variant: 'vue',    icon: 'pi pi-desktop'  },
+      { label: 'PrimeVue 4',   variant: 'mobile', icon: 'pi pi-th-large' },
+    ]},
+    { label: 'Backend', variant: 'api', arrow: true, nodes: [
+      { label: 'Spring Boot',  variant: 'spring', icon: 'pi pi-server'   },
+      { label: 'Jenkins CI',   variant: 'alb',    icon: 'pi pi-cog'      },
+    ]},
+    { label: 'Data', variant: 'data', arrow: false, nodes: [
+      { label: 'PostgreSQL',   variant: 'pg',     icon: 'pi pi-database' },
+      { label: 'SonarQube',    variant: 'redis',  icon: 'pi pi-shield'   },
+    ]},
+  ]
+})
 
 const heroEl    = ref<HTMLElement | null>(null)
 const badgeEl   = ref<HTMLElement | null>(null)
@@ -246,7 +272,7 @@ onUnmounted(() => gsapCtx?.revert())
 <style scoped>
 .fp-hero {
   position: relative;
-  padding: 100px 0 0;
+  padding: 60px 0 0;
   overflow: hidden;
   background: #0a0a0a;
 }
@@ -298,7 +324,7 @@ onUnmounted(() => gsapCtx?.revert())
 @media (min-width: 1024px) { .fp-hero__inner { grid-template-columns: 1fr 1fr; } }
 
 /* ── Copy ──────────────────────────────────────────────────────── */
-.fp-hero__copy { display: flex; flex-direction: column; gap: 24px; }
+.fp-hero__copy { display: flex; flex-direction: column; gap: 20px; }
 
 .fp-hero__badge-row {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
@@ -321,17 +347,23 @@ onUnmounted(() => gsapCtx?.revert())
 .fp-hero__sep { color: #333; font-size: 12px; }
 .fp-hero__meta-text { font-size: 12px; font-family: 'Geist Mono', monospace; color: #555; letter-spacing: 0.04em; }
 
-.fp-hero__title {
-  font-size: clamp(36px, 5vw, 64px); font-weight: 800;
-  letter-spacing: -0.04em; line-height: 1.05; color: #f5f5f5;
+.fp-hero__type-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 600; font-family: 'Geist Mono', monospace;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #6366f1; background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.2); padding: 5px 12px; border-radius: 6px;
+  width: fit-content;
 }
-.fp-hero__title-accent {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+.fp-hero__type-badge i { font-size: 11px; }
+
+.fp-hero__title {
+  font-size: clamp(28px, 4vw, 56px); font-weight: 800;
+  letter-spacing: -0.04em; line-height: 1.05; color: #f5f5f5;
 }
 
 .fp-hero__tagline {
-  font-size: clamp(16px, 2vw, 20px); font-weight: 500;
+  font-size: clamp(15px, 1.8vw, 19px); font-weight: 500;
   color: #a0a0a0; line-height: 1.5; letter-spacing: -0.01em;
 }
 .fp-hero__desc { font-size: 15px; line-height: 1.8; color: #737373; max-width: 56ch; }
@@ -356,6 +388,25 @@ onUnmounted(() => gsapCtx?.revert())
   border-color: color-mix(in srgb, var(--tc, #6366f1) 50%, transparent);
   background: color-mix(in srgb, var(--tc, #6366f1) 14%, transparent);
 }
+
+/* ── Live button ───────────────────────────────────────────────── */
+.fp-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.fp-hero__live-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 24px; border-radius: 10px; font-size: 14px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+  background: color-mix(in srgb, var(--pc, #6366f1) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pc, #6366f1) 40%, transparent);
+  color: color-mix(in srgb, var(--pc, #6366f1) 90%, #fff);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--pc, #6366f1) 15%, transparent);
+}
+.fp-hero__live-btn:hover {
+  background: color-mix(in srgb, var(--pc, #6366f1) 25%, transparent);
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--pc, #6366f1) 30%, transparent);
+  transform: translateY(-1px);
+}
+.fp-hero__live-btn i { font-size: 12px; }
 
 /* ── Architecture diagram ──────────────────────────────────────── */
 .fp-hero__diagram { display: flex; justify-content: center; }
@@ -411,7 +462,6 @@ onUnmounted(() => gsapCtx?.revert())
 .fp-diagram__node--spring { color: #6db33f; border-color: rgba(109,179,63,0.2); }
 .fp-diagram__node--pg     { color: #336791; border-color: rgba(51,103,145,0.2); }
 .fp-diagram__node--redis  { color: #dc382d; border-color: rgba(220,56,45,0.2);  }
-.fp-diagram__node--s3     { color: #ff9900; border-color: rgba(255,153,0,0.2);  }
 
 .fp-diagram__arrow {
   display: flex; flex-direction: column; align-items: center; padding: 4px 0;
@@ -454,7 +504,7 @@ onUnmounted(() => gsapCtx?.revert())
 .fp-hero__metric:hover { background: #111; }
 
 .fp-hero__metric-value {
-  font-size: 26px; font-weight: 800; letter-spacing: -0.03em;
+  font-size: 22px; font-weight: 800; letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums; line-height: 1;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;

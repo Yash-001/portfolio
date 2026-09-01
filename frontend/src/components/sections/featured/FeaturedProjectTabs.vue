@@ -18,7 +18,7 @@
       />
 
       <button
-        v-for="tab in EAM_TABS"
+        v-for="tab in props.tabs"
         :key="tab.id"
         :ref="el => setTabRef(tab.id, el as HTMLElement)"
         class="fp-tabs__tab"
@@ -53,11 +53,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import type { EamTabId } from '@/constants/featured-project.constants'
-import { EAM_TABS } from '@/constants/featured-project.constants'
 
-const props = defineProps<{ modelValue: EamTabId; ariaLabel?: string }>()
-const emit  = defineEmits<{ (e: 'update:modelValue', v: EamTabId): void }>()
+type Tab = { readonly id: string; readonly label: string; readonly icon: string }
+
+const props = defineProps<{ modelValue: string; tabs: ReadonlyArray<Tab>; ariaLabel?: string }>()
+const emit  = defineEmits<{ (e: 'update:modelValue', v: string): void }>()
 
 const tabsEl  = ref<HTMLElement | null>(null)
 const trackEl = ref<HTMLElement | null>(null)
@@ -89,7 +89,7 @@ function updateIndicator(id: string) {
   indicatorWidth.value = btnRect.width
 }
 
-function select(id: EamTabId) {
+function select(id: string) {
   emit('update:modelValue', id)
   nextTick(() => {
     tabRefs.get(id)?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
@@ -99,9 +99,9 @@ function select(id: EamTabId) {
 
 // Keyboard navigation — arrow keys cycle tabs (WCAG 2.1 tablist pattern)
 function onKeydown(e: KeyboardEvent) {
-  const ids = EAM_TABS.map(t => t.id)
+  const ids = props.tabs.map(t => t.id)
   const current = ids.indexOf(props.modelValue)
-  let next: EamTabId | null = null
+  let next: string | null = null
   if (e.key === 'ArrowRight') { e.preventDefault(); next = ids[(current + 1) % ids.length] }
   else if (e.key === 'ArrowLeft') { e.preventDefault(); next = ids[(current - 1 + ids.length) % ids.length] }
   else if (e.key === 'Home') { e.preventDefault(); next = ids[0] }

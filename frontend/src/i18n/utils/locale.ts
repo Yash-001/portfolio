@@ -3,6 +3,16 @@ import { LOCALES } from '@/types/i18n.types'
 
 const SUPPORTED = LOCALES.map((l) => l.code)
 const KEY = 'yr-locale'
+const VERSION_KEY = 'yr-locale-version'
+const LOCALE_VERSION = '3'  // bump this whenever locale file structure changes
+
+/** Clear persisted locale if it was saved with an older version. */
+export function clearStaleLocale(): void {
+  if (localStorage.getItem(VERSION_KEY) !== LOCALE_VERSION) {
+    localStorage.removeItem(KEY)
+    localStorage.setItem(VERSION_KEY, LOCALE_VERSION)
+  }
+}
 
 export function persistLocale(code: LocaleCode): void {
   localStorage.setItem(KEY, code)

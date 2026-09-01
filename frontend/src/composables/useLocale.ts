@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { i18n, loadLocale } from '@/i18n'
 import { LOCALES, type LocaleCode } from '@/types/i18n.types'
-import { persistLocale, getPersistedLocale, detectBrowserLocale, applyRtl } from '@/i18n/utils/locale'
+import { persistLocale, getPersistedLocale, detectBrowserLocale, applyRtl, clearStaleLocale } from '@/i18n/utils/locale'
 
 export function useLocale() {
   const { t, tm, locale } = useI18n()
@@ -18,6 +18,7 @@ export function useLocale() {
   }
 
   async function initLocale(): Promise<void> {
+    clearStaleLocale()
     const target = getPersistedLocale() ?? detectBrowserLocale() ?? 'en'
     await setLocale(target)
   }

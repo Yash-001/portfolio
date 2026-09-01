@@ -13,10 +13,13 @@ from app.models.ai_models import AIErrorCode, AIErrorResponse
 
 from app.core.config import get_settings
 from app.core.logging import setup_logging
+from app.db.database import init_db, close_db
+from app.db.migrations import run_migrations
 from app.middleware.error_handler import ai_service_error_handler, generic_error_handler
 from app.middleware.logging_middleware import RequestLoggingMiddleware
 from app.routers.ai_router import router as ai_router
 from app.routers.chat_router import router as chat_router
+from app.routers.reviews_router import router as reviews_router
 from app.services.exceptions import AIServiceError
 
 setup_logging()
@@ -41,12 +44,18 @@ def _validate_config() -> None:
     if settings.ENVIRONMENT == "production" and settings.APP_DEBUG:
         raise RuntimeError("APP_DEBUG must be false in production")
 
+    if not settings.ADMIN_API_KEY:
+        logger.warning("ADMIN_API_KEY is not set — admin endpoints will return 401")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     _validate_config()
+    await init_db()
+    await run_migrations()
     logger.info("AI service started: env=%s provider=%s", settings.ENVIRONMENT, settings.DEFAULT_AI_PROVIDER)
     yield
+    await close_db()
     logger.info("AI service shutting down")
 
 
@@ -77,8 +86,8 @@ def create_app() -> FastAPI:
         CORSMiddleware,
         allow_origins=settings.allowed_origins_list,
         allow_credentials=False,
-        allow_methods=["GET", "POST"],
-        allow_headers=["Content-Type", "X-Request-ID"],
+        allow_methods=["GET", "POST", "PUT", "DELETE"],
+        allow_headers=["Content-Type", "X-Request-ID", "X-Admin-Key"],
     )
 
     # ── Request logging ───────────────────────────────────────────────────
@@ -103,8 +112,9 @@ def create_app() -> FastAPI:
         )
 
     # ── Routers ───────────────────────────────────────────────────────────
-    app.include_router(ai_router, prefix="/api/v1")
-    app.include_router(chat_router, prefix="/api/v1")
+    app.include_router(ai_router,      prefix="/api/v1")
+    app.include_router(chat_router,    prefix="/api/v1")
+    app.include_router(reviews_router, prefix="/api/v1")
 
     # ── Root ──────────────────────────────────────────────────────────────
     @app.get("/", include_in_schema=False)

@@ -9,7 +9,7 @@
     <!-- Thumbnail grid -->
     <div class="fp-gallery__grid">
       <button
-        v-for="(shot, i) in EAM_SCREENSHOTS"
+        v-for="(shot, i) in props.screenshots"
         :key="shot.id"
         class="fp-gallery__thumb"
         :class="{ 'fp-gallery__thumb--active': activeIndex === i }"
@@ -115,10 +115,10 @@
             >
               <i class="pi pi-chevron-left" />
             </button>
-            <span class="fp-gallery__nav-count">{{ activeIndex + 1 }} / {{ EAM_SCREENSHOTS.length }}</span>
+            <span class="fp-gallery__nav-count">{{ activeIndex + 1 }} / {{ props.screenshots.length }}</span>
             <button
               class="fp-gallery__nav-btn"
-              :disabled="activeIndex === EAM_SCREENSHOTS.length - 1"
+              :disabled="activeIndex === props.screenshots.length - 1"
               aria-label="Next screenshot"
               @click="next"
             >
@@ -133,8 +133,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { EAM_SCREENSHOTS } from '@/constants/featured-project.constants'
 
+const props = defineProps<{
+  screenshots: ReadonlyArray<{ id: string; label: string; description: string }>
+}>()
 const SCREEN_ICONS = [
   'pi pi-chart-bar', 'pi pi-list', 'pi pi-wrench',
   'pi pi-calculator', 'pi pi-history', 'pi pi-qrcode',
@@ -143,11 +145,11 @@ const SCREEN_ICONS = [
 const ACCENT_COLORS = ['#6366f1', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4']
 
 const activeIndex = ref(0)
-const active = computed(() => EAM_SCREENSHOTS[activeIndex.value])
+const active = computed(() => props.screenshots[activeIndex.value])
 
 function open(i: number) { activeIndex.value = i }
 function prev() { if (activeIndex.value > 0) activeIndex.value-- }
-function next() { if (activeIndex.value < EAM_SCREENSHOTS.length - 1) activeIndex.value++ }
+function next() { if (activeIndex.value < props.screenshots.length - 1) activeIndex.value++ }
 
 // Keyboard navigation — only when gallery is hovered/focused
 function onKey(e: KeyboardEvent) {

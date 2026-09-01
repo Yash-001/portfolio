@@ -23,7 +23,7 @@
 
     <Divider class="my-6" />
 
-    <div class="flex items-center gap-3">
+    <div class="social-icons-row">
       <a
         v-for="s in SOCIAL_LINKS_NAV"
         :key="s.platform"
@@ -96,6 +96,12 @@ const pt = {
 .mobile-nav-link:focus-visible {
   outline: 2px solid var(--border-focus);
   outline-offset: 2px;
+}
+
+.social-icons-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .social-icon-btn {

@@ -46,6 +46,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'terms',       name: 'terms',         component: () => import('@/pages/TermsPage.vue'),                   meta: meta('terms') },
       { path: 'blog',        name: 'blog',          component: () => import('@/pages/BlogPage.vue'),                    meta: meta('blog') },
       { path: 'blog/:slug',  name: 'blog-post',     component: () => import('@/pages/BlogPostPage.vue'),                meta: { title: 'Blog | Yash Ranjan', description: DEFAULT_META.description, ogImage: DEFAULT_META.ogImage, transition: 'page' } },
+      { path: 'admin',       name: 'admin',         component: () => import('@/pages/AdminPage.vue'),                   meta: { title: 'Admin | Yash Ranjan', noIndex: true, transition: 'page' } },
       {
         path: 'projects',
         name: 'projects',

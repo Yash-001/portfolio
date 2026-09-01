@@ -146,32 +146,86 @@
   ],
   "projects": [
     {
+      "id": "careerforge",
+      "slug": "careerforge",
+      "title": "CareerForge",
+      "tagline": "AI-powered career management — resumes, job tracking, and tailoring in one platform.",
+      "description": "A full-stack SaaS platform for professional profile management, AI-assisted resume analysis and tailoring, versioned resumes, PDF export, job application tracking, and subscription billing. Built as a modular monolith with Java 21, Spring Boot, Vue.js 3, PostgreSQL, and Docker.",
+      "category": "Full-Stack",
+      "status": "in-progress",
+      "featured": true,
+      "year": 2025,
+      "duration": "Ongoing",
+      "role": "Product Designer + Full-Stack Developer",
+      "problem": "Job seekers manage their career across disconnected tools — one for resumes, another for applications, another for AI rewrites. There is no single place to maintain a master professional profile and generate tailored resume versions for specific roles without losing previous versions.",
+      "approach": "Designed a modular monolith (not microservices) to keep deployment simple while maintaining clear internal boundaries. The core model separates a user's master professional profile from individual resume versions — allowing tailoring without destroying the original. AI analysis and tailoring use a provider abstraction so the underlying model can be swapped without restructuring the application. Billing uses the same abstraction pattern with a Stripe integration behind a BillingService interface.",
+      "outcome": "MVP delivered through production Docker build and CI/CD pipeline. 379 backend tests and 167 frontend tests passing. Features shipped: JWT authentication with refresh tokens, professional profile, versioned resume builder, AI resume analysis and tailoring, server-side PDF export (OpenPDF), job application tracker with status lifecycle, Stripe subscription billing, and a dashboard.",
+      "technologies": [
+        "Java 21",
+        "Spring Boot",
+        "Spring Security",
+        "Vue.js 3",
+        "TypeScript",
+        "PrimeVue",
+        "PostgreSQL",
+        "Flyway",
+        "Stripe",
+        "OpenPDF",
+        "Docker",
+        "GitHub Actions",
+        "Nginx",
+        "JWT"
+      ],
+      "metrics": [
+        {
+          "label": "Backend tests",
+          "value": "379",
+          "description": "All passing — Phase 9I audit"
+        },
+        {
+          "label": "Frontend tests",
+          "value": "167",
+          "description": "All passing — Vitest"
+        },
+        {
+          "label": "Architecture",
+          "value": "Modular monolith",
+          "description": "Clear internal boundaries"
+        },
+        {
+          "label": "Auth",
+          "value": "JWT + refresh",
+          "description": "15min access / 7-day refresh"
+        }
+      ]
+    },
+    {
       "id": "enterprise-asset-management-system",
       "slug": "enterprise-asset-management-system",
-      "title": "AI-Powered Enterprise Asset Management Platform",
-      "tagline": "Enterprise Asset Management with AI-assisted maintenance, asset intelligence, and modern cloud architecture.",
-      "description": "A full-stack Enterprise Asset Management (EAM) platform designed to help organizations manage assets, maintenance operations, inventory, work orders, and users through a secure, scalable, and modern web application. Built from scratch using Java 21, Spring Boot, Vue.js 3, PostgreSQL, and Docker.",
+      "title": "AI-Powered Enterprise Asset Management Platform (EAMS)",
+      "tagline": "Full-stack EAM platform — assets, maintenance, inventory, and work orders in one system.",
+      "description": "A full-stack Enterprise Asset Management platform built from scratch using Java 21, Spring Boot, Vue.js 3, PostgreSQL, and Docker. Manages asset lifecycle, preventive maintenance schedules, inventory tracking, work orders, role-based access control, and AI-assisted maintenance intelligence.",
       "category": "Enterprise",
       "status": "in-progress",
       "featured": true,
       "year": 2026,
       "duration": "Ongoing",
-      "role": "Founder, Solution Architect & Full Stack Engineer",
-      "problem": "Many organizations still rely on spreadsheets or disconnected legacy systems to manage assets, maintenance schedules, inventory, and work orders. These approaches make it difficult to maintain data accuracy, enforce access control, and scale operations as organizations grow.",
-      "approach": "Designed the application using a modular Spring Boot architecture with a Vue.js 3 frontend, JWT-based authentication, role-based access control, Flyway database migrations, Dockerized infrastructure, and RESTful APIs. The platform emphasizes clean architecture, maintainability, and extensibility so new business modules can be added with minimal impact to existing functionality.",
-      "outcome": "Built a production-ready foundation supporting asset lifecycle management, preventive maintenance, inventory tracking, work order management, authentication, and administrative capabilities. The project serves as both a reusable enterprise platform and a demonstration of end-to-end product development.",
+      "role": "Founder, Solution Architect & Full-Stack Engineer",
+      "problem": "Organizations managing physical assets still rely on spreadsheets or disconnected legacy systems for maintenance schedules, inventory, and work orders. These approaches make it impossible to enforce access control, track asset history, or scale operations without manual overhead.",
+      "approach": "Designed a modular Spring Boot architecture with clear domain boundaries — assets, maintenance, inventory, work orders, and users are separate modules with well-defined interfaces. Vue.js 3 frontend with JWT-based authentication and role-based access control. Flyway manages schema migrations. Dockerized infrastructure with GitHub Actions CI/CD. AI layer provides maintenance recommendations based on asset history and usage patterns.",
+      "outcome": "Production-ready platform supporting full asset lifecycle management, preventive maintenance scheduling, inventory tracking, work order management, and administrative capabilities. Serves as both a reusable enterprise platform and a demonstration of end-to-end product ownership.",
       "technologies": [
         "Java 21",
         "Spring Boot 3",
+        "Spring Security",
         "Vue.js 3",
         "TypeScript",
         "PostgreSQL",
-        "Spring Security",
-        "JWT",
         "Flyway",
         "Docker",
         "Gradle",
         "GitHub Actions",
+        "JWT",
         "REST APIs"
       ],
       "metrics": [
@@ -194,57 +248,6 @@
           "label": "Frontend",
           "value": "Vue 3",
           "description": "Modern responsive SPA"
-        }
-      ]
-    },
-    {
-      "id": "harbors-management-info-system",
-      "slug": "harbors-management-info-system",
-      "title": "Harbors Management Information System",
-      "tagline": "Modernizing government software for the State of Hawaii.",
-      "description": "Enterprise harbor management platform supporting vessel operations, cargo tracking, passenger management, billing, invoicing, and financial planning for the Hawaii Department of Transportation.",
-      "category": "Enterprise",
-      "status": "in-progress",
-      "featured": true,
-      "year": 2024,
-      "duration": "Ongoing",
-      "role": "Senior Software Engineer — Full Stack",
-      "problem": "The legacy harbor management system required modernization while continuing to support critical day-to-day government operations.",
-      "approach": "Developed modern Vue.js 3 interfaces, Spring Boot APIs, Oracle database integrations, and enterprise modules while contributing to the migration of legacy functionality into the new PHIMS platform.",
-      "outcome": "Delivered new business capabilities, improved maintainability, and supported ongoing modernization of a mission-critical government platform.",
-      "technologies": [
-        "Java 21",
-        "Spring Boot",
-        "Vue.js 3",
-        "PrimeVue",
-        "Oracle Database",
-        "Gradle",
-        "REST APIs",
-        "Spring Security",
-        "JUnit",
-        "Git",
-        "Pinia"
-      ],
-      "metrics": [
-        {
-          "label": "Client",
-          "value": "Gov. of Hawaii",
-          "description": "Department of Transportation"
-        },
-        {
-          "label": "Stack",
-          "value": "Java + Vue",
-          "description": "Modernized enterprise platform"
-        },
-        {
-          "label": "Modules",
-          "value": "10+",
-          "description": "Harbors & billing management"
-        },
-        {
-          "label": "Role",
-          "value": "Senior Engineer",
-          "description": "End-to-end feature ownership"
         }
       ]
     },
@@ -1020,35 +1023,45 @@
   ],
   "technologies": [
     {
-      "name": "REST APIs",
-      "categories": [
-        "Enterprise",
-        "Backend"
-      ],
-      "projectCount": 3,
-      "yearsOfExperience": 7
-    },
-    {
-      "name": "Git",
-      "categories": [
-        "Enterprise",
-        "Backend"
-      ],
-      "projectCount": 3,
-      "yearsOfExperience": 7
-    },
-    {
       "name": "Spring Boot",
       "categories": [
-        "Enterprise",
+        "Full-Stack",
         "Backend"
       ],
       "projectCount": 3,
       "yearsOfExperience": 6
     },
     {
+      "name": "PostgreSQL",
+      "categories": [
+        "Full-Stack",
+        "Enterprise"
+      ],
+      "projectCount": 3,
+      "yearsOfExperience": 4
+    },
+    {
       "name": "Java 21",
       "categories": [
+        "Full-Stack",
+        "Enterprise"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 7
+    },
+    {
+      "name": "REST APIs",
+      "categories": [
+        "Enterprise",
+        "Backend"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 7
+    },
+    {
+      "name": "Git",
+      "categories": [
+        "Backend",
         "Enterprise"
       ],
       "projectCount": 2,
@@ -1064,32 +1077,63 @@
       "yearsOfExperience": 5
     },
     {
-      "name": "PostgreSQL",
+      "name": "TypeScript",
       "categories": [
+        "Full-Stack",
         "Enterprise"
       ],
       "projectCount": 2,
       "yearsOfExperience": 4
     },
     {
-      "name": "Gradle",
+      "name": "Docker",
       "categories": [
+        "Full-Stack",
         "Enterprise"
       ],
       "projectCount": 2,
-      "yearsOfExperience": 2
+      "yearsOfExperience": 1
     },
     {
-      "name": "Vue.js 3",
+      "name": "Spring Security",
       "categories": [
+        "Full-Stack",
         "Enterprise"
       ],
       "projectCount": 2,
       "yearsOfExperience": 0
     },
     {
-      "name": "Spring Security",
+      "name": "Vue.js 3",
       "categories": [
+        "Full-Stack",
+        "Enterprise"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "Flyway",
+      "categories": [
+        "Full-Stack",
+        "Enterprise"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "GitHub Actions",
+      "categories": [
+        "Full-Stack",
+        "Enterprise"
+      ],
+      "projectCount": 2,
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "JWT",
+      "categories": [
+        "Full-Stack",
         "Enterprise"
       ],
       "projectCount": 2,
@@ -1121,9 +1165,9 @@
       "yearsOfExperience": 6
     },
     {
-      "name": "TypeScript",
+      "name": "Nginx",
       "categories": [
-        "Enterprise"
+        "Full-Stack"
       ],
       "projectCount": 1,
       "yearsOfExperience": 4
@@ -1163,6 +1207,14 @@
     {
       "name": "PrimeVue",
       "categories": [
+        "Full-Stack"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 2
+    },
+    {
+      "name": "Gradle",
+      "categories": [
         "Enterprise"
       ],
       "projectCount": 1,
@@ -1177,63 +1229,23 @@
       "yearsOfExperience": 2
     },
     {
-      "name": "Docker",
+      "name": "Stripe",
       "categories": [
-        "Enterprise"
+        "Full-Stack"
       ],
       "projectCount": 1,
-      "yearsOfExperience": 1
+      "yearsOfExperience": 0
+    },
+    {
+      "name": "OpenPDF",
+      "categories": [
+        "Full-Stack"
+      ],
+      "projectCount": 1,
+      "yearsOfExperience": 0
     },
     {
       "name": "Spring Boot 3",
-      "categories": [
-        "Enterprise"
-      ],
-      "projectCount": 1,
-      "yearsOfExperience": 0
-    },
-    {
-      "name": "JWT",
-      "categories": [
-        "Enterprise"
-      ],
-      "projectCount": 1,
-      "yearsOfExperience": 0
-    },
-    {
-      "name": "Flyway",
-      "categories": [
-        "Enterprise"
-      ],
-      "projectCount": 1,
-      "yearsOfExperience": 0
-    },
-    {
-      "name": "GitHub Actions",
-      "categories": [
-        "Enterprise"
-      ],
-      "projectCount": 1,
-      "yearsOfExperience": 0
-    },
-    {
-      "name": "Oracle Database",
-      "categories": [
-        "Enterprise"
-      ],
-      "projectCount": 1,
-      "yearsOfExperience": 0
-    },
-    {
-      "name": "JUnit",
-      "categories": [
-        "Enterprise"
-      ],
-      "projectCount": 1,
-      "yearsOfExperience": 0
-    },
-    {
-      "name": "Pinia",
       "categories": [
         "Enterprise"
       ],
@@ -1289,5 +1301,5 @@
       "yearsOfExperience": 0
     }
   ],
-  "generatedAt": "2026-08-31T17:35:08.951Z"
+  "generatedAt": "2026-09-01T15:26:31.823Z"
 }

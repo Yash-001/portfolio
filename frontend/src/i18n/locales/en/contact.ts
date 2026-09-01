@@ -23,8 +23,8 @@ export default {
     selectType:  'Select type…',
     selectRange: 'Select range…',
     placeholder: {
-      name:    'Yash Ranjan',
-      email:   "you{'@'}company.com",
+      name:    'Enter your full name',
+      email:   'Enter your email address',
       message: 'Tell me about your project, timeline, and goals…',
     },
     errors: {
